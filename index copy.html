@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Ethics & Sustainability Prototype</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="setupOverlay" class="setup-overlay">
+    <div class="setup-panel">
+      <div id="setupNameStep" class="setup-step">
+        <p class="setup-kicker">Tutorial Setup</p>
+        <h2>Enter your name</h2>
+        <p class="setup-copy">Before entering the tutorial, choose the name that will appear on your player sticker and follow your latest completed node.</p>
+        <label class="input-label" for="playerNameInput">Player name</label>
+        <input id="playerNameInput" class="setup-input" type="text" maxlength="24" placeholder="Type your name" />
+        <div class="button-row">
+          <button id="confirmNameBtn" class="primary-btn">Confirm name</button>
+        </div>
+      </div>
+
+      <div id="setupThemeStep" class="setup-step hidden">
+        <p class="setup-kicker">Visual Style</p>
+        <h2>Choose a game palette</h2>
+        <p class="setup-copy">Select one of the four directions below. Each preview shows the same interface with a different professional visual language.</p>
+
+        <div class="theme-grid">
+          <label class="theme-card theme-midnight">
+            <input type="radio" name="themeChoice" value="midnight" checked />
+            <div class="theme-card-top">
+              <span class="theme-name">Midnight Lab</span>
+              <span class="theme-tag">Cool / calm</span>
+            </div>
+            <div class="theme-preview">
+              <div class="preview-topbar"></div>
+              <div class="preview-modal">
+                <div class="preview-badge"></div>
+                <div class="preview-title"></div>
+                <div class="preview-copy"></div>
+                <div class="preview-copy short"></div>
+                <div class="preview-button-row">
+                  <div class="preview-btn preview-btn-primary"></div>
+                  <div class="preview-btn preview-btn-secondary"></div>
+                </div>
+              </div>
+            </div>
+          </label>
+
+          <label class="theme-card theme-sand">
+            <input type="radio" name="themeChoice" value="sand" />
+            <div class="theme-card-top">
+              <span class="theme-name">Sandstone Review</span>
+              <span class="theme-tag">Warm / editorial</span>
+            </div>
+            <div class="theme-preview">
+              <div class="preview-topbar"></div>
+              <div class="preview-modal">
+                <div class="preview-badge"></div>
+                <div class="preview-title"></div>
+                <div class="preview-copy"></div>
+                <div class="preview-copy short"></div>
+                <div class="preview-button-row">
+                  <div class="preview-btn preview-btn-primary"></div>
+                  <div class="preview-btn preview-btn-secondary"></div>
+                </div>
+              </div>
+            </div>
+          </label>
+
+          <label class="theme-card theme-carbon">
+            <input type="radio" name="themeChoice" value="carbon" />
+            <div class="theme-card-top">
+              <span class="theme-name">Aurora Slate</span>
+              <span class="theme-tag">Dark / atmospheric</span>
+            </div>
+            <div class="theme-preview">
+              <div class="preview-topbar"></div>
+              <div class="preview-modal">
+                <div class="preview-badge"></div>
+                <div class="preview-title"></div>
+                <div class="preview-copy"></div>
+                <div class="preview-copy short"></div>
+                <div class="preview-button-row">
+                  <div class="preview-btn preview-btn-primary"></div>
+                  <div class="preview-btn preview-btn-secondary"></div>
+                </div>
+              </div>
+            </div>
+          </label>
+
+          <label class="theme-card theme-glacier">
+            <input type="radio" name="themeChoice" value="glacier" />
+            <div class="theme-card-top">
+              <span class="theme-name">Glacier Notes</span>
+              <span class="theme-tag">Light / crisp</span>
+            </div>
+            <div class="theme-preview">
+              <div class="preview-topbar"></div>
+              <div class="preview-modal">
+                <div class="preview-badge"></div>
+                <div class="preview-title"></div>
+                <div class="preview-copy"></div>
+                <div class="preview-copy short"></div>
+                <div class="preview-button-row">
+                  <div class="preview-btn preview-btn-primary"></div>
+                  <div class="preview-btn preview-btn-secondary"></div>
+                </div>
+              </div>
+            </div>
+          </label>
+        </div>
+
+        <div class="button-row">
+          <button id="backToNameBtn" class="ghost-btn">Back</button>
+          <button id="confirmThemeBtn" class="primary-btn">Confirm style</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <p class="eyebrow">Designing Learning Tools – Prototype</p>
+        <h1>AI for Sickness Detection</h1>
+        <p class="subtitle">Tutorial path with story, information, and quiz nodes</p>
+      </div>
+      <button id="resetBtn" class="ghost-btn">Restart prototype</button>
+    </header>
+
+    <main id="mainLayout" class="layout map-only">
+      <section class="panel board-panel">
+        <div class="panel-header">
+          <h2>Mind-map board</h2>
+          <p>
+            Click a node to open it. Completed nodes can be reopened to review the feedback. For now, only the funding tutorial path is available.
+          </p>
+        </div>
+
+        <div class="legend">
+          <span><i class="dot blocked"></i> Blocked</span>
+          <span><i class="dot available"></i> Available</span>
+          <span><i class="dot completed"></i> Completed</span>
+          <span><i class="shape-demo shape-story"></i> Story node</span>
+          <span><i class="shape-demo shape-info"></i> Information node</span>
+          <span><i class="shape-demo shape-quiz"></i> Quiz node</span>
+        </div>
+
+        <div class="board-viewport">
+          <div id="board" class="board full-board" aria-label="Mind map prototype board">
+            <svg class="board-lines" viewBox="0 0 1600 1120" preserveAspectRatio="none" aria-hidden="true">
+              <line data-from="center" data-to="team_creation" />
+              <line data-from="center" data-to="data_management" />
+              <line data-from="center" data-to="deployment" />
+              <line data-from="center" data-to="funding_quiz_intro" />
+
+              <line data-from="funding_quiz_intro" data-to="funding_story" class="funding-line" />
+              <line data-from="funding_story" data-to="funding_branch_quiz" class="funding-line" />
+              <line data-from="funding_story" data-to="funding_info" class="funding-line" />
+              <line data-from="funding_branch_quiz" data-to="funding_info" class="funding-line" />
+              <line data-from="funding_info" data-to="funding_final_quiz" class="funding-line" />
+            </svg>
+
+            <div id="node-center" class="node node-center node-circle completed node-clickable" data-node="center" tabindex="0" role="button">
+              <span class="node-title">Project Start</span>
+              <span class="node-tag">Story step</span>
+            </div>
+
+            <div id="node-team" class="node node-locked node-story-shape" data-node="team_creation">
+              <span class="node-title">Team Creation</span>
+              <span class="node-tag">Blocked</span>
+            </div>
+
+            <div id="node-funding" class="node node-available pulse node-clickable node-quiz-shape" data-node="funding_quiz_intro" tabindex="0" role="button">
+              <span class="node-title">Funding</span>
+              <span class="node-tag">Available · Quiz</span>
+            </div>
+
+            <div id="node-data" class="node node-locked node-info-shape" data-node="data_management">
+              <span class="node-title">Data Management</span>
+              <span class="node-tag">Blocked</span>
+            </div>
+
+            <div id="node-deployment" class="node node-locked node-quiz-shape" data-node="deployment">
+              <span class="node-title">Deployment</span>
+              <span class="node-tag">Blocked</span>
+            </div>
+
+            <div id="node-funding-story" class="node node-locked tutorial-node node-story-shape" data-node="funding_story">
+              <span class="node-title">Funding Direction</span>
+              <span class="node-tag">Blocked · Story</span>
+            </div>
+
+            <div id="node-funding-branch-a" class="node node-locked tutorial-node node-quiz-shape" data-node="funding_branch_quiz">
+              <span class="node-title">Budget Review</span>
+              <span class="node-tag">Blocked · Quiz</span>
+            </div>
+
+            <div id="node-funding-merge" class="node node-locked tutorial-node node-info-shape" data-node="funding_info">
+              <span class="node-title">Funding Note</span>
+              <span class="node-tag">Blocked · Info</span>
+            </div>
+
+            <div id="node-funding-final" class="node node-locked tutorial-node node-quiz-shape" data-node="funding_final_quiz">
+              <span class="node-title">Final Check</span>
+              <span class="node-tag">Blocked · Quiz</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="storyPanel" class="panel story-panel hidden" aria-live="polite">
+        <div class="story-panel-top">
+          <div class="resources-box">
+            <div class="panel-header compact">
+              <h2>Resources</h2>
+              <p>These three resources represent the main dimensions you should balance. If one drops too low, some future choices may become harder or unavailable.</p>
+            </div>
+
+            <div class="resource">
+              <div class="resource-label-row">
+                <span>Social fairness</span>
+                <strong id="socialValue">55</strong>
+              </div>
+              <div class="bar"><div id="socialBar" class="fill" style="width: 55%"></div></div>
+            </div>
+
+            <div class="resource">
+              <div class="resource-label-row">
+                <span>Financial viability</span>
+                <strong id="financialValue">55</strong>
+              </div>
+              <div class="bar"><div id="financialBar" class="fill" style="width: 55%"></div></div>
+            </div>
+
+            <div class="resource">
+              <div class="resource-label-row">
+                <span>Eco-friendliness</span>
+                <strong id="ecoValue">55</strong>
+              </div>
+              <div class="bar"><div id="ecoBar" class="fill" style="width: 55%"></div></div>
+            </div>
+          </div>
+
+        </div>
+
+        <div id="contentCard" class="content-card"></div>
+      </section>
+    </main>
+  </div>
+
+  <template id="nodeTemplate">
+    <div class="step-badge" id="nodeTypeBadge"></div>
+    <h2 id="nodeTitle"></h2>
+    <p id="nodeText"></p>
+    <div id="nodeExtra" class="info-box hidden"></div>
+    <div id="choices" class="choices"></div>
+    <div id="secondaryAction" class="button-row"></div>
+  </template>
+
+  <template id="introTemplate">
+    <div class="step-badge" id="introBadge"></div>
+    <h2 id="introTitle"></h2>
+    <p id="introText"></p>
+    <div id="introHint" class="info-box"></div>
+    <div id="introActions" class="button-row"></div>
+  </template>
+
+  <template id="feedbackTemplate">
+    <div class="step-badge">Node feedback</div>
+    <h2 id="feedbackTitle"></h2>
+    <p id="feedbackStory"></p>
+    <div class="feedback-box">
+      <h3>Feedback</h3>
+      <p id="feedbackText"></p>
+    </div>
+    <div id="impactBox" class="delta-box hidden">
+      <h3>Impact on resources</h3>
+      <div id="deltaList" class="delta-list"></div>
+    </div>
+    <div id="feedbackActions" class="button-row"></div>
+  </template>
+
+  <script src="script.js"></script>
+</body>
+</html>

@@ -234,6 +234,8 @@ button { font: inherit; }
   align-items: center;
   justify-content: center;
   padding: 28px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background:
     radial-gradient(circle at top, var(--page-glow), transparent 30%),
     var(--setup-overlay);
@@ -247,8 +249,11 @@ button { font: inherit; }
 
 .setup-panel {
   width: min(1080px, 100%);
+  max-height: min(920px, calc(100dvh - 56px));
   padding: 34px;
   border-radius: 30px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   background:
     linear-gradient(180deg, var(--setup-panel-start), var(--setup-panel-end));
   border: 1px solid var(--surface-border);
@@ -1397,7 +1402,23 @@ button:disabled {
 
 @media (max-width: 720px) {
   .app-shell { padding: 16px; }
-  .setup-panel { padding: 22px; }
+  .setup-overlay {
+    align-items: flex-start;
+    padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+  }
+  .setup-panel {
+    max-height: calc(100dvh - 28px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+    padding: 22px;
+    border-radius: 24px;
+  }
+  .setup-step h2 { font-size: 1.7rem; }
+  .button-row {
+    position: sticky;
+    bottom: 0;
+    padding-top: 16px;
+    padding-bottom: max(4px, env(safe-area-inset-bottom));
+    background: linear-gradient(180deg, rgba(0,0,0,0), var(--setup-panel-end) 36%);
+  }
   .topbar { flex-direction: column; }
   h1 { font-size: 1.6rem; }
   .board-viewport { height: 580px; }

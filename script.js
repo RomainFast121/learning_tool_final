@@ -1,23 +1,174 @@
+const LOWER_LIMIT = 30;
+const UPPER_LIMIT = 70;
+
 const initialResources = {
-  social: 55,
-  financial: 55,
-  eco: 55,
+  social: 45,
+  financial: 45,
+  eco: 45,
 };
+
+const resourceMeta = {
+  social: {
+    label: 'Social fairness',
+    short: 'Social',
+    lowTitle: 'Social balance is under strain',
+    lowLead:
+      'Trust, legitimacy, and stakeholder confidence have been weakened enough that some routes now become unrealistic.',
+    lowLesson:
+      'When social fairness drops too low, options that depend on trust, participation, or institutional legitimacy become harder to support.',
+    highTitle: 'Social balance is becoming over-concentrated',
+    highLead:
+      'The project is protecting legitimacy strongly, but it may now be underinvesting in feasibility or environmental discipline.',
+    highLesson:
+      'Maximizing one dimension can distort the project just as much as neglecting it. Balance matters more than purity.',
+    caution:
+      'Social fairness is receiving the weakest average support so far. Be careful not to let trust, inclusion, and public legitimacy fall behind.',
+    push:
+      'Social fairness is receiving the strongest average push so far. Keep that strength, but make sure feasibility and environmental cost do not disappear from view.',
+  },
+  financial: {
+    label: 'Financial viability',
+    short: 'Financial',
+    lowTitle: 'Financial viability is under strain',
+    lowLead:
+      'Budget slack and staffing flexibility are now thin enough that some demanding paths can no longer be kept open.',
+    lowLesson:
+      'When financial viability drops too low, options that require reserve budget, extra staffing, or long review cycles become difficult to defend.',
+    highTitle: 'Financial viability is becoming over-concentrated',
+    highLead:
+      'The project is heavily favoring feasibility and momentum, which can start squeezing out legitimacy or environmental care.',
+    highLesson:
+      'Treating financial viability as the dominant lens can narrow the project into a speed-and-output logic that weakens the rest of the system.',
+    caution:
+      'Financial viability is receiving the weakest average support so far. Be careful not to neglect staffing realism, reserve capacity, and long-term feasibility.',
+    push:
+      'Financial viability is receiving the strongest average push so far. Keep the project viable, but do not let cost logic dominate every other concern.',
+  },
+  eco: {
+    label: 'Eco-friendliness',
+    short: 'Eco',
+    lowTitle: 'Eco-friendliness is under strain',
+    lowLead:
+      'Environmental slack is now low enough that compute-heavy or wasteful routes become harder to justify.',
+    lowLesson:
+      'When eco-friendliness drops too low, high-footprint options become less realistic because sustainability has been neglected too long.',
+    highTitle: 'Eco-friendliness is becoming over-concentrated',
+    highLead:
+      'The project is strongly protecting environmental discipline, but it may now be under-serving clinical urgency or operational feasibility.',
+    highLesson:
+      'Environmental care matters, but over-maximizing it can also create blind spots if the project stops responding to practical or social constraints.',
+    caution:
+      'Eco-friendliness is receiving the weakest average support so far. Be careful not to let compute cost and sustainability drift into the background.',
+    push:
+      'Eco-friendliness is receiving the strongest average push so far. Keep it visible, but not at the expense of legitimacy or operational feasibility.',
+  },
+};
+
+const chapterClusters = [
+  {
+    id: 'funding',
+    title: 'Funding',
+    kicker: 'Act I',
+    blurb: 'Sponsor pressure, public promises, and contract terms.',
+    row: 'top',
+    column: 'left',
+  },
+  {
+    id: 'data',
+    title: 'Data Management',
+    kicker: 'Act II',
+    blurb: 'Dataset quality, documentation, bias, and compute cost.',
+    row: 'top',
+    column: 'right',
+  },
+  {
+    id: 'team',
+    title: 'Team Recruitment',
+    kicker: 'Act III',
+    blurb: 'Capacity, expertise, representation, and workload.',
+    row: 'bottom',
+    column: 'left',
+  },
+  {
+    id: 'launch',
+    title: 'Launch',
+    kicker: 'Act IV',
+    blurb: 'Readiness, trust, monitoring, and public scrutiny.',
+    row: 'bottom',
+    column: 'right',
+  },
+];
+
+const CLUSTER_LAYOUT = {
+  horizontalPadding: 48,
+  topPadding: 150,
+  bottomPadding: 96,
+  minimumGutter: 40,
+  outerPaddingRight: 80,
+  outerPaddingBottom: 80,
+  outerPaddingLeft: 60,
+  outerPaddingTop: 60,
+};
+
+const onboardingPages = [
+  {
+    badge: 'Welcome',
+    title: (name) => `Welcome ${name}, the project is starting.`,
+    text:
+      'You are stepping into the role of a researcher helping lead an AI-for-sickness-detection project. The pressure is real: hospitals want results, clinicians want credibility, and every shortcut creates a different kind of risk.',
+    extraHtml:
+      '<p>This is a compact but complete game. It is not a tutorial branch anymore: it is a realistic project journey through funding, staffing, data governance, and launch.</p>',
+    showResources: false,
+  },
+  {
+    badge: 'Board',
+    title: () => 'How the board works',
+    text:
+      'The board is organized into four chapter clusters. Some nodes are shared milestones, while others belong to alternative routes that only open if earlier decisions make them plausible.',
+    extraHtml:
+      '<p>Story nodes set up scenes and consequences, information nodes pause to explain why a tension matters, and quiz nodes test interpretation. Major decisions can permanently close a sibling route on the board.</p>',
+    showResources: false,
+  },
+  {
+    badge: 'Balance',
+    title: () => 'How resources shape the game',
+    text:
+      'The project tracks social fairness, financial viability, and eco-friendliness. Story and decision nodes change these balances; quizzes usually do not.',
+    extraHtml:
+      `<p>If a resource falls to <strong>${LOWER_LIMIT}</strong> or below, some options become unrealistic and are blocked. If a resource climbs to <strong>${UPPER_LIMIT}</strong> or above, the game warns that you may be over-optimizing one dimension and creating a different blind spot.</p>`,
+    showResources: true,
+  },
+  {
+    badge: 'Start',
+    title: () => 'The first node is an evaluation',
+    text:
+      'The center node contains a short pre-scenario question. It records your starting instinct without changing resources, then opens the first playable workstreams.',
+    extraHtml:
+      '<p>After that, you will move between funding, team, and data chapters. The launch chapter opens once enough groundwork has been completed.</p>',
+    showResources: true,
+  },
+];
 
 let state = {
   resources: { ...initialResources },
   currentNodeId: null,
-  completedNodes: new Set(['center']),
-  availableNodes: new Set(['center', 'funding_quiz_intro']),
+  completedNodes: new Set(),
+  availableNodes: new Set(['center']),
+  closedNodes: new Set(),
+  closedReasons: {},
   feedbackByNode: {},
-  branchChoice: null,
   playerName: '',
   playerTheme: 'midnight',
   lastCompletedNodeId: 'center',
   onboardingComplete: false,
+  impactHistory: [],
+  preScenarioComplete: false,
+  preScenarioAnswer: '',
+  branchFlags: new Set(),
+  chapterMilestones: new Set(),
+  shownThresholds: new Set(),
+  thresholdHistory: [],
 };
-
-const nodeElements = {};
 
 const refs = {
   setupOverlay: document.getElementById('setupOverlay'),
@@ -28,337 +179,1833 @@ const refs = {
   backToNameBtn: document.getElementById('backToNameBtn'),
   confirmThemeBtn: document.getElementById('confirmThemeBtn'),
   mainLayout: document.getElementById('mainLayout'),
-  boardViewport: document.querySelector('.board-viewport'),
   board: document.getElementById('board'),
-  boardLines: document.querySelector('.board-lines'),
+  boardViewport: document.querySelector('.board-viewport'),
+  boardLines: document.getElementById('boardLines'),
+  boardClusters: document.getElementById('boardClusters'),
+  boardNodes: document.getElementById('boardNodes'),
   storyPanel: document.getElementById('storyPanel'),
   contentCard: document.getElementById('contentCard'),
-  resourcesBox: document.querySelector('.resources-box'),
   socialBar: document.getElementById('socialBar'),
   financialBar: document.getElementById('financialBar'),
   ecoBar: document.getElementById('ecoBar'),
   socialValue: document.getElementById('socialValue'),
   financialValue: document.getElementById('financialValue'),
   ecoValue: document.getElementById('ecoValue'),
+  recapBtn: document.getElementById('recapBtn'),
   resetBtn: document.getElementById('resetBtn'),
+  windowOverlay: document.getElementById('windowOverlay'),
+  windowOverlayCard: document.getElementById('windowOverlayCard'),
 };
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#39;');
+}
+
+function resolveValue(value, node) {
+  return typeof value === 'function' ? value(state, node) : value;
+}
+
+function getBadgeLabel(node) {
+  return node.badge || (
+    node.type === 'info'
+      ? 'Information node'
+      : node.type === 'quiz'
+        ? 'Quiz node'
+        : 'Story node'
+  );
+}
+
+function makeStoryNode(config) {
+  return {
+    type: 'story',
+    showResources: true,
+    ...config,
+  };
+}
+
+function makeQuizNode(config) {
+  return {
+    type: 'quiz',
+    showResources: true,
+    ...config,
+  };
+}
+
+function makeInfoNode(config) {
+  return {
+    type: 'info',
+    showResources: true,
+    ...config,
+  };
+}
 
 const nodes = {
-  center: {
+  center: makeStoryNode({
     id: 'center',
-    type: 'story',
-    title: 'Project Start',
-    badge: 'Story step',
-    text: 'You are a researcher joining a project on AI for sickness detection. You will move from node to node, discover situations that happen during R&D, and make choices that shape the project. To assist you, three resources track key dimensions you should balance: social fairness, financial viability, and eco-friendliness. If one gets too low, some future options may become harder to justify or unavailable. This tutorial only opens the funding path, and it introduces the three node types used in the game: story, information, and quiz nodes.',
-    secondaryAction: {
-      label: 'Open funding tutorial',
-      action: () => openNode('funding_quiz_intro'),
-    },
-    introText: 'This is the tutorial hub. It briefly shows how the prototype works before the player enters the real game.',
-  },
-  funding_quiz_intro: {
-    id: 'funding_quiz_intro',
-    type: 'quiz',
-    title: 'Funding – first choice',
-    badge: 'Quiz node',
-    text: 'A potential sponsor is ready to support the project. Before moving forward, you need to decide which funding attitude is the most responsible at this stage of the project.',
-    introText: 'You are about to try a quiz node. Quiz nodes ask you to compare options and reflect on which decision is the most responsible.',
+    chapter: 'start',
+    title: 'Project Briefing',
+    badge: 'Start node',
+    x: 1000,
+    y: 820,
+    w: 220,
+    h: 220,
+    introText:
+      'This opening node frames the project and records a short pre-scenario answer before the first workstreams unlock.',
+    text:
+      'The city hospital network wants an AI tool that can help flag respiratory complications before the winter rush. The project has visible momentum, but its legitimacy is still fragile. Before the first workstreams open, answer this short question about how you would respond to early rollout pressure.',
+    extraHtml:
+      '<h3>Pre-scenario question</h3><p>A hospital partner offers support, but asks the team to announce an ambitious rollout date before the review plan and data safeguards are fully defined. What would you do first?</p><p>This answer is stored only as an evaluation of your starting instinct. It does not change any resource and does not trigger feedback.</p>',
+    evaluationOnly: true,
+    choices: [
+      { text: 'Accept the request immediately so the project gains momentum and visibility as fast as possible.' },
+      { text: 'Pause the announcement and first clarify the review plan, governance steps, and deployment conditions.' },
+      { text: 'Let the sponsor define the public timeline in detail so the team can concentrate on the technical work.' },
+      { text: 'Avoid giving a firm answer for now and hope the pressure settles on its own.' },
+    ],
+  }),
+
+  funding_01: makeStoryNode({
+    id: 'funding_01',
+    chapter: 'funding',
+    title: 'Sponsor Rumor',
+    x: 150,
+    y: 150,
+    introText: 'A rumor starts circulating that a diagnostics company wants to support the project.',
+    text:
+      'Before any formal contact has happened, people inside the hospital are already speculating. Some hear opportunity. Others hear dependency. The principal investigator asks you to help frame how the team should enter the first conversation.',
+    continueTo: 'funding_02',
+    continueLabel: 'Continue to the funding meeting',
+  }),
+  funding_02: makeStoryNode({
+    id: 'funding_02',
+    chapter: 'funding',
+    title: 'How To Enter The Meeting',
+    badge: 'Major decision',
+    x: 390,
+    y: 130,
+    introText: 'The first internal funding discussion is about posture, not yet about contract terms.',
+    text:
+      'Two instincts emerge in the room. One group wants to treat the meeting as a showcase moment and convert energy into public momentum. Another wants to keep the conversation quiet, disciplined, and review-oriented until the project has stronger internal footing.',
+    extraHtml:
+      '<h3>What is really being decided?</h3><p>This is a large directional decision. It does not only affect tone. It shapes which later paths remain realistic, which routes close, and how much public pressure the team will have to absorb.</p>',
     choices: [
       {
-        text: 'Accept any funding source immediately, as long as the budget is large enough.',
-        correct: false,
-        retry: true,
-        feedbackTitle: 'This option is too simplistic.',
-        feedbackStory: 'The project may gain money quickly, but the team would ignore possible conflicts of interest and long-term consequences.',
-        feedbackText: 'At the start of an R&D process, funding should not be judged only by speed or amount. Ethical constraints and future impact still matter.',
+        text: 'Enter as if this is a showcase opportunity and try to turn the sponsor meeting into visible momentum early.',
+        feedbackTitle: 'You chose a high-visibility entry.',
+        feedbackStory: 'The project gains speed and attention, but expectations begin to form before the team has fully stabilized its internal review process.',
+        feedbackText: 'This route may improve financing quickly, but it makes later caution harder to communicate.',
+        impact: { social: -8, financial: 10, eco: -2 },
+        next: 'funding_03_hype',
+        unlocks: ['funding_08b'],
+        locks: ['funding_03_guarded', 'funding_04_guarded', 'funding_05_guarded', 'funding_06_guarded'],
+        lockReason:
+          'This more public-facing posture closed the quieter diligence route. The team is now operating inside a higher-visibility funding path.',
+        branchFlagsSet: ['funding_hype'],
       },
       {
-        text: 'Delay all funding decisions until the AI model is already deployed.',
-        correct: false,
-        retry: true,
-        feedbackTitle: 'This creates another problem.',
-        feedbackStory: 'Without a funding strategy, the project cannot be framed properly and some later decisions may become incoherent or unrealistic.',
-        feedbackText: 'Funding choices happen early and influence many later steps. Avoiding the decision is not a good answer here.',
-      },
-      {
-        text: 'Choose the sponsor that asks for the fastest deployment, so the project can grow quickly.',
-        correct: false,
-        retry: true,
-        feedbackTitle: 'This option gives too much power to short-term pressure.',
-        feedbackStory: 'The team risks shaping the whole project around speed, even if important safeguards are not ready yet.',
-        feedbackText: 'A good funding strategy should leave room for ethical review and responsible development, not only acceleration.',
-      },
-      {
-        text: 'Select funding that supports development while still leaving space for review, adjustment, and responsible project choices.',
-        correct: true,
-        next: 'funding_story',
-        feedbackTitle: 'You chose a more balanced funding logic.',
-        feedbackStory: 'The team secures support without locking itself into a rushed path from the beginning.',
-        feedbackText: 'This answer works better because it keeps the project viable while preserving room for responsible decision-making later on.',
-        impact: { social: 1, financial: 1, eco: 1 },
+        text: 'Enter carefully, keep the meeting closed-door, and focus first on governance, milestones, and conditions of independence.',
+        feedbackTitle: 'You chose a guarded opening.',
+        feedbackStory: 'The room loses some early momentum, but it keeps more space for due diligence and internal alignment.',
+        feedbackText: 'This route protects legitimacy and review, even if it softens the first funding wave.',
+        impact: { social: 5, financial: -3, eco: 1 },
+        next: 'funding_03_guarded',
+        unlocks: ['funding_08b'],
+        locks: ['funding_03_hype', 'funding_04_hype', 'funding_05_hype', 'funding_06_hype'],
+        lockReason:
+          'This review-first posture closed the showcase route. The team is now moving through a more controlled funding path.',
+        branchFlagsSet: ['funding_guarded'],
       },
     ],
-  },
-  funding_story: {
-    id: 'funding_story',
-    type: 'story',
-    title: 'Funding direction',
-    badge: 'Story step',
-    text: 'With initial funding secured, the sponsor now asks how the first phase should be presented. Some team members want to emphasize rapid visible progress. Others prefer a slower framing that highlights credibility, careful testing, and trust-building.',
-    introText: 'This is a story node. Story nodes move the scenario forward and let the player shape the direction of the project.',
+  }),
+  funding_03_hype: makeStoryNode({
+    id: 'funding_03_hype',
+    chapter: 'funding',
+    title: 'Sponsor Pitch',
+    x: 650,
+    y: 90,
+    introText: 'The meeting is moved to a polished presentation room with communications staff present.',
+    text:
+      'The sponsor talks in the language of scale, visibility, and rapid proof of value. Several people in the room look energized. A clinician beside you stays unusually quiet, taking notes every time the timeline gets shorter. When the meeting breaks, the room carries a slightly unsettling mix of enthusiasm and vagueness: everyone can describe the opportunity, but not yet the conditions under which it should remain acceptable.',
+    continueTo: 'funding_04_hype',
+    continueLabel: 'Continue',
+  }),
+  funding_04_hype: makeQuizNode({
+    id: 'funding_04_hype',
+    chapter: 'funding',
+    title: 'First Safeguard',
+    x: 900,
+    y: 130,
+    introText: 'The room is excited, but one basic question still matters.',
+    text:
+      'Under this more public funding posture, which safeguard is still the most important to protect before the project makes strong external promises?',
     choices: [
       {
-        text: 'Present the project as a fast-moving innovation and focus on visible short-term results.',
-        next: 'funding_branch_quiz',
-        branch: 'path1',
-        feedbackTitle: 'You chose a more ambitious public direction.',
-        feedbackStory: 'The team now needs to justify this stronger promise and prepare a more demanding follow-up discussion.',
-        feedbackText: 'This path is not automatically wrong, but it increases pressure on later decisions and may create stronger expectations.',
-        impact: { social: -6, financial: 10, eco: -2 },
+        text: 'A visible timeline that reassures journalists and executives right away.',
+        retry: true,
+        feedbackTitle: 'That responds to optics, not the underlying risk.',
+        feedbackStory: 'The project would look organized, but it would still be vulnerable if its governance conditions remain vague.',
+        feedbackText: 'In a high-visibility route, the first safeguard is not messaging polish. It is preserving the ability to review and slow down if needed.',
       },
       {
-        text: 'Stress quick momentum so that future investors see strong commercial potential early on.',
-        next: 'funding_branch_quiz',
-        branch: 'path1',
-        feedbackTitle: 'You chose a growth-oriented framing.',
-        feedbackStory: 'This can attract attention, but it also makes later trade-offs around responsibility more sensitive.',
-        feedbackText: 'Fast-growth narratives can be useful, but they often reduce the room for caution once the project moves forward.',
-        impact: { social: -4, financial: 9, eco: -3 },
+        text: 'Clear review checkpoints and room to revise milestones if evidence or governance concerns change.',
+        feedbackTitle: 'You identified the strongest safeguard.',
+        feedbackStory: 'The team does not undo the public posture, but it protects a mechanism that can still absorb uncertainty later on.',
+        feedbackText: 'This is the most defensible answer because it keeps public momentum from turning into irreversible pressure.',
+        next: 'funding_05_hype',
       },
       {
-        text: 'Present the project as a careful research process that needs room for checks and adaptation.',
-        next: 'funding_info',
-        branch: 'path2',
-        feedbackTitle: 'You chose a more cautious direction.',
-        feedbackStory: 'The team enters the next phase with less pressure and more space to explain uncertainty openly.',
-        feedbackText: 'This direction supports credibility and may reduce unrealistic expectations from stakeholders.',
-        impact: { social: 8, financial: -5, eco: 1 },
-      },
-      {
-        text: 'Highlight responsibility and transparency before promising strong external results.',
-        next: 'funding_info',
-        branch: 'path2',
-        feedbackTitle: 'You chose a trust-oriented direction.',
-        feedbackStory: 'The project moves forward with a more careful public message and avoids committing too early.',
-        feedbackText: 'A transparent framing can support stronger long-term legitimacy, even if it looks less spectacular at first.',
-        impact: { social: 7, financial: -4, eco: 2 },
+        text: 'A larger compute commitment so the project can keep demonstrating visible progress.',
+        retry: true,
+        feedbackTitle: 'That would reinforce the same pressure.',
+        feedbackStory: 'More compute could make the route look active, but it would not solve the governance risk created by early visibility.',
+        feedbackText: 'When a project is already under public pressure, doubling down on speed rarely creates the missing accountability structure.',
       },
     ],
-  },
-  funding_branch_quiz: {
-    id: 'funding_branch_quiz',
-    type: 'quiz',
-    title: 'Budget review',
-    badge: 'Quiz node',
-    text: 'Because the project was presented in a more ambitious way, the team now has to review its internal priorities. Which reaction is the most reasonable?',
-    introText: 'This second quiz node builds on the earlier story choice and shows how one decision creates pressure later in the project.',
+  }),
+  funding_05_hype: makeStoryNode({
+    id: 'funding_05_hype',
+    chapter: 'funding',
+    title: 'Message Discipline',
+    badge: 'Decision node',
+    x: 650,
+    y: 300,
+    introText: 'A draft press line begins circulating before the meeting notes are even finished.',
+    text:
+      'Communications staff propose language about “rapid clinical readiness.” The sponsor likes it. The hospital board office wants something steadier. You are asked to decide how hard the team should lean into the momentum it just created. The disagreement is not loud, but it is important: the sentence chosen here will influence whether later caution sounds like responsible review or like an embarrassing retreat.',
     choices: [
       {
-        text: 'Cut all review steps so the team can match the ambitious message immediately.',
-        correct: false,
-        retry: true,
-        feedbackTitle: 'This answer is too risky.',
-        feedbackStory: 'Trying to match ambition only by removing safeguards would weaken the quality of the project.',
-        feedbackText: 'Greater external pressure does not justify abandoning review or reflection.',
+        text: 'Keep the bold language and let the room feel the urgency of a fast-moving project.',
+        feedbackTitle: 'You reinforced the public momentum.',
+        feedbackStory: 'The route becomes easier to finance and harder to slow down. From now on, caution will sound more expensive in the room.',
+        feedbackText: 'This creates a stronger top-line story, but it also narrows the space for later correction.',
+        impact: { social: -7, financial: 6, eco: -2 },
+        next: 'funding_06_hype',
+        branchFlagsSet: ['funding_message_bold'],
       },
       {
-        text: 'Keep a clear review process even if it slows the image of rapid progress slightly.',
-        correct: true,
-        next: 'funding_info',
-        feedbackTitle: 'You kept a more robust internal balance.',
-        feedbackStory: 'The team adjusts expectations and protects the quality of the work before moving on.',
-        feedbackText: 'This answer shows that ambition can remain compatible with responsible project management.',
-        impact: { social: 1, financial: 2, eco: 0 },
-      },
-      {
-        text: 'Ignore the tension and assume the team will solve it naturally later on.',
-        correct: false,
-        retry: true,
-        feedbackTitle: 'This does not really solve the issue.',
-        feedbackStory: 'The tension remains and would probably reappear later in a more difficult form.',
-        feedbackText: 'When pressure is visible, the team should address it explicitly rather than postpone it without a plan.',
-      },
-      {
-        text: 'Give all strategic choices to the sponsor to simplify the process.',
-        correct: false,
-        retry: true,
-        feedbackTitle: 'This would reduce the team’s responsibility too much.',
-        feedbackStory: 'The project would lose autonomy and later ethical decisions could become harder to defend.',
-        feedbackText: 'Funding partners matter, but they should not replace internal responsibility.',
+        text: 'Keep the project visible, but remove anything that implies a fixed clinical-readiness promise.',
+        feedbackTitle: 'You kept some momentum without overcommitting.',
+        feedbackStory: 'The sponsor loses a little rhetorical energy, but the team preserves room to admit uncertainty later on.',
+        feedbackText: 'This keeps the high-visibility route from collapsing entirely into hype.',
+        impact: { social: 2, financial: 2, eco: 0 },
+        next: 'funding_06_hype',
+        branchFlagsSet: ['funding_message_tempered'],
       },
     ],
-  },
-  funding_info: {
-    id: 'funding_info',
-    type: 'info',
-    title: 'Funding note',
-    badge: 'Information node',
-    text: 'Funding does more than provide money. It also shapes incentives, priorities, and the level of pressure surrounding the project. In a learning tool on ethics and sustainability, this kind of node gives the player a short piece of knowledge without forcing another decision immediately.',
-    introText: 'This is an information node. Information nodes pause the decision flow and highlight an idea the player should keep in mind.',
-    extraHtml: '<h3>Why this matters</h3><p>A sponsor can influence timelines, the way success is defined, and the room left for transparency or review. This is why funding is treated as part of the ethical context, not only as a practical issue.</p>',
-    secondaryAction: {
-      label: 'Finish this node',
-      action: () => completeInfoNodeAndAdvance(),
-    },
-  },
-  funding_final_quiz: {
-    id: 'funding_final_quiz',
-    type: 'quiz',
-    title: 'Final check',
-    badge: 'Quiz node',
-    text: 'To finish the tutorial, choose the statement that best summarizes what this funding sequence was meant to teach.',
+  }),
+  funding_06_hype: makeStoryNode({
+    id: 'funding_06_hype',
+    chapter: 'funding',
+    title: 'Momentum Briefing',
+    x: 940,
+    y: 310,
+    introText: 'Before contract drafting begins, the hospital wants a clean internal line on what this sponsor momentum actually means.',
+    text:
+      'A deputy director asks whether teams should begin acting as if a bigger winter push is now likely. Even people who are skeptical can feel the institution leaning toward the new confidence the sponsor meeting created. Without anyone explicitly saying so, the hospital is beginning to coordinate around a future that still depends on assumptions the project has not fully tested.',
+    continueTo: 'funding_06',
+    continueLabel: 'Continue to expectation pressure',
+  }),
+  funding_03_guarded: makeStoryNode({
+    id: 'funding_03_guarded',
+    chapter: 'funding',
+    title: 'Closed-Door Diligence',
+    x: 460,
+    y: 420,
+    introText: 'The meeting is deliberately small, and the sponsor notices the difference immediately.',
+    text:
+      'Instead of a public showcase, the conversation turns into a practical exchange about review gates, publication freedom, and how much influence the sponsor expects over timeline decisions. The room feels cooler, but more honest. Instead of leaving with excitement, the team leaves with something less glamorous and more useful: a sharper sense of where later pressure would come from if the relationship deepened.',
+    continueTo: 'funding_04_guarded',
+    continueLabel: 'Continue',
+  }),
+  funding_04_guarded: makeQuizNode({
+    id: 'funding_04_guarded',
+    chapter: 'funding',
+    title: 'Due Diligence Priority',
+    x: 620,
+    y: 540,
+    introText: 'The sponsor looks serious, but not hostile. The next move matters.',
+    text:
+      'In this quieter funding route, which question is the most important to clarify before the project starts treating the offer as stable?',
     choices: [
       {
-        text: 'Funding is mainly a financial issue and does not really affect ethical decisions later on.',
-        correct: false,
+        text: 'Whether the sponsor can help arrange a stronger public communications campaign.',
         retry: true,
-        feedbackTitle: 'This misses the main point.',
-        feedbackStory: 'The tutorial showed that funding influences how the whole project is framed and managed.',
-        feedbackText: 'In this game, early organizational choices already shape later ethical tensions.',
+        feedbackTitle: 'That is not the most important priority yet.',
+        feedbackStory: 'Public communication may matter later, but it does not answer whether the project will remain governable under the offer.',
+        feedbackText: 'The key issue at this stage is protecting the project’s independence and review structure, not amplifying its visibility.',
       },
       {
-        text: 'The best strategy is always to promise fast results first and think about consequences later.',
-        correct: false,
-        retry: true,
-        feedbackTitle: 'This goes against the logic of the tutorial.',
-        feedbackStory: 'The project would become harder to steer responsibly if promises dominate reflection from the start.',
-        feedbackText: 'The tutorial is meant to show trade-offs, not to reward speed alone.',
+        text: 'Whether the contract keeps audit checkpoints, publication room, and flexibility over rollout milestones.',
+        feedbackTitle: 'You focused on the right due diligence question.',
+        feedbackStory: 'The room stays careful, but it now has a concrete way to define what responsible support would actually mean.',
+        feedbackText: 'This is the strongest answer because it checks whether the project can stay accountable after taking the money.',
+        next: 'funding_05_guarded',
       },
       {
-        text: 'Responsible funding choices can influence later pressure, governance, and room for ethical review.',
-        correct: true,
-        completePrototype: true,
-        feedbackTitle: 'Correct tutorial takeaway.',
-        feedbackStory: 'You completed the tutorial path and saw how story steps, information nodes, and quiz nodes can work together.',
-        feedbackText: 'This is the key lesson of the prototype: early project framing already affects later ethical and sustainability decisions.',
-        impact: { social: 1, financial: 1, eco: 1 },
-      },
-      {
-        text: 'Only technical performance matters in the first stages of an AI health project.',
-        correct: false,
+        text: 'Whether the team can negotiate the largest possible compute package first and sort the rest later.',
         retry: true,
-        feedbackTitle: 'This answer is too narrow.',
-        feedbackStory: 'The prototype is built precisely to show that technical progress is only one part of the situation.',
-        feedbackText: 'Ethics, sustainability, and governance are present from the beginning, not only at deployment.',
+        feedbackTitle: 'That would front-load the wrong issue.',
+        feedbackStory: 'More infrastructure could look attractive, but it would not tell the team whether the relationship itself is safe and governable.',
+        feedbackText: 'Infrastructure matters, but governance comes first because it determines how every later disagreement will be handled.',
       },
     ],
-  },
-  team_creation: {
-    id: 'team_creation',
-    type: 'story',
-    title: 'Team Creation',
-    badge: 'Story step',
-    text: 'Placeholder node for a future branch.',
-    introText: 'This branch is not part of the scaled-down tutorial yet.',
-  },
-  data_management: {
-    id: 'data_management',
-    type: 'info',
-    title: 'Data Management',
-    badge: 'Information node',
-    text: 'Placeholder node for a future branch.',
-    introText: 'This branch is not part of the scaled-down tutorial yet.',
-  },
-  deployment: {
-    id: 'deployment',
-    type: 'quiz',
-    title: 'Deployment',
-    badge: 'Quiz node',
-    text: 'Placeholder node for a future branch.',
-    introText: 'This branch is not part of the scaled-down tutorial yet.',
-  },
+  }),
+  funding_05_guarded: makeStoryNode({
+    id: 'funding_05_guarded',
+    chapter: 'funding',
+    title: 'Internal Briefing',
+    badge: 'Decision node',
+    x: 380,
+    y: 660,
+    introText: 'The hospital staff now want to know how to describe the sponsor conversation internally.',
+    text:
+      'If you sound too cautious, some teams will fear the project is stalling. If you sound too positive, people will start acting as if support is already secure. The next internal message will shape how the organization interprets the negotiation. These early internal summaries matter because they often become the story people remember later, even when the actual agreement was much more conditional.',
+    choices: [
+      {
+        text: 'Describe the sponsor as promising, but make it clear that the project is still protecting review milestones and independence.',
+        feedbackTitle: 'You kept expectations measured and intelligible.',
+        feedbackStory: 'The project does not surge, but staff are less likely to mistake a possible partnership for a finished deal.',
+        feedbackText: 'This preserves organizational trust without pretending that uncertainty has already been solved.',
+        impact: { social: 4, financial: 1, eco: 0 },
+        next: 'funding_06_guarded',
+        branchFlagsSet: ['funding_message_guarded'],
+      },
+      {
+        text: 'Signal strong optimism so teams start behaving as if a larger funding phase is already coming.',
+        feedbackTitle: 'You imported momentum into the hospital before the deal existed.',
+        feedbackStory: 'This may help internal energy, but it also risks making later caution look like retreat.',
+        feedbackText: 'Even a guarded funding route can recreate hype if the institution begins acting on promises too early.',
+        impact: { social: -4, financial: 4, eco: -1 },
+        next: 'funding_06_guarded',
+        branchFlagsSet: ['funding_message_optimistic'],
+      },
+    ],
+  }),
+  funding_06_guarded: makeStoryNode({
+    id: 'funding_06_guarded',
+    chapter: 'funding',
+    title: 'Procurement Questions',
+    x: 640,
+    y: 960,
+    introText: 'The quieter route buys the team time, but that time fills quickly with institutional questions.',
+    text:
+      'Procurement and governance staff now want concrete language about sponsor boundaries, review milestones, and what the hospital is promising internally. The route is calmer, but not easier. Careful governance creates work of its own, and the team is now learning that discipline must be maintained long before it becomes visible to anyone outside the project.',
+    continueTo: 'funding_06',
+    continueLabel: 'Continue to expectation pressure',
+  }),
+  funding_06: makeStoryNode({
+    id: 'funding_06',
+    chapter: 'funding',
+    title: 'Expectation Pressure',
+    x: 260,
+    y: 360,
+    introText: (currentState) =>
+      currentState.branchFlags.has('funding_hype')
+        ? 'Because the route is already visible, donor expectations start arriving early.'
+        : 'Even without a public spectacle, donor expectations begin to shape the conversation.',
+    text: (currentState) =>
+      currentState.branchFlags.has('funding_hype')
+        ? 'A city official now wants reassurance that the project will produce a visible result before winter. Several people quietly admit that the team may already be speaking as if the timeline were firmer than it really is.'
+        : 'A city official now wants reassurance that the project will eventually be visible enough to justify early patience. The team feels the subtle pressure to prove that caution still has momentum.',
+    continueTo: 'funding_07',
+    continueLabel: 'Move to contract terms',
+  }),
+  funding_07: makeStoryNode({
+    id: 'funding_07',
+    chapter: 'funding',
+    title: 'Contract Red Lines',
+    badge: 'Decision node',
+    x: 120,
+    y: 530,
+    introText: 'The draft agreement arrives with one decisive question left unresolved.',
+    text:
+      'The sponsor is willing to support the project, but not without shaping some part of its future behavior. The team must now choose which red lines it is willing to defend and which risks it is willing to absorb.',
+    choices: [
+      {
+        text: 'Accept a stronger sponsor footprint in exchange for a larger operational cushion and faster resourcing.',
+        feedbackTitle: 'You protected feasibility by conceding influence.',
+        feedbackStory: 'The project becomes easier to finance, but harder to defend if the sponsor later pushes for speed or visibility over review.',
+        feedbackText: 'This route increases flexibility in the short term while making governance more fragile later on.',
+        impact: { social: -5, financial: 7, eco: -3 },
+        next: 'funding_08',
+        branchFlagsSet: ['funding_contract_loose'],
+      },
+      {
+        text: 'Insist on audit checkpoints, publication room, and explicit limits on sponsor control over rollout timing.',
+        feedbackTitle: 'You defended a stricter contract.',
+        feedbackStory: 'The final package is leaner, but the project keeps more space to remain accountable when pressures sharpen later.',
+        feedbackText: 'This is less comfortable financially, but it protects the team from becoming politically dependent on one actor.',
+        impact: { social: 6, financial: -4, eco: 2 },
+        next: 'funding_08',
+        branchFlagsSet: ['funding_contract_strict'],
+      },
+      {
+        text: 'Take a smaller pilot-focused agreement that can be exited if governance tensions grow too strong.',
+        feedbackTitle: 'You chose a narrower commitment.',
+        feedbackStory: 'The project gains less support, but it keeps a realistic escape path if the relationship becomes constraining.',
+        feedbackText: 'This option trades scale for resilience and makes it easier to protect future correction.',
+        impact: { social: 3, financial: -2, eco: 1 },
+        next: 'funding_08',
+        branchFlagsSet: ['funding_contract_pilot'],
+      },
+    ],
+  }),
+  funding_08: makeInfoNode({
+    id: 'funding_08',
+    chapter: 'funding',
+    title: 'What Funding Really Changes',
+    x: 300,
+    y: 840,
+    introText: 'This information node names the structural lesson behind the chapter.',
+    text:
+      'Funding is never just background infrastructure. It affects how quickly promises form, who can apply pressure, and how much room the project keeps for delay, review, and revision. In real projects, the funding structure often decides whether a team can still slow down once external momentum has already started to build.',
+    extraHtml:
+      '<h3>Useful method</h3><p>Draft a one-page funding memo before accepting support: who gains from speed, who carries risk if the project goes wrong, which commitments are non-negotiable, and what would justify revisiting the agreement later.</p><h3>Concrete questions</h3><p>Clarify influence over publication, communication, milestones, and rollout timing. If these remain vague, pressure often reappears later when the team is least able to resist it.</p>',
+    continueTo: 'funding_09',
+    continueLabel: 'Continue to board review',
+  }),
+  funding_08b: makeInfoNode({
+    id: 'funding_08b',
+    chapter: 'funding',
+    title: 'Stakeholder Map',
+    x: 820,
+    y: 980,
+    introText: 'This optional node gives a simple method a student could reuse later in a real project.',
+    text:
+      'Make a quick stakeholder map before taking support: who wants acceleration, who bears reputational risk, who carries hidden implementation work, and who can still say no later. This turns a vague partner discussion into a concrete governance picture.',
+    extraHtml:
+      '<h3>Practical checklist</h3><p>Write down incentives, likely pressure points, and one red line the team would defend even under time pressure. If nobody can name that red line, the project is usually more dependent than it thinks.</p>',
+  }),
+  funding_09: makeQuizNode({
+    id: 'funding_09',
+    chapter: 'funding',
+    title: 'Board Review',
+    x: 540,
+    y: 840,
+    introText: 'The hospital board asks one last question before signing off on the chapter.',
+    text:
+      'Which statement best captures the most responsible way to explain the funding arrangement to the board?',
+    choices: [
+      {
+        text: 'The sponsor mostly solves the project’s political risk, so the main task now is keeping the momentum high.',
+        retry: true,
+        feedbackTitle: 'That misreads what sponsorship can do.',
+        feedbackStory: 'Funding may help stabilize the project, but it never removes the need for internal accountability and defensible review.',
+        feedbackText: 'Money can relieve pressure in one dimension while increasing pressure in another.',
+      },
+      {
+        text: 'The arrangement should be judged by whether it keeps support, review space, and institutional accountability in workable balance.',
+        feedbackTitle: 'You identified the chapter’s core lesson.',
+        feedbackStory: 'The board now sees funding as part of the project’s ethical architecture rather than as a neutral background condition.',
+        feedbackText: 'This answer fits the chapter because it treats support, governance, and pressure as linked rather than separate issues.',
+        next: 'funding_10',
+      },
+      {
+        text: 'If the budget is credible enough, later governance problems can be improvised when they appear.',
+        retry: true,
+        feedbackTitle: 'That postpones the real work.',
+        feedbackStory: 'Improvised governance usually means the strongest actor sets the terms when pressure is already high.',
+        feedbackText: 'Responsible project framing brings major tensions into view early instead of hoping they can be solved later under urgency.',
+      },
+    ],
+  }),
+  funding_10: makeStoryNode({
+    id: 'funding_10',
+    chapter: 'funding',
+    title: 'Funding Milestone',
+    x: 790,
+    y: 690,
+    introText: 'The funding chapter closes with a more stable, but not necessarily comfortable, arrangement.',
+    text: (currentState) =>
+      currentState.branchFlags.has('funding_contract_strict')
+        ? 'The sponsor relationship remains usable, but clearly bounded. People in the hospital trust the project a little more because they can see where the lines were actually drawn.'
+        : currentState.branchFlags.has('funding_contract_loose')
+          ? 'The project now has visible momentum and stronger operational room, but everyone also knows that later tension with the sponsor may be harder to absorb.'
+          : 'The project leaves the chapter with a narrower agreement that preserves room to adjust later. It does not feel triumphant, but it does feel governable.',
+    continueTo: null,
+    continueLabel: 'Return to the board',
+    completeChapter: 'funding',
+  }),
+
+  team_01: makeStoryNode({
+    id: 'team_01',
+    chapter: 'team',
+    title: 'Capacity Warning',
+    x: 150,
+    y: 1160,
+    introText: 'The project can no longer run on goodwill and spare evenings alone.',
+    text:
+      'As the work becomes more visible, the principal investigator warns that the current staffing pattern is not sustainable. The question is no longer whether more people are needed, but what kinds of people the project is willing to prioritize.',
+    continueTo: 'team_02',
+    continueLabel: 'Continue to hiring priorities',
+  }),
+  team_02: makeStoryNode({
+    id: 'team_02',
+    chapter: 'team',
+    title: 'First Hiring Priority',
+    badge: 'Major decision',
+    x: 390,
+    y: 1140,
+    introText: 'The first hiring decision will shape the culture of the project more than the job title suggests.',
+    text:
+      'One faction wants to keep the team compact and technically sharp, arguing that coordination overhead could become its own failure mode. Another wants to widen the table early so trust, clinical reality, and governance are not retrofitted later as damage control.',
+    choices: [
+      {
+        text: 'Keep the first hires narrow and technical so the core model effort stays fast and manageable.',
+        feedbackTitle: 'You chose a tighter expert core.',
+        feedbackStory: 'The team becomes easier to steer operationally, but several forms of experience and legitimacy remain outside the room.',
+        feedbackText: 'This route can protect short-term feasibility while making later representation work more reactive.',
+        impact: { social: -7, financial: 5, eco: 0 },
+        next: 'team_03_narrow',
+        unlocks: ['team_08b'],
+        locks: ['team_03_broad', 'team_04_broad', 'team_05_broad', 'team_06_broad'],
+        lockReason:
+          'This narrow hiring posture closed the broader early-governance route. The chapter now follows a more compact staffing path.',
+        branchFlagsSet: ['team_narrow'],
+      },
+      {
+        text: 'Use the first hires to widen the room early with clinical, governance, and stakeholder-facing expertise.',
+        feedbackTitle: 'You chose a broader staffing base.',
+        feedbackStory: 'The team gains perspective and legitimacy, but it also becomes more expensive and harder to coordinate cleanly.',
+        feedbackText: 'This route invests early in representation and review, even at the cost of immediate operational simplicity.',
+        impact: { social: 7, financial: -6, eco: 1 },
+        next: 'team_03_broad',
+        unlocks: ['team_08b'],
+        locks: ['team_03_narrow', 'team_04_narrow', 'team_05_narrow', 'team_06_narrow'],
+        lockReason:
+          'This broader hiring posture closed the narrow expert-core route. The chapter now follows a more distributed staffing path.',
+        branchFlagsSet: ['team_broad'],
+      },
+    ],
+  }),
+  team_03_narrow: makeStoryNode({
+    id: 'team_03_narrow',
+    chapter: 'team',
+    title: 'Clinician Pushback',
+    x: 650,
+    y: 1100,
+    introText: 'The first reaction from clinicians is respectful but uneasy.',
+    text:
+      'A senior clinician says the project risks becoming technically elegant and operationally naive if hospital realities keep entering only after core decisions are already made. No one dismisses the concern, but the room is still leaning toward speed. What makes the scene memorable is not hostility, but the way everyone can feel that the warning is correct while still being tempted to postpone dealing with it.',
+    continueTo: 'team_04_narrow',
+    continueLabel: 'Continue',
+  }),
+  team_04_narrow: makeQuizNode({
+    id: 'team_04_narrow',
+    chapter: 'team',
+    title: 'What Makes A Team Responsible?',
+    x: 870,
+    y: 1210,
+    introText: 'The project now has to define what “good staffing” actually means.',
+    text:
+      'Under a narrow first-hiring posture, which principle is still the most important to preserve?',
+    choices: [
+      {
+        text: 'Maximize technical specialization and assume missing perspectives can be added later without much cost.',
+        retry: true,
+        feedbackTitle: 'That underestimates path dependence.',
+        feedbackStory: 'Once a narrow team culture hardens, adding broader perspectives later becomes slower and more politically difficult than it first appears.',
+        feedbackText: 'Responsible staffing is not only about raw expertise. It is also about when and how different constraints are allowed into the room.',
+      },
+      {
+        text: 'Keep a manageable team, but create explicit channels for clinical and stakeholder reality to shape the work early.',
+        feedbackTitle: 'You preserved the strongest principle in this route.',
+        feedbackStory: 'The team may stay compact, but it avoids treating outside perspectives as an afterthought.',
+        feedbackText: 'This is the best answer because it keeps feasibility without pretending the project can remain inward-looking forever.',
+        next: 'team_05_narrow',
+      },
+      {
+        text: 'Measure staffing quality mainly by how little disagreement appears inside the project.',
+        retry: true,
+        feedbackTitle: 'Low disagreement can hide the wrong thing.',
+        feedbackStory: 'The absence of visible tension may simply mean that difficult perspectives were never allowed into the process early enough to matter.',
+        feedbackText: 'A responsible team is not necessarily the quietest one. It is the one that can surface constraints before they turn into crises.',
+      },
+    ],
+  }),
+  team_05_narrow: makeStoryNode({
+    id: 'team_05_narrow',
+    chapter: 'team',
+    title: 'Patch The Narrowness Or Double Down?',
+    badge: 'Decision node',
+    x: 650,
+    y: 1310,
+    introText: 'The team can now either soften the narrow route or reinforce it.',
+    text:
+      'A proposal emerges to add a formal clinician liaison and review loop without fully widening the core team. Another proposal argues that even this would slow the project too much and blur responsibility. The question is less about goodwill than about design: what kinds of knowledge deserve a formal route into decisions before the project becomes expensive to revise?',
+    choices: [
+      {
+        text: 'Add a clinician liaison and structured review moments, even if the core team stays compact.',
+        feedbackTitle: 'You softened the narrow route.',
+        feedbackStory: 'The team remains operationally tight, but some real-world friction is now allowed to enter before damage accumulates.',
+        feedbackText: 'This does not fully solve the chapter, but it prevents narrowness from becoming pure tunnel vision.',
+        impact: { social: 4, financial: -2, eco: 0 },
+        next: 'team_06_narrow',
+        branchFlagsSet: ['team_liaison'],
+      },
+      {
+        text: 'Keep the team cleanly technical and consult outside groups only when specific blockers appear.',
+        feedbackTitle: 'You doubled down on the expert core.',
+        feedbackStory: 'The project may remain faster to coordinate, but several tensions will now re-enter later and with less patience around them.',
+        feedbackText: 'This sharpens the project’s internal speed at the cost of earlier legitimacy work.',
+        impact: { social: -5, financial: 3, eco: 0 },
+        next: 'team_06_narrow',
+        branchFlagsSet: ['team_double_down'],
+      },
+    ],
+  }),
+  team_06_narrow: makeStoryNode({
+    id: 'team_06_narrow',
+    chapter: 'team',
+    title: 'Shortlist Tension',
+    x: 910,
+    y: 1410,
+    introText: 'The narrow route reaches the first shortlist and the institutional consequences become much more concrete.',
+    text:
+      'Candidates are strong on technical work, but several people notice how little patient-facing, clinical translation, and governance labor would actually be represented in the formal team if the shortlist becomes the team. The shortlist is competent, yet it also makes visible what the project is quietly deciding not to center.',
+    continueTo: 'team_06',
+    continueLabel: 'Continue to workload reality',
+  }),
+  team_03_broad: makeStoryNode({
+    id: 'team_03_broad',
+    chapter: 'team',
+    title: 'A Wider Table',
+    x: 400,
+    y: 1300,
+    introText: 'The broader route changes the tone of meetings immediately.',
+    text:
+      'A clinician, a privacy specialist, and a patient-representation lead all frame the project differently. The conversation becomes slower, but much richer. Everyone can feel the cost of that difference in meeting time and staffing overhead, but they can also feel something else: the project is less likely to be surprised later by concerns it never structurally allowed into the room.',
+    continueTo: 'team_04_broad',
+    continueLabel: 'Continue',
+  }),
+  team_04_broad: makeQuizNode({
+    id: 'team_04_broad',
+    chapter: 'team',
+    title: 'Representation Check',
+    x: 610,
+    y: 1500,
+    introText: 'The team now needs a principle to organize this wider room.',
+    text:
+      'Under a broader staffing route, which principle matters most for keeping the team responsible rather than simply larger?',
+    choices: [
+      {
+        text: 'Invite many perspectives, but let the technical core absorb or ignore them informally as needed.',
+        retry: true,
+        feedbackTitle: 'That creates the appearance of inclusion without its effect.',
+        feedbackStory: 'If broader perspectives are not linked to real decision points, the project may look more legitimate without actually becoming more accountable.',
+        feedbackText: 'Representation matters most when it has a defined place in how decisions get made.',
+      },
+      {
+        text: 'Link broader participation to concrete review moments and responsibilities so extra voices are not purely symbolic.',
+        feedbackTitle: 'You identified the strongest principle here.',
+        feedbackStory: 'The team becomes more complex, but the added voices now shape actual process rather than decorative consultation.',
+        feedbackText: 'This is the best answer because broader staffing only matters if it changes how the project is governed.',
+        next: 'team_05_broad',
+      },
+      {
+        text: 'Protect harmony above all else so the broader team does not become too politically difficult to manage.',
+        retry: true,
+        feedbackTitle: 'Harmony is not the same as accountability.',
+        feedbackStory: 'A broader room that cannot surface friction early may simply delay disagreement rather than prevent it.',
+        feedbackText: 'In a complex project, some productive disagreement is evidence that constraints are entering early enough to matter.',
+      },
+    ],
+  }),
+  team_05_broad: makeStoryNode({
+    id: 'team_05_broad',
+    chapter: 'team',
+    title: 'Where To Spend The Extra Coordination',
+    badge: 'Decision node',
+    x: 390,
+    y: 1610,
+    introText: 'A broad team creates a second decision: where should the extra coordination actually go?',
+    text:
+      'One group wants to invest the extra time in patient-facing review and legitimacy. Another wants to focus it on clinical workflow integration so the project stays tied to hospital reality rather than external representation alone. The team is no longer arguing about whether broad participation matters, but about where its limited coordination energy should produce the most real value.',
+    choices: [
+      {
+        text: 'Prioritize patient-facing review and public legitimacy even if operational coordination stays messy for longer.',
+        feedbackTitle: 'You pushed the route toward legitimacy work.',
+        feedbackStory: 'The project builds stronger outward trust, but some internal workflow questions will now take longer to settle cleanly.',
+        feedbackText: 'This increases social grounding while making coordination a bit more expensive.',
+        impact: { social: 6, financial: -3, eco: 0 },
+        next: 'team_06_broad',
+        branchFlagsSet: ['team_patient_voice'],
+      },
+      {
+        text: 'Prioritize clinical workflow integration so the broader team stays anchored in everyday practice.',
+        feedbackTitle: 'You made the broader route more operational.',
+        feedbackStory: 'The project stays grounded in hospital use, even if some external legitimacy work becomes lighter than it could have been.',
+        feedbackText: 'This does not abandon representation, but it directs the extra coordination toward practical integration first.',
+        impact: { social: 3, financial: -2, eco: 1 },
+        next: 'team_06_broad',
+        branchFlagsSet: ['team_clinical_anchor'],
+      },
+    ],
+  }),
+  team_06_broad: makeStoryNode({
+    id: 'team_06_broad',
+    chapter: 'team',
+    title: 'Coordination Cost',
+    x: 720,
+    y: 1810,
+    introText: 'The broader route hears more constraints early, but that breadth comes with a visible cost.',
+    text:
+      'Calendar pressure is rising, role boundaries are blurrier than anyone hoped, and some team members quietly wonder whether the project can keep this level of representation without burning people out before launch season. A broad team can be more responsible, but only if its coordination design is strong enough to keep inclusion from becoming exhaustion.',
+    continueTo: 'team_06',
+    continueLabel: 'Continue to workload reality',
+  }),
+  team_06: makeStoryNode({
+    id: 'team_06',
+    chapter: 'team',
+    title: 'Workload Reality',
+    x: 280,
+    y: 1470,
+    introText: 'No matter which route the team took, capacity strain now becomes visible.',
+    text: (currentState) =>
+      currentState.branchFlags.has('team_broad')
+        ? 'The broader team catches more issues early, but several members are now stretched across governance, coordination, and clinical translation work.'
+        : 'The tighter team moves quickly, but the same people are now carrying technical, operational, and institutional responsibilities at once.',
+    continueTo: 'team_07',
+    continueLabel: 'Continue to reorganization',
+  }),
+  team_07: makeStoryNode({
+    id: 'team_07',
+    chapter: 'team',
+    title: 'Reorganize Or Hold The Line',
+    badge: 'Decision node',
+    x: 120,
+    y: 1610,
+    introText: 'The chapter turns from who is in the room to how the room is run.',
+    text:
+      'A project manager warns that the current structure will not scale through winter. The team now has to decide whether to protect speed, protect coordination, or try to balance the two more deliberately.',
+    choices: [
+      {
+        text: 'Keep decision-making centralized in a small core and consult others only at defined checkpoints.',
+        feedbackTitle: 'You protected a tighter command structure.',
+        feedbackStory: 'Coordination becomes simpler, but some people now feel that they influence the project only after major directions are already set.',
+        feedbackText: 'This improves feasibility in the short term while risking thinner ownership across the broader project.',
+        impact: { social: -4, financial: 4, eco: 0 },
+        next: 'team_08',
+        branchFlagsSet: ['team_centralized'],
+      },
+      {
+        text: 'Create a rotating steering rhythm that shares decision load, even if meetings become heavier.',
+        feedbackTitle: 'You distributed responsibility more widely.',
+        feedbackStory: 'The project becomes harder to schedule, but more people can see where the hard trade-offs are actually happening.',
+        feedbackText: 'This protects governance and legitimacy, though it costs more coordination energy.',
+        impact: { social: 5, financial: -4, eco: 1 },
+        next: 'team_08',
+        branchFlagsSet: ['team_rotating'],
+      },
+      {
+        text: 'Split the work into paired leads so technical and institutional questions are carried together instead of separately.',
+        feedbackTitle: 'You chose a balancing structure.',
+        feedbackStory: 'The structure is not simple, but it may stop the project from becoming either too inward-looking or too meeting-heavy.',
+        feedbackText: 'This option tries to preserve operational clarity without isolating the project from its wider responsibilities.',
+        impact: { social: 3, financial: -2, eco: 1 },
+        next: 'team_08',
+        branchFlagsSet: ['team_paired_leads'],
+      },
+    ],
+  }),
+  team_08: makeInfoNode({
+    id: 'team_08',
+    chapter: 'team',
+    title: 'What Team Design Really Does',
+    x: 280,
+    y: 1850,
+    introText: 'This information node names the deeper point behind the chapter.',
+    text:
+      'A team is not only a list of competencies. It is a structure that decides which constraints become visible early, which ones stay outside the room, and how expensive it becomes to correct the project later. Many failures of “communication” are actually failures of team design: the right concern existed, but had no protected path into the decision.',
+    extraHtml:
+      '<h3>Useful method</h3><p>Before a project accelerates, write down which roles are responsible for technical quality, workflow fit, ethics or governance, and stakeholder impact. If one person is carrying several of these silently, the project is more fragile than it looks.</p><h3>What to watch for</h3><p>A warning sign is when important concerns only appear after a plan is already framed as too expensive to revisit.</p>',
+    continueTo: 'team_09',
+    continueLabel: 'Continue to the final team check',
+  }),
+  team_08b: makeInfoNode({
+    id: 'team_08b',
+    chapter: 'team',
+    title: 'Missing Voices Check',
+    x: 820,
+    y: 1920,
+    introText: 'This optional node offers a quick reflection tool for team composition.',
+    text:
+      'Ask four questions: who understands the technical system, who understands the workflow, who understands governance, and who can speak for the people affected by mistakes. If one of these perspectives only appears informally, the team may be depending on luck.',
+    extraHtml:
+      '<h3>Practical use</h3><p>This check is especially useful before hiring, before pilot design, and whenever a team says it will “add broader perspectives later.” Later often means after the expensive choices are already made.</p>',
+  }),
+  team_09: makeQuizNode({
+    id: 'team_09',
+    chapter: 'team',
+    title: 'Final Team Check',
+    x: 540,
+    y: 1850,
+    introText: 'The chapter ends with one practical test of judgment.',
+    text:
+      'Which sign best suggests that a team structure may be becoming unhealthy, even if the project still appears productive?',
+    choices: [
+      {
+        text: 'The team is moving quickly and disagreements are becoming rarer over time.',
+        retry: true,
+        feedbackTitle: 'That can be misleading.',
+        feedbackStory: 'Lower visible disagreement may simply mean that the people carrying discomfort are no longer close enough to the process to interrupt it.',
+        feedbackText: 'Healthy teams do not eliminate friction; they surface the right friction early enough to shape decisions.',
+      },
+      {
+        text: 'Important concerns only appear after major decisions are already framed as too expensive to revisit.',
+        feedbackTitle: 'You identified the clearest warning sign.',
+        feedbackStory: 'That pattern usually means the team is learning about its real constraints too late for adjustment to feel easy or legitimate.',
+        feedbackText: 'This is the strongest answer because responsible team design is largely about when a project becomes able to hear unwelcome information.',
+        next: 'team_10',
+      },
+      {
+        text: 'Meetings are longer than they were during the project’s earliest phase.',
+        retry: true,
+        feedbackTitle: 'Longer meetings are not the core issue.',
+        feedbackStory: 'Longer meetings may reflect complexity, not failure. The real question is whether the added time is helping the project hear what it needs to hear.',
+        feedbackText: 'A more accountable team can be slower without being weaker if the extra process is doing real governance work.',
+      },
+    ],
+  }),
+  team_10: makeStoryNode({
+    id: 'team_10',
+    chapter: 'team',
+    title: 'Team Milestone',
+    x: 860,
+    y: 1690,
+    introText: 'The team chapter closes with a structure that is workable, but not tension-free.',
+    text: (currentState) =>
+      currentState.branchFlags.has('team_narrow')
+        ? 'The project leaves the chapter with a sharper, more compact structure. It may stay fast, but some legitimacy work has clearly been deferred rather than solved.'
+        : 'The project leaves the chapter with a broader and more demanding structure. It carries more friction, but it also hears more of the project’s real constraints before they become emergencies.',
+    continueTo: null,
+    continueLabel: 'Return to the board',
+    completeChapter: 'team',
+  }),
+
+  data_01: makeStoryNode({
+    id: 'data_01',
+    chapter: 'data',
+    title: 'First Dataset Offer',
+    x: 1290,
+    y: 150,
+    introText: 'Three hospitals are willing to share historical data, but the records are unevenly documented.',
+    text:
+      'Everyone sees the same temptation: if the team moves fast, it can start experimenting almost immediately. But the archive is inconsistent, consent wording varies across sites, and no one is confident that the metadata tells a clean story.',
+    continueTo: 'data_02',
+    continueLabel: 'Continue to the intake decision',
+  }),
+  data_02: makeStoryNode({
+    id: 'data_02',
+    chapter: 'data',
+    title: 'How To Take In The Data',
+    badge: 'Major decision',
+    x: 1510,
+    y: 130,
+    introText: 'The first data decision is about discipline, not yet about model quality.',
+    text:
+      'One group argues that the project should ingest quickly and fix documentation later so the technical work can begin. Another argues for staged access, bias notes, and consent review before the team starts acting as if the archive is cleaner than it is.',
+    choices: [
+      {
+        text: 'Ingest quickly, begin experimentation, and fix the documentation once the team knows which records actually matter.',
+        feedbackTitle: 'You chose a faster intake route.',
+        feedbackStory: 'The project gains immediate technical momentum, but it also builds on an archive whose weaknesses may become visible later and at higher cost.',
+        feedbackText: 'This route favors progress-first logic and risks learning the data’s institutional limits only after they are already operationally embedded.',
+        impact: { social: -6, financial: 4, eco: -2 },
+        next: 'data_03_fast',
+        unlocks: ['data_08b'],
+        locks: ['data_03_careful', 'data_04_careful', 'data_05_careful', 'data_06_careful'],
+        lockReason:
+          'This fast-ingestion posture closed the staged-audit route. The chapter now follows a quicker but riskier data path.',
+        branchFlagsSet: ['data_fast'],
+      },
+      {
+        text: 'Start with staged access, document bias gaps, and treat consent ambiguity as part of the work rather than cleanup.',
+        feedbackTitle: 'You chose a more disciplined intake route.',
+        feedbackStory: 'The project slows down, but it gains a clearer picture of what kind of data relationship it is actually entering.',
+        feedbackText: 'This route protects traceability and legitimacy even though it delays early model experimentation.',
+        impact: { social: 5, financial: -4, eco: 1 },
+        next: 'data_03_careful',
+        unlocks: ['data_08b'],
+        locks: ['data_03_fast', 'data_04_fast', 'data_05_fast', 'data_06_fast'],
+        lockReason:
+          'This staged-audit posture closed the quick-ingestion route. The chapter now follows a more deliberate data path.',
+        branchFlagsSet: ['data_careful'],
+      },
+    ],
+  }),
+  data_03_fast: makeStoryNode({
+    id: 'data_03_fast',
+    chapter: 'data',
+    title: 'Ingestion Sprint',
+    x: 1740,
+    y: 90,
+    introText: 'The archive enters the project faster than anyone is entirely comfortable admitting.',
+    text:
+      'The technical team is relieved to finally move, but small inconsistencies start surfacing immediately: missing fields, uneven labels, and site-specific notes that no one fully understands yet. What felt like momentum a few hours earlier now begins to look more like borrowing certainty from an archive the team has only partly met.',
+    continueTo: 'data_04_fast',
+    continueLabel: 'Continue',
+  }),
+  data_04_fast: makeQuizNode({
+    id: 'data_04_fast',
+    chapter: 'data',
+    title: 'First Traceability Step',
+    x: 1960,
+    y: 150,
+    introText: 'The route is fast, but it still needs one disciplined response.',
+    text:
+      'If the archive is already being ingested quickly, what is the most responsible first traceability step?',
+    choices: [
+      {
+        text: 'Ignore the inconsistencies until the team knows whether the model can perform at all.',
+        retry: true,
+        feedbackTitle: 'That would delay the problem rather than control it.',
+        feedbackStory: 'The model might move forward, but the team would lose the ability to say later which weaknesses were known and when.',
+        feedbackText: 'Fast routes become much riskier when the project cannot track what it already knew about the archive’s limitations.',
+      },
+      {
+        text: 'Create a living record of known gaps, site-specific uncertainties, and assumptions as the archive is used.',
+        feedbackTitle: 'You chose the strongest stabilizing step.',
+        feedbackStory: 'The route remains quick, but it no longer acts as if uncertainty can be safely forgotten while experimentation begins.',
+        feedbackText: 'This is the best answer because it adds minimal friction while preserving some accountability over the archive’s weaknesses.',
+        next: 'data_05_fast',
+      },
+      {
+        text: 'Push for larger data volume so the inconsistencies matter less statistically.',
+        retry: true,
+        feedbackTitle: 'That treats quantity as if it solved governance.',
+        feedbackStory: 'More records could make the route look stronger, but the project would still not understand what kinds of data problems it was scaling up.',
+        feedbackText: 'Data scale does not erase ambiguity. It can just make the ambiguity harder to see.',
+      },
+    ],
+  }),
+  data_05_fast: makeStoryNode({
+    id: 'data_05_fast',
+    chapter: 'data',
+    title: 'Bias Gap Response',
+    badge: 'Decision node',
+    x: 1730,
+    y: 310,
+    introText: 'A fairness gap becomes visible sooner than the team expected.',
+    text:
+      'An early analysis suggests that the archive underrepresents some patient groups. The team now has to decide whether to keep pushing, pause for repair, or look for a faster compensating move that may ask a lot from the project’s remaining trust.',
+    choices: [
+      {
+        text: 'Keep the route moving and document the representation limits for later correction.',
+        feedbackTitle: 'You protected momentum, but left a serious gap exposed.',
+        feedbackStory: 'The project can keep moving technically, yet it now carries a fairness limitation that will be expensive to explain later.',
+        feedbackText: 'This is a recognizable real-world move, but it shifts a difficult problem forward rather than resolving it.',
+        impact: { social: -6, financial: 3, eco: 0 },
+        next: 'data_06_fast',
+        branchFlagsSet: ['data_gap_deferred'],
+      },
+      {
+        text: 'Pause and repair the representation gap before acting as if the archive is ready for stronger claims.',
+        feedbackTitle: 'You slowed the route to protect legitimacy.',
+        feedbackStory: 'The data path becomes less efficient, but the project avoids building too much confidence on top of a known blind spot.',
+        feedbackText: 'This choice protects social and evidentiary quality at a real operational cost.',
+        impact: { social: 5, financial: -4, eco: 1 },
+        next: 'data_06_fast',
+        branchFlagsSet: ['data_gap_repaired'],
+      },
+      {
+        text: 'Launch a fast community data collection push to fill the gap quickly.',
+        requires: ['social'],
+        blockedReason:
+          'This route depends on public trust and stakeholder willingness that the project no longer has strongly enough to request on short notice.',
+        feedbackTitle: 'You tried to compensate quickly by asking for more trust.',
+        feedbackStory: 'The move could help the archive, but it also asks communities to extend confidence to a project that may not yet have earned it.',
+        feedbackText: 'Rapid expansion can look responsible, but it depends on whether the project still has the legitimacy to ask for more from people.',
+        impact: { social: 2, financial: -2, eco: -1 },
+        next: 'data_06_fast',
+        branchFlagsSet: ['data_gap_expand'],
+      },
+    ],
+  }),
+  data_06_fast: makeStoryNode({
+    id: 'data_06_fast',
+    chapter: 'data',
+    title: 'Shortcut Pressure',
+    x: 1980,
+    y: 440,
+    introText: 'The quick route keeps moving, but the archive now starts to push back in practical ways.',
+    text:
+      'Two engineers argue that the team is drifting into a patchwork of local fixes that works for experimentation but will be hard to justify once people ask how the archive was handled from site to site. Shortcut logic often feels efficient while it is happening, but it can create a trail of weak explanations that becomes obvious later all at once.',
+    continueTo: 'data_06',
+    continueLabel: 'Continue to compute and storage',
+  }),
+  data_03_careful: makeStoryNode({
+    id: 'data_03_careful',
+    chapter: 'data',
+    title: 'Archive Inspection',
+    x: 1450,
+    y: 320,
+    introText: 'The careful route begins by looking at the archive as institutional material, not only technical input.',
+    text:
+      'The team reads documentation, site notes, and consent language before treating the records as stable training material. It is slower, but the archive stops feeling like a silent object and starts feeling like a relationship with history behind it. That shift matters because it becomes harder to speak about the data as if it were neutral once the team has actually seen the unevenness of its provenance.',
+    continueTo: 'data_04_careful',
+    continueLabel: 'Continue',
+  }),
+  data_04_careful: makeQuizNode({
+    id: 'data_04_careful',
+    chapter: 'data',
+    title: 'Consent Ambiguity',
+    x: 1650,
+    y: 470,
+    introText: 'The route is slower, but it still needs a judgment call.',
+    text:
+      'If consent language varies across sites and some reuse assumptions are unclear, what is the most responsible interpretation?',
+    choices: [
+      {
+        text: 'Treat all ambiguity as effectively resolved unless someone formally challenges it.',
+        retry: true,
+        feedbackTitle: 'That would mistake silence for clarity.',
+        feedbackStory: 'The project might move faster, but it would do so by converting uncertainty into unwarranted confidence.',
+        feedbackText: 'Ambiguity should be recorded and managed, not silently flattened into permission.',
+      },
+      {
+        text: 'Document the ambiguity, scope data use accordingly, and avoid acting as if all sites carry the same level of reuse certainty.',
+        feedbackTitle: 'You chose the strongest interpretation.',
+        feedbackStory: 'The route remains careful, but it avoids turning unclear consent language into a false sense of legitimacy.',
+        feedbackText: 'This answer best fits the chapter because it preserves traceability while still letting work continue responsibly.',
+        next: 'data_05_careful',
+      },
+      {
+        text: 'Drop the most ambiguous sites entirely before checking whether their removal creates fairness problems.',
+        retry: true,
+        feedbackTitle: 'That solves one issue by risking another.',
+        feedbackStory: 'Removing uncertain records may feel safer, but it can also distort the archive in ways the project then fails to notice.',
+        feedbackText: 'Responsible data judgment has to track several constraints at once, not only the most administratively visible one.',
+      },
+    ],
+  }),
+  data_05_careful: makeStoryNode({
+    id: 'data_05_careful',
+    chapter: 'data',
+    title: 'How Much Documentation Is Enough?',
+    badge: 'Decision node',
+    x: 1430,
+    y: 640,
+    introText: 'The careful route now has to decide how far its discipline will really go.',
+    text:
+      'The documentation burden is beginning to irritate some of the technical team. One proposal keeps the audit light and pragmatic. Another argues that the project should invest more heavily now so later claims rest on something sturdier than memory and good intentions.',
+    choices: [
+      {
+        text: 'Keep documentation light and targeted so the team does not disappear into paperwork.',
+        feedbackTitle: 'You kept the careful route leaner.',
+        feedbackStory: 'The archive remains more accountable than in the fast path, but some future questions will still depend on how much the team can reconstruct later.',
+        feedbackText: 'This protects feasibility, though it limits how strong the project’s later traceability claims can be.',
+        impact: { social: 2, financial: 1, eco: 0 },
+        next: 'data_06_careful',
+        branchFlagsSet: ['data_docs_light'],
+      },
+      {
+        text: 'Invest in stronger documentation and audit notes now, even if it delays visible model progress.',
+        feedbackTitle: 'You made the careful route more robust.',
+        feedbackStory: 'The team slows down, but it gains a record strong enough to explain how the archive was interpreted and constrained over time.',
+        feedbackText: 'This route is less comfortable in the short term and much stronger if the project later needs to justify itself publicly.',
+        impact: { social: 4, financial: -3, eco: 1 },
+        next: 'data_06_careful',
+        branchFlagsSet: ['data_docs_strong'],
+      },
+    ],
+  }),
+  data_06_careful: makeStoryNode({
+    id: 'data_06_careful',
+    chapter: 'data',
+    title: 'Audit Patience',
+    x: 1660,
+    y: 780,
+    introText: 'The careful route is more defensible, but some of the team is beginning to test its patience.',
+    text:
+      'People can now explain the archive more honestly, yet several members worry that the project is accumulating disciplined notes faster than visible model progress. The route is sturdier, but harder to sell internally. This is a recognizable research tension: good documentation often looks slow right up until the moment weak documentation becomes a serious liability.',
+    continueTo: 'data_06',
+    continueLabel: 'Continue to compute and storage',
+  }),
+  data_06: makeStoryNode({
+    id: 'data_06',
+    chapter: 'data',
+    title: 'Compute And Storage',
+    x: 1310,
+    y: 460,
+    introText: 'The archive is now real enough to produce a practical shock.',
+    text:
+      'The first storage and compute estimate lands on the table. What looked like a manageable technical step now has an environmental and financial profile that the team can no longer treat as background noise.',
+    continueTo: 'data_07',
+    continueLabel: 'Continue to the response',
+  }),
+  data_07: makeStoryNode({
+    id: 'data_07',
+    chapter: 'data',
+    title: 'Responding To The Data Strain',
+    badge: 'Decision node',
+    x: 1180,
+    y: 590,
+    introText: 'The project now has to choose what kind of data discipline it wants under real resource pressure.',
+    text:
+      'One response is to push for more data quickly and hope scale improves the picture. Another is to work harder on the archive already in hand. A third is to redesign the technical path so it costs less to learn from the data without pretending that more is always better.',
+    choices: [
+      {
+        text: 'Expand data collection quickly so the model can learn from a broader pool as soon as possible.',
+        requires: ['social'],
+        blockedReason:
+          'This route depends on enough social legitimacy to ask for more data cooperation. Right now that trust base is too thin to make the move realistic.',
+        feedbackTitle: 'You chose the expansion route.',
+        feedbackStory: 'The project may improve its archive, but it also increases what it is asking from institutions and patients at a moment when trust may still be uneven.',
+        feedbackText: 'Data expansion is not only technical. It depends on whether the project has earned enough legitimacy to ask for more.',
+        impact: { social: -1, financial: -2, eco: -2 },
+        next: 'data_08',
+        branchFlagsSet: ['data_expand'],
+      },
+      {
+        text: 'Invest in cleaning, documenting, and understanding the existing archive more deeply before broadening it.',
+        feedbackTitle: 'You chose depth over expansion.',
+        feedbackStory: 'The route may look slower, but the project becomes better able to explain what its evidence actually means and where it remains weak.',
+        feedbackText: 'This protects social and epistemic quality at a visible cost in time and budget.',
+        impact: { social: 5, financial: -4, eco: 1 },
+        next: 'data_08',
+        branchFlagsSet: ['data_deepen'],
+      },
+      {
+        text: 'Redesign the technical path to use less compute, even if that means giving up some early experimental ambition.',
+        feedbackTitle: 'You reduced the footprint of the route.',
+        feedbackStory: 'The archive path becomes more sustainable, though some technical ambitions now have to be postponed or made narrower.',
+        feedbackText: 'This protects eco-friendliness and feasibility by refusing to treat infrastructure cost as invisible.',
+        impact: { social: 0, financial: -1, eco: 6 },
+        next: 'data_08',
+        branchFlagsSet: ['data_low_compute'],
+      },
+    ],
+  }),
+  data_08: makeInfoNode({
+    id: 'data_08',
+    chapter: 'data',
+    title: 'Traceability Is A Governance Tool',
+    x: 1420,
+    y: 860,
+    introText: 'This information node names the chapter’s structural lesson.',
+    text:
+      'Data governance is not only about legality or performance. It is also about whether the project can later say what it used, what it knew, what it ignored, and why those decisions were made under pressure. Traceability is what lets a team correct itself without pretending that earlier uncertainty never existed.',
+    extraHtml:
+      '<h3>Useful method</h3><p>Keep a lightweight data log: provenance, consent basis, known gaps, exclusions, label definitions, and what would invalidate current use assumptions.</p><h3>What to avoid</h3><p>Do not rely on memory to reconstruct why a dataset seemed acceptable at the time. If the explanation cannot survive turnover or public scrutiny, the governance is too thin.</p>',
+    continueTo: 'data_09',
+    continueLabel: 'Continue to the final data check',
+  }),
+  data_08b: makeInfoNode({
+    id: 'data_08b',
+    chapter: 'data',
+    title: 'Minimum Data Log',
+    x: 1940,
+    y: 930,
+    introText: 'This optional node gives a practical documentation structure students could reuse later.',
+    text:
+      'A minimal data log should answer six questions: where the data came from, what consent or reuse basis applies, what gaps are known, how labels were defined, what was excluded, and what would make the current use case no longer defensible.',
+    extraHtml:
+      '<h3>Why this helps</h3><p>This kind of log supports handover, review, and correction. It also forces the team to admit uncertainty explicitly instead of hiding it inside fast-moving technical progress.</p>',
+  }),
+  data_09: makeQuizNode({
+    id: 'data_09',
+    chapter: 'data',
+    title: 'Final Data Check',
+    x: 1720,
+    y: 980,
+    introText: 'The chapter ends with one judgment test about readiness.',
+    text:
+      'Which condition best signals that the project is moving toward a defensible data posture rather than just a technically active one?',
+    choices: [
+      {
+        text: 'The team can finally train repeatedly without stopping for metadata or consent questions.',
+        retry: true,
+        feedbackTitle: 'That mainly signals friction reduction.',
+        feedbackStory: 'Lower friction may feel productive, but it does not tell the project whether its archive has become more accountable or simply easier to ignore.',
+        feedbackText: 'Readiness is not just about smoother training loops. It is about whether the project can justify the conditions under which training is happening.',
+      },
+      {
+        text: 'The team can explain the archive’s limits, known gaps, and reuse conditions without pretending they have disappeared.',
+        feedbackTitle: 'You identified the chapter’s core test.',
+        feedbackStory: 'The project may still have uncertainty, but it now has a more truthful relationship to what its data can and cannot support.',
+        feedbackText: 'This is the strongest answer because defensibility depends on clarity about limits, not only on technical activity.',
+        next: 'data_10',
+      },
+      {
+        text: 'The project has accumulated enough data volume that bias concerns become less important to raise publicly.',
+        retry: true,
+        feedbackTitle: 'That mistakes scale for resolution.',
+        feedbackStory: 'Volume can hide problems, but it does not guarantee that the project has understood or responsibly handled them.',
+        feedbackText: 'Fairness and accountability do not vanish when the archive gets larger. They often become harder to inspect.',
+      },
+    ],
+  }),
+  data_10: makeStoryNode({
+    id: 'data_10',
+    chapter: 'data',
+    title: 'Data Milestone',
+    x: 1910,
+    y: 690,
+    introText: 'The data chapter closes with a clearer, though still imperfect, evidentiary foundation.',
+    text: (currentState) =>
+      currentState.branchFlags.has('data_fast')
+        ? 'The project leaves the chapter with technical momentum, but also with a sharper awareness that archive weaknesses were not truly solved, only managed.'
+        : 'The project leaves the chapter with a slower but sturdier data posture. It still carries uncertainty, yet it now understands its archive more honestly and defensibly.',
+    continueTo: null,
+    continueLabel: 'Return to the board',
+    completeChapter: 'data',
+  }),
+
+  launch_01: makeStoryNode({
+    id: 'launch_01',
+    chapter: 'launch',
+    title: 'Winter Pressure',
+    x: 1290,
+    y: 1160,
+    introText: 'The launch chapter opens once the earlier foundations have become concrete enough to carry real consequences.',
+    text:
+      'Emergency admissions begin to rise. People inside the hospital stop talking about the project as a concept and start asking when it will actually appear in practice. Every earlier compromise now returns in the form of timing, trust, and operational risk.',
+    continueTo: 'launch_02',
+    continueLabel: 'Continue to readiness posture',
+  }),
+  launch_02: makeStoryNode({
+    id: 'launch_02',
+    chapter: 'launch',
+    title: 'Launch Posture',
+    badge: 'Major decision',
+    x: 1510,
+    y: 1140,
+    introText: 'The first launch decision is about scope, visibility, and what kind of risk the hospital is willing to carry.',
+    text:
+      'One route pushes toward a broader, more visible multi-site pilot that shows confidence and momentum. Another route argues for a narrower first deployment that learns quietly, protects room for rollback, and resists the urge to turn a first launch into a public proof of inevitability.',
+    choices: [
+      {
+        text: 'Prepare for a visible multi-site pilot that demonstrates strong confidence in the project.',
+        feedbackTitle: 'You chose a broader and more exposed launch route.',
+        feedbackStory: 'The project may now look more convincing from the outside, but it also becomes less able to treat uncertainty as normal.',
+        feedbackText: 'This route can amplify momentum, yet it makes every unresolved weakness more public and less forgiving.',
+        impact: { social: -6, financial: 4, eco: -2 },
+        next: 'launch_03_ambitious',
+        unlocks: ['launch_08b'],
+        locks: ['launch_03_measured', 'launch_04_measured', 'launch_05_measured', 'launch_06_measured'],
+        lockReason:
+          'This broader launch posture closed the quieter pilot route. The chapter now follows a more exposed deployment path.',
+        branchFlagsSet: ['launch_ambitious'],
+      },
+      {
+        text: 'Prepare for a narrower ward-level pilot that keeps room for correction and local trust-building.',
+        feedbackTitle: 'You chose a more measured launch route.',
+        feedbackStory: 'The project may look less triumphant, but it stays closer to the kind of deployment that can still learn without overclaiming.',
+        feedbackText: 'This route protects correction capacity and reduces the political cost of admitting uncertainty.',
+        impact: { social: 5, financial: -2, eco: 1 },
+        next: 'launch_03_measured',
+        unlocks: ['launch_08b'],
+        locks: ['launch_03_ambitious', 'launch_04_ambitious', 'launch_05_ambitious', 'launch_06_ambitious'],
+        lockReason:
+          'This narrower launch posture closed the broader showcase route. The chapter now follows a more measured deployment path.',
+        branchFlagsSet: ['launch_measured'],
+      },
+    ],
+  }),
+  launch_03_ambitious: makeStoryNode({
+    id: 'launch_03_ambitious',
+    chapter: 'launch',
+    title: 'Coordination Call',
+    x: 1740,
+    y: 1100,
+    introText: 'The broader route creates immediate coordination strain.',
+    text:
+      'Three hospital sites now want to know what will change for them, who owns the monitoring burden, and how quickly the system can be adjusted if reality turns out messier than the optimism in the room. The broader route now starts producing the kind of practical questions that enthusiasm alone cannot absorb.',
+    continueTo: 'launch_04_ambitious',
+    continueLabel: 'Continue',
+  }),
+  launch_04_ambitious: makeQuizNode({
+    id: 'launch_04_ambitious',
+    chapter: 'launch',
+    title: 'Launch Condition',
+    x: 1920,
+    y: 1180,
+    introText: 'The team needs a clear condition for proceeding responsibly.',
+    text:
+      'Under a broader launch route, which condition matters most before the hospital should treat the pilot as genuinely ready?',
+    choices: [
+      {
+        text: 'A compelling external narrative that reassures executives the launch will look decisive.',
+        retry: true,
+        feedbackTitle: 'That protects optics, not readiness.',
+        feedbackStory: 'The project might feel easier to defend publicly, but it would still be weak if rollback and monitoring conditions remain vague.',
+        feedbackText: 'Readiness under a broad rollout depends less on rhetoric than on whether the project can absorb error without institutional panic.',
+      },
+      {
+        text: 'Clear monitoring ownership, rollback triggers, and a realistic understanding of where uncertainty still remains.',
+        feedbackTitle: 'You identified the most important condition.',
+        feedbackStory: 'The route may still be ambitious, but it now has a more defensible structure for containing the consequences of error.',
+        feedbackText: 'This is the strongest answer because broad pilots need stronger correction systems, not just stronger confidence.',
+        next: 'launch_05_ambitious',
+      },
+      {
+        text: 'Enough technical excitement that the team feels motivated to handle operational problems later if they appear.',
+        retry: true,
+        feedbackTitle: 'Motivation is not the same as launch discipline.',
+        feedbackStory: 'Excitement can help teams push through discomfort, but it cannot substitute for a monitoring and rollback structure once patients and staff are affected.',
+        feedbackText: 'A responsible launch is defined by how it handles uncertainty, not only by how strongly people believe in it.',
+      },
+    ],
+  }),
+  launch_05_ambitious: makeStoryNode({
+    id: 'launch_05_ambitious',
+    chapter: 'launch',
+    title: 'How Visible Should Launch Be?',
+    badge: 'Decision node',
+    x: 1730,
+    y: 1310,
+    introText: 'A broader route now has to decide how much publicity it will carry with it.',
+    text:
+      'The sponsor wants a visible announcement. Some hospital staff want a quieter clinical-first rollout until the system behaves well under stress. The decision will shape how forgiving the environment becomes once the first problems appear.',
+    choices: [
+      {
+        text: 'Pair the pilot with a visible sponsor-backed announcement to secure future momentum early.',
+        requires: ['social'],
+        blockedReason:
+          'This option depends on a level of public trust and institutional confidence that the project no longer has strongly enough to support such a visible launch.',
+        feedbackTitle: 'You turned the ambitious route into a public event.',
+        feedbackStory: 'The project gains attention and possible leverage, but it also becomes much harder to treat early corrections as normal learning.',
+        feedbackText: 'Publicity can help momentum, yet it also raises the political cost of uncertainty exactly when the project most needs room to acknowledge it.',
+        impact: { social: -8, financial: 5, eco: -1 },
+        next: 'launch_06_ambitious',
+        branchFlagsSet: ['launch_public'],
+      },
+      {
+        text: 'Keep the rollout operationally broad but communication-light until the team sees the first live signals.',
+        feedbackTitle: 'You protected the route from some of its own visibility.',
+        feedbackStory: 'The pilot remains large, but it gains a little more space to absorb its first surprises without immediate public staging.',
+        feedbackText: 'This does not remove the risks of breadth, but it does reduce the cost of learning in public.',
+        impact: { social: 1, financial: 1, eco: 0 },
+        next: 'launch_06_ambitious',
+        branchFlagsSet: ['launch_broad_quiet'],
+      },
+    ],
+  }),
+  launch_06_ambitious: makeStoryNode({
+    id: 'launch_06_ambitious',
+    chapter: 'launch',
+    title: 'Site Readiness Gap',
+    x: 1910,
+    y: 1390,
+    introText: 'The broader route exposes a problem that only appears once several sites compare notes side by side.',
+    text:
+      'One site is confident, another is under-trained, and a third is quietly depending on one local champion to absorb most of the operational uncertainty. The launch is no longer one thing; it is several uneven realities at once. Multi-site ambition looks clean from far away and much less uniform the closer people get to actual implementation work.',
+    continueTo: 'launch_06',
+    continueLabel: 'Continue to clinician trust',
+  }),
+  launch_03_measured: makeStoryNode({
+    id: 'launch_03_measured',
+    chapter: 'launch',
+    title: 'Ward Walkthrough',
+    x: 1480,
+    y: 1340,
+    introText: 'The narrower route feels more modest, but much more concrete.',
+    text:
+      'A nurse manager walks through the pilot ward and points out several practical problems that no one had fully seen from the boardroom: alarm fatigue, handover timing, and how easily “decision support” can still feel like pressure in a busy clinical setting. The quieter route suddenly feels less like caution in the abstract and more like respect for details that will decide whether staff can actually live with the tool.',
+    continueTo: 'launch_04_measured',
+    continueLabel: 'Continue',
+  }),
+  launch_04_measured: makeQuizNode({
+    id: 'launch_04_measured',
+    chapter: 'launch',
+    title: 'Launch Condition',
+    x: 1680,
+    y: 1460,
+    introText: 'The quieter route still needs a real test of readiness.',
+    text:
+      'Under a narrower pilot route, which condition matters most before the ward should treat the system as responsibly deployable?',
+    choices: [
+      {
+        text: 'A well-designed message that reassures staff the pilot is low risk.',
+        retry: true,
+        feedbackTitle: 'Messaging alone is not enough.',
+        feedbackStory: 'The system may sound reassuring, but the ward still needs concrete monitoring, handoff clarity, and a credible plan for correction.',
+        feedbackText: 'Even a measured rollout must be operationally ready, not simply rhetorically calm.',
+      },
+      {
+        text: 'Clear ownership for monitoring, practical workflow fit, and a visible path for pausing or stepping back if needed.',
+        feedbackTitle: 'You identified the strongest launch condition.',
+        feedbackStory: 'The route remains modest, but it now has a real structure for learning without pretending that uncertainty is a failure.',
+        feedbackText: 'This is the best answer because a measured pilot is only meaningful if it truly keeps room for correction.',
+        next: 'launch_05_measured',
+      },
+      {
+        text: 'Enough technical confidence that the team will probably not need to use its rollback plan anyway.',
+        retry: true,
+        feedbackTitle: 'That confuses confidence with preparedness.',
+        feedbackStory: 'A responsible rollback structure exists precisely because the team cannot assume confidence is enough once the system is live.',
+        feedbackText: 'Readiness is measured by how a project can handle being wrong, not by how strongly it hopes not to be.',
+      },
+    ],
+  }),
+  launch_05_measured: makeStoryNode({
+    id: 'launch_05_measured',
+    chapter: 'launch',
+    title: 'How Quiet Should The Pilot Be?',
+    badge: 'Decision node',
+    x: 1450,
+    y: 1620,
+    introText: 'A quieter route still has to decide how much of itself to reveal.',
+    text:
+      'Some people want the pilot framed as a learning exercise with careful expectations. Others worry that too much modesty will make the project look fragile and politically easier to defund if early results are mixed.',
+    choices: [
+      {
+        text: 'Frame the pilot explicitly as a learning phase with transparent limits and visible checkpoints.',
+        feedbackTitle: 'You made the route openly provisional.',
+        feedbackStory: 'The project may look less triumphant, but it gains a stronger public language for correction, adjustment, and trust-building.',
+        feedbackText: 'This protects legitimacy by refusing to confuse modesty with weakness.',
+        impact: { social: 6, financial: -2, eco: 1 },
+        next: 'launch_06_measured',
+        branchFlagsSet: ['launch_learning_frame'],
+      },
+      {
+        text: 'Keep the pilot narrow operationally, but communicate it as a quiet sign that full rollout is mostly a matter of time.',
+        feedbackTitle: 'You softened the caution without fully abandoning it.',
+        feedbackStory: 'The route may keep institutional support stronger, but it also begins recreating some of the expectation pressure it was meant to avoid.',
+        feedbackText: 'This is more ambitious rhetorically than it first appears, even if the rollout itself remains narrow.',
+        impact: { social: -2, financial: 3, eco: 0 },
+        next: 'launch_06_measured',
+        branchFlagsSet: ['launch_quiet_confidence'],
+      },
+    ],
+  }),
+  launch_06_measured: makeStoryNode({
+    id: 'launch_06_measured',
+    chapter: 'launch',
+    title: 'Local Confidence Check',
+    x: 1560,
+    y: 2010,
+    introText: 'The quieter route still needs more than caution. It needs people on the ward to believe the caution is real.',
+    text:
+      'A ward lead says the pilot sounds careful on paper, but asks whether staff will actually feel permitted to pause or question the tool once the winter rush makes hesitation expensive. The question matters because many pilots are technically reversible and socially difficult to challenge once they are attached to hope or urgency.',
+    continueTo: 'launch_06',
+    continueLabel: 'Continue to clinician trust',
+  }),
+  launch_06: makeStoryNode({
+    id: 'launch_06',
+    chapter: 'launch',
+    title: 'Clinician Trust',
+    x: 1320,
+    y: 1490,
+    introText: 'No launch route avoids the same basic institutional test.',
+    text:
+      'A consultant physician asks a simple question in a tense tone: “When this system is wrong, who will be expected to carry that wrongness first?” The room falls quiet because everyone knows the answer cannot be technical alone.',
+    continueTo: 'launch_07',
+    continueLabel: 'Continue to monitoring design',
+  }),
+  launch_07: makeStoryNode({
+    id: 'launch_07',
+    chapter: 'launch',
+    title: 'Monitoring And Rollback',
+    badge: 'Decision node',
+    x: 1270,
+    y: 1650,
+    introText: 'The final live decision is about how the project will behave once reality starts pressing back.',
+    text:
+      'One design uses strict monitoring ownership and clear rollback triggers. Another prioritizes rapid iteration and softer guardrails to preserve momentum. A third turns launch into a dashboard-heavy performance environment that risks treating visibility as reassurance.',
+    choices: [
+      {
+        text: 'Use strict monitoring ownership, explicit rollback triggers, and limited automation while trust is still forming.',
+        feedbackTitle: 'You designed the launch around correction capacity.',
+        feedbackStory: 'The system may feel more cautious, but clinicians can now see how the project intends to behave when uncertainty becomes real rather than theoretical.',
+        feedbackText: 'This protects legitimacy and learning, even though it may look less bold in the short term.',
+        impact: { social: 6, financial: -3, eco: 1 },
+        next: 'launch_08',
+        branchFlagsSet: ['launch_strict_monitoring'],
+      },
+      {
+        text: 'Use softer guardrails and rapid iteration so the team can respond quickly without slowing the rollout too much.',
+        feedbackTitle: 'You protected momentum over firmness.',
+        feedbackStory: 'The project stays agile, but some staff now feel that the system’s correction logic may depend too much on trust in the core team’s judgment.',
+        feedbackText: 'This can work operationally, yet it makes legitimacy and clarity harder to secure under stress.',
+        impact: { social: -4, financial: 3, eco: -1 },
+        next: 'launch_08',
+        branchFlagsSet: ['launch_soft_monitoring'],
+      },
+      {
+        text: 'Center the launch around live performance dashboards and sponsor-facing visibility to prove the system is under control.',
+        overRequires: ['financial'],
+        blockedReason:
+          'This option would double down on financial and performance logic at a moment when that dimension is already too dominant to keep the project balanced.',
+        feedbackTitle: 'You made the launch highly performative.',
+        feedbackStory: 'The dashboards may reassure some executives, but they also risk turning correction into something politically harder to admit in real time.',
+        feedbackText: 'Performance visibility is not the same thing as accountability. In some cases, it can make accountability harder to practice honestly.',
+        impact: { social: -6, financial: 5, eco: -2 },
+        next: 'launch_08',
+        branchFlagsSet: ['launch_dashboard'],
+      },
+    ],
+  }),
+  launch_08: makeInfoNode({
+    id: 'launch_08',
+    chapter: 'launch',
+    title: 'Deployment Is A Legitimacy Event',
+    x: 1430,
+    y: 1880,
+    introText: 'This information node names the final structural lesson.',
+    text:
+      'Deployment is not merely the moment a system begins running. It is also the moment an institution reveals what it believes counts as acceptable uncertainty, who it expects to absorb risk, and how honestly it can describe the limits of its own confidence. A launch says as much about governance as it does about technology.',
+    extraHtml:
+      '<h3>Useful method</h3><p>Before launch, define success criteria, monitoring ownership, rollback triggers, who can pause the system, and how incidents will be recorded and discussed.</p><h3>What students should remember</h3><p>A pilot is more responsible when people closest to the work know how to question it safely, not only when leadership knows how to present it confidently.</p>',
+    continueTo: 'launch_09',
+    continueLabel: 'Continue to the final question',
+  }),
+  launch_08b: makeInfoNode({
+    id: 'launch_08b',
+    chapter: 'launch',
+    title: 'Pilot Readiness Checklist',
+    x: 1940,
+    y: 1950,
+    introText: 'This optional node offers a reusable launch checklist.',
+    text:
+      'A basic readiness check should cover five things: who monitors, who can pause, what counts as a reportable incident, what evidence would justify broadening the pilot, and how staff concerns will be fed back into decisions.',
+    extraHtml:
+      '<h3>Why this helps</h3><p>It keeps launch from becoming only a confidence ritual. The point is not to remove uncertainty, but to decide in advance how the project will behave when uncertainty becomes real.</p>',
+  }),
+  launch_09: makeQuizNode({
+    id: 'launch_09',
+    chapter: 'launch',
+    title: 'Final Launch Check',
+    x: 1720,
+    y: 1880,
+    introText: 'The final quiz checks whether the whole game’s logic has stayed intact.',
+    text:
+      'Which statement best captures what a responsible launch posture requires after all four chapters of the game?',
+    choices: [
+      {
+        text: 'A launch is mainly successful if the project can show confidence strongly enough to avoid political hesitation.',
+        retry: true,
+        feedbackTitle: 'That reduces launch to optics.',
+        feedbackStory: 'Confidence may matter politically, but it cannot substitute for governable uncertainty, correction capacity, and a believable account of constraints.',
+        feedbackText: 'A responsible launch is not one that merely looks certain. It is one that can remain defensible when certainty turns out to be incomplete.',
+      },
+      {
+        text: 'A launch should match the project’s actual balance of evidence, trust, feasibility, and correction capacity rather than only its ambition.',
+        feedbackTitle: 'You identified the game’s central launch lesson.',
+        feedbackStory: 'The project is now being judged in the right frame: not by whether it seems bold, but by whether it is genuinely governable under real conditions.',
+        feedbackText: 'This is the strongest answer because the whole game has been about keeping ambition aligned with institutional reality.',
+        next: 'launch_10',
+      },
+      {
+        text: 'Once a project reaches deployment, most earlier funding, team, and data tensions matter much less than technical performance.',
+        retry: true,
+        feedbackTitle: 'That misreads how projects actually work.',
+        feedbackStory: 'Deployment is where earlier structural tensions become visible, not where they disappear into performance alone.',
+        feedbackText: 'Launch exposes the accumulated logic of the project. It does not erase it.',
+      },
+    ],
+  }),
+  launch_10: makeStoryNode({
+    id: 'launch_10',
+    chapter: 'launch',
+    title: (currentState) => getEnding(currentState).title,
+    badge: 'Ending',
+    x: 1910,
+    y: 1760,
+    introText: 'The game ends with the kind of launch the project has made possible for itself.',
+    text: (currentState) => getEnding(currentState).text,
+    extraHtml: (currentState) => `<h3>Outcome</h3><p>${escapeHtml(getEnding(currentState).lesson)}</p>`,
+    continueTo: null,
+    continueLabel: 'Finish and return to board',
+    completeChapter: 'launch',
+  }),
 };
 
-const onboardingPages = [
-  {
-    badge: 'Welcome',
-    title: (name) => `Welcome ${name}, you just entered the game!`,
-    text:
-      'You are stepping into the role of a researcher leading an AI-for-sickness-detection project. As the story unfolds, you will face tensions around funding, communication, responsibility, timing, and project management. Your goal is not only to move the story forward, but also to learn how early decisions can create ethical and sustainability trade-offs later on.',
-    extraHtml:
-      '<p>This small version is a tutorial: it introduces the logic of the game, the kind of dilemmas you will face, and the learning goals behind the design.</p><p>We will shortly explain you how to navigate, please click on the next button at the bottom of the window.</p>',
-    showResources: false,
-  },
-  {
-    badge: 'Board Structure',
-    title: () => 'How the board works',
-    text:
-      'The board represents the project timeline as a set of connected nodes. As you move from one node to another, the story progresses and new situations appear.',
-    extraHtml:
-      `<p>Different node shapes correspond to different types of interaction: story nodes move the narrative forward, information nodes pause the story to explain an important point, and quiz nodes test whether you identified the most responsible answer.</p>
-      <div class="guide-shot">
-        <div class="guide-shot-header">Board overview</div>
-        <div class="guide-legend">
-          <span><i class="dot blocked"></i>Blocked</span>
-          <span><i class="dot available"></i>Available</span>
-          <span><i class="dot completed"></i>Completed</span>
-          <span><i class="shape-demo shape-story"></i>Story</span>
-          <span><i class="shape-demo shape-info"></i>Info</span>
-          <span><i class="shape-demo shape-quiz"></i>Quiz</span>
-        </div>
-        <div class="guide-board">
-          <span class="guide-link one"></span>
-          <span class="guide-link two"></span>
-          <span class="guide-link three"></span>
-          <div class="guide-node guide-node-center completed">Start</div>
-          <div class="guide-node guide-node-story">Story</div>
-          <div class="guide-node guide-node-info">Info</div>
-          <div class="guide-node guide-node-quiz node-available">Quiz</div>
-        </div>
-      </div>
-      <p>During the game, you will use the buttons at the bottom of a node window: <strong>Next</strong> to continue inside a node, <strong>Back</strong> to revisit the previous page, <strong>Back to full map</strong> to leave the node, and <strong>Restart prototype</strong> at the top if you want to begin again from scratch.</p>`,
-    showResources: false,
-  },
-  {
-    badge: 'Resources',
-    title: () => 'How resources affect the story',
-    text:
-      'The three resources represent the main dimensions you should balance during the project: social fairness, financial viability, and eco-friendliness.',
-    extraHtml:
-      '<p>Story nodes usually have more impact because they reflect strategic project choices. Quiz nodes have lighter effects because they mostly check whether you recognized the best option.</p><p>After each choice, you receive feedback explaining what happened and why it matters. In a quiz node, if you choose a wrong answer, you will need to leave the node and click on it again to retry.</p>',
-    showResources: true,
-  },
-  {
-    badge: 'Navigation',
-    title: () => 'Tracking your progression',
-    text:
-      'You can click back on a completed node at any point to review the feedback you received before.',
-    extraHtml:
-      `<p>The legend shows your progression across the board: which nodes are blocked, which ones are available, and which ones are already completed. You can also move across the map by sliding on your trackpad, just like you normally would on a large board.</p>
-      <div class="guide-shot guide-shot-wide">
-        <div class="guide-shot-header">What happens when you click again on a completed node</div>
-        <div class="guide-review">
-          <div class="guide-review-board">
-            <div class="guide-node guide-node-center completed small">Start</div>
-            <div class="guide-node guide-node-quiz completed active">Funding</div>
-            <div class="guide-node guide-node-story node-available next">Next</div>
-          </div>
-          <div class="guide-review-panel">
-            <div class="guide-review-card"></div>
-            <div class="guide-review-card short"></div>
-            <div class="guide-review-button">Back to full map</div>
-          </div>
-        </div>
-      </div>
-      <p>In that review view, you can still return to the map with the <strong>Back to full map</strong> button at the bottom right. Take your time, explore carefully, and see how your decisions shape the project.</p>`,
-    showResources: true,
-  },
-  {
-    badge: 'Start Demo',
-    title: () => 'Your tutorial is ready',
-    text:
-      'You will now access a smaller version to try it out and see how to play.',
-    extraHtml:
-      '<p>Let&apos;s start your story and see how you manage your project!</p>',
-    showResources: true,
-  },
-];
+function getEnding(currentState) {
+  const minResource = Math.min(
+    currentState.resources.social,
+    currentState.resources.financial,
+    currentState.resources.eco,
+  );
+  const lowCount = Object.values(currentState.resources).filter((value) => value <= LOWER_LIMIT).length;
+  const highVisibility =
+    currentState.branchFlags.has('funding_hype') ||
+    currentState.branchFlags.has('launch_ambitious') ||
+    currentState.branchFlags.has('launch_public');
 
-function bindNodeElements() {
-  Object.keys(nodes).forEach((id) => {
-    const element = document.querySelector(`[data-node="${id}"]`);
-    if (element) nodeElements[id] = element;
+  if (lowCount >= 2 || minResource <= 24) {
+    return {
+      key: 'stalled',
+      title: 'Stalled / Contested Rollout',
+      text:
+        'The launch remains technically possible, but the institution no longer feels aligned enough to carry it cleanly. Some people still want to push, others want to pause, and the result is a rollout that becomes politically contested before it becomes truly stable.',
+      lesson:
+        'This ending reflects what happens when imbalance accumulates faster than the project can absorb it. The system may still exist, but the institution no longer trusts the path to it.',
+    };
+  }
+
+  if (highVisibility || currentState.resources.financial >= currentState.resources.social + 10) {
+    return {
+      key: 'fragile',
+      title: 'Fragile High-Visibility Rollout',
+      text:
+        'The system launches with visible momentum and enough institutional backing to look convincing from the outside. Yet underneath the confidence, several balances remain tense, and the project now has less room to admit uncertainty without political cost.',
+      lesson:
+        'This ending shows how a project can reach deployment while still carrying structural fragility. Visibility and readiness are not the same thing.',
+    };
+  }
+
+  return {
+    key: 'measured',
+    title: 'Measured Rollout',
+    text:
+      'The system enters practice in a narrower, more deliberate way. It does not look spectacular, but the institution has kept enough balance to learn, correct, and explain itself without collapsing into panic every time uncertainty reappears.',
+    lesson:
+      'This ending reflects a project that stayed governable. It never removed tension completely, but it kept the balances strong enough for correction to remain realistic.',
+  };
+}
+
+function getNodeSize(node) {
+  if (node.id === 'center') {
+    return { w: node.w || 220, h: node.h || 220 };
+  }
+  return { w: node.w || 176, h: node.h || 104 };
+}
+
+function getChapterMeta(chapterId) {
+  return chapterClusters.find((cluster) => cluster.id === chapterId) || null;
+}
+
+function getBaseNodeFrame(node) {
+  const { w, h } = getNodeSize(node);
+  return {
+    x: node.x,
+    y: node.y,
+    w,
+    h,
+    right: node.x + w,
+    bottom: node.y + h,
+  };
+}
+
+function getChapterNodeBounds(chapterId) {
+  const chapterNodes = Object.values(nodes).filter((node) => node.chapter === chapterId);
+  const frames = chapterNodes.map((node) => ({ node, frame: getBaseNodeFrame(node) }));
+  return {
+    chapterId,
+    frames,
+    minX: Math.min(...frames.map(({ frame }) => frame.x)),
+    minY: Math.min(...frames.map(({ frame }) => frame.y)),
+    maxX: Math.max(...frames.map(({ frame }) => frame.right)),
+    maxY: Math.max(...frames.map(({ frame }) => frame.bottom)),
+  };
+}
+
+function getLayoutOffsets() {
+  const chapterBounds = Object.fromEntries(
+    chapterClusters.map((cluster) => [cluster.id, getChapterNodeBounds(cluster.id)]),
+  );
+
+  const leftColumnMax = Math.max(
+    ...chapterClusters
+      .filter((cluster) => cluster.column === 'left')
+      .map((cluster) => chapterBounds[cluster.id].maxX),
+  );
+  const rightColumnMin = Math.min(
+    ...chapterClusters
+      .filter((cluster) => cluster.column === 'right')
+      .map((cluster) => chapterBounds[cluster.id].minX),
+  );
+  const currentColumnGap = rightColumnMin - leftColumnMax;
+  const desiredColumnGap =
+    CLUSTER_LAYOUT.horizontalPadding * 2 + CLUSTER_LAYOUT.minimumGutter;
+  const rightColumnShift = Math.max(0, desiredColumnGap - currentColumnGap);
+
+  const topRowMax = Math.max(
+    ...chapterClusters
+      .filter((cluster) => cluster.row === 'top')
+      .map((cluster) => chapterBounds[cluster.id].maxY),
+  );
+  const bottomRowMin = Math.min(
+    ...chapterClusters
+      .filter((cluster) => cluster.row === 'bottom')
+      .map((cluster) => chapterBounds[cluster.id].minY),
+  );
+  const currentRowGap = bottomRowMin - topRowMax;
+  const desiredRowGap =
+    CLUSTER_LAYOUT.topPadding + CLUSTER_LAYOUT.bottomPadding + CLUSTER_LAYOUT.minimumGutter;
+  const bottomRowShift = Math.max(0, desiredRowGap - currentRowGap);
+
+  return {
+    chapterBounds,
+    rightColumnShift,
+    bottomRowShift,
+  };
+}
+
+function getResolvedChapterNodeBounds(chapterId, offsets = getLayoutOffsets()) {
+  const chapterMeta = getChapterMeta(chapterId);
+  const bounds = offsets.chapterBounds[chapterId];
+  const shiftX = chapterMeta?.column === 'right' ? offsets.rightColumnShift : 0;
+  const shiftY = chapterMeta?.row === 'bottom' ? offsets.bottomRowShift : 0;
+
+  return {
+    minX: bounds.minX + shiftX,
+    minY: bounds.minY + shiftY,
+    maxX: bounds.maxX + shiftX,
+    maxY: bounds.maxY + shiftY,
+  };
+}
+
+function getCenterNodeFrame(offsets = getLayoutOffsets()) {
+  const centerNode = nodes.center;
+  const { w, h } = getNodeSize(centerNode);
+
+  const leftMax = Math.max(
+    ...chapterClusters
+      .filter((cluster) => cluster.column === 'left')
+      .map((cluster) => getResolvedChapterNodeBounds(cluster.id, offsets).maxX),
+  );
+  const rightMin = Math.min(
+    ...chapterClusters
+      .filter((cluster) => cluster.column === 'right')
+      .map((cluster) => getResolvedChapterNodeBounds(cluster.id, offsets).minX),
+  );
+  const topMax = Math.max(
+    ...chapterClusters
+      .filter((cluster) => cluster.row === 'top')
+      .map((cluster) => getResolvedChapterNodeBounds(cluster.id, offsets).maxY),
+  );
+  const bottomMin = Math.min(
+    ...chapterClusters
+      .filter((cluster) => cluster.row === 'bottom')
+      .map((cluster) => getResolvedChapterNodeBounds(cluster.id, offsets).minY),
+  );
+
+  const centerX = (leftMax + rightMin) / 2;
+  const centerY = (topMax + bottomMin) / 2;
+
+  return {
+    x: Math.round(centerX - w / 2),
+    y: Math.round(centerY - h / 2),
+    w,
+    h,
+    right: Math.round(centerX + w / 2),
+    bottom: Math.round(centerY + h / 2),
+  };
+}
+
+function getResolvedNodeFrame(node, offsets = getLayoutOffsets()) {
+  if (node.id === 'center') {
+    return getCenterNodeFrame(offsets);
+  }
+
+  const chapterMeta = getChapterMeta(node.chapter);
+  const base = getBaseNodeFrame(node);
+  const shiftX = chapterMeta?.column === 'right' ? offsets.rightColumnShift : 0;
+  const shiftY = chapterMeta?.row === 'bottom' ? offsets.bottomRowShift : 0;
+
+  return {
+    x: base.x + shiftX,
+    y: base.y + shiftY,
+    w: base.w,
+    h: base.h,
+    right: base.right + shiftX,
+    bottom: base.bottom + shiftY,
+  };
+}
+
+function getComputedChapterClusters(offsets = getLayoutOffsets()) {
+  return chapterClusters.map((cluster) => {
+    const frames = Object.values(nodes)
+      .filter((node) => node.chapter === cluster.id)
+      .map((node) => getResolvedNodeFrame(node, offsets));
+
+    const minX = Math.min(...frames.map((frame) => frame.x));
+    const minY = Math.min(...frames.map((frame) => frame.y));
+    const maxX = Math.max(...frames.map((frame) => frame.right));
+    const maxY = Math.max(...frames.map((frame) => frame.bottom));
+    const x = Math.max(CLUSTER_LAYOUT.outerPaddingLeft, minX - CLUSTER_LAYOUT.horizontalPadding);
+    const y = Math.max(CLUSTER_LAYOUT.outerPaddingTop, minY - CLUSTER_LAYOUT.topPadding);
+
+    return {
+      ...cluster,
+      x,
+      y,
+      w: (maxX + CLUSTER_LAYOUT.horizontalPadding) - x,
+      h: (maxY + CLUSTER_LAYOUT.bottomPadding) - y,
+      minX,
+      minY,
+      maxX,
+      maxY,
+    };
   });
+}
+
+function getBoardBounds(offsets = getLayoutOffsets(), clusters = getComputedChapterClusters(offsets)) {
+  const nodeFrames = Object.values(nodes).map((node) => getResolvedNodeFrame(node, offsets));
+  const maxX = Math.max(
+    ...nodeFrames.map((frame) => frame.right),
+    ...clusters.map((cluster) => cluster.x + cluster.w),
+  );
+  const maxY = Math.max(
+    ...nodeFrames.map((frame) => frame.bottom),
+    ...clusters.map((cluster) => cluster.y + cluster.h),
+  );
+
+  return {
+    width: Math.ceil(maxX + CLUSTER_LAYOUT.outerPaddingRight),
+    height: Math.ceil(maxY + CLUSTER_LAYOUT.outerPaddingBottom),
+  };
+}
+
+function getNodeCenterPoint(node, offsets = getLayoutOffsets()) {
+  const frame = getResolvedNodeFrame(node, offsets);
+  return { x: frame.x + frame.w / 2, y: frame.y + frame.h / 2 };
+}
+
+function getOutgoingLinks(node) {
+  const links = new Set();
+  if (node.continueTo) links.add(node.continueTo);
+  if (Array.isArray(node.unlocks)) {
+    node.unlocks.forEach((id) => links.add(id));
+  }
+  if (node.choices) {
+    node.choices.forEach((choice) => {
+      if (choice.next) links.add(choice.next);
+      if (Array.isArray(choice.unlocks)) choice.unlocks.forEach((id) => links.add(id));
+      if (Array.isArray(choice.locks)) choice.locks.forEach((id) => links.add(id));
+    });
+  }
+  return [...links];
+}
+
+function roundAverage(value) {
+  return Math.round(value * 10) / 10;
+}
+
+function formatSignedValue(value) {
+  const rounded = Math.abs(value) < 0.05 ? 0 : roundAverage(value);
+  const sign = rounded > 0 ? '+' : '';
+  return `${sign}${Number.isInteger(rounded) ? rounded.toFixed(0) : rounded.toFixed(1)}`;
+}
+
+function getDeltaClass(value) {
+  if (value > 0) return 'delta-positive';
+  if (value < 0) return 'delta-negative';
+  return 'delta-neutral';
+}
+
+function showNameStep() {
+  refs.setupThemeStep.classList.add('hidden');
+  refs.setupNameStep.classList.remove('hidden');
+}
+
+function showThemeStep() {
+  refs.setupNameStep.classList.add('hidden');
+  refs.setupThemeStep.classList.remove('hidden');
+}
+
+function applyTheme(theme) {
+  state.playerTheme = theme;
+  document.body.dataset.theme = theme;
 }
 
 function updateResources() {
@@ -370,177 +2017,174 @@ function updateResources() {
   refs.ecoValue.textContent = state.resources.eco;
 }
 
-function escapeHtml(value) {
-  return value
-    .replaceAll('&', '&amp;')
-    .replaceAll('<', '&lt;')
-    .replaceAll('>', '&gt;')
-    .replaceAll('"', '&quot;')
-    .replaceAll("'", '&#39;');
+function closeWindowOverlay() {
+  refs.windowOverlay.classList.add('hidden');
+  refs.windowOverlay.setAttribute('aria-hidden', 'true');
+  refs.windowOverlayCard.innerHTML = '';
 }
 
-function renderPlayerMarker() {
-  document.querySelectorAll('.player-marker').forEach((el) => el.remove());
-  if (!state.playerName) return;
-  const target = nodeElements[state.lastCompletedNodeId];
-  if (!target) return;
-  const initials = state.playerName
-    .split(/\s+/)
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0].toUpperCase())
-    .join('') || 'P';
-  const marker = document.createElement('div');
-  marker.className = 'player-marker';
-  marker.innerHTML = `<span class="player-avatar">${escapeHtml(initials)}</span><span class="player-name">${escapeHtml(state.playerName)}</span>`;
-  target.appendChild(marker);
+function showWindowOverlay(html, bindActions = null) {
+  refs.windowOverlayCard.innerHTML = html;
+  refs.windowOverlay.classList.remove('hidden');
+  refs.windowOverlay.setAttribute('aria-hidden', 'false');
+  if (bindActions) bindActions(refs.windowOverlayCard);
 }
 
-function getNodeCenter(nodeId) {
-  const el = nodeElements[nodeId];
-  if (!el) return null;
-  return {
-    x: el.offsetLeft + el.offsetWidth / 2,
-    y: el.offsetTop + el.offsetHeight / 2,
-    w: el.offsetWidth,
-    h: el.offsetHeight,
-    circle: el.classList.contains('node-circle'),
+function buildOverlayCard({ badge, title, intro, sections = [], buttons = [] }) {
+  const sectionHtml = sections
+    .map(
+      (section) =>
+        `<div class="overlay-section"><h3>${escapeHtml(section.title)}</h3><p>${escapeHtml(section.text)}</p></div>`,
+    )
+    .join('');
+  const buttonsHtml = buttons
+    .map(
+      (button) =>
+        `<button type="button" class="${button.className}" data-overlay-action="${escapeHtml(button.id)}">${escapeHtml(button.label)}</button>`,
+    )
+    .join('');
+
+  return `
+    <div class="overlay-card">
+      <div class="step-badge">${escapeHtml(badge)}</div>
+      <h2>${escapeHtml(title)}</h2>
+      <p class="overlay-intro">${escapeHtml(intro)}</p>
+      <div class="overlay-sections">${sectionHtml}</div>
+      <div class="button-row">${buttonsHtml}</div>
+    </div>
+  `;
+}
+
+function openRouteClosedOverlay(nodeId) {
+  const node = nodes[nodeId];
+  const reason = state.closedReasons[nodeId] || 'This route was closed by an earlier decision and cannot reopen in the current run.';
+  showWindowOverlay(
+    buildOverlayCard({
+      badge: 'Closed route',
+      title: resolveValue(node.title, node),
+      intro: reason,
+      sections: [
+        {
+          title: 'What this means',
+          text:
+            'This branch remains visible so the player can see that the board changed because of an earlier choice. A different run could unlock this path instead.',
+        },
+      ],
+      buttons: [
+        { id: 'close', label: 'Close', className: 'ghost-btn' },
+      ],
+    }),
+    (card) => {
+      card.querySelector('[data-overlay-action="close"]').addEventListener('click', closeWindowOverlay);
+    },
+  );
+}
+
+function openThresholdOverlay(entries, reasonOverride = '') {
+  const intro = reasonOverride || entries[0].lead;
+  showWindowOverlay(
+    buildOverlayCard({
+      badge: 'Learning prompt',
+      title: entries.length === 1 ? entries[0].title : 'The project has become unbalanced',
+      intro,
+      sections: entries.map((entry) => ({
+        title: entry.label,
+        text: entry.lesson,
+      })),
+      buttons: [
+        { id: 'close', label: 'Close', className: 'ghost-btn' },
+      ],
+    }),
+    (card) => {
+      card.querySelector('[data-overlay-action="close"]').addEventListener('click', closeWindowOverlay);
+    },
+  );
+}
+
+function openRecapOverlay() {
+  const totals = { social: 0, financial: 0, eco: 0 };
+  state.impactHistory.forEach((impact) => {
+    totals.social += impact.social || 0;
+    totals.financial += impact.financial || 0;
+    totals.eco += impact.eco || 0;
+  });
+  const count = state.impactHistory.length;
+  const averages = {
+    social: count ? roundAverage(totals.social / count) : 0,
+    financial: count ? roundAverage(totals.financial / count) : 0,
+    eco: count ? roundAverage(totals.eco / count) : 0,
   };
-}
+  const sorted = Object.entries(averages).sort((a, b) => a[1] - b[1]);
+  const lowestKey = sorted[0][0];
+  const highestKey = sorted[sorted.length - 1][0];
+  const recentThresholds = state.thresholdHistory.slice(-3);
 
-function getEdgePoint(source, target) {
-  const dx = target.x - source.x;
-  const dy = target.y - source.y;
-  if (source.circle) {
-    const length = Math.hypot(dx, dy) || 1;
-    const radius = Math.min(source.w, source.h) / 2;
-    return {
-      x: source.x + (dx / length) * radius,
-      y: source.y + (dy / length) * radius,
-    };
-  }
+  const html = `
+    <div class="overlay-card overlay-card-wide">
+      <div class="step-badge">Progress recap</div>
+      <h2>How your decisions are shaping the game</h2>
+      <p class="overlay-intro">This summary tracks both your current totals and the average direction of your resource-changing decisions.</p>
 
-  const halfW = source.w / 2;
-  const halfH = source.h / 2;
-  const scale = 1 / Math.max(Math.abs(dx) / halfW || 0, Math.abs(dy) / halfH || 0, 1);
-  return {
-    x: source.x + dx * scale,
-    y: source.y + dy * scale,
-  };
-}
+      <div class="recap-grid">
+        ${Object.keys(resourceMeta)
+          .map((key) => `
+            <div class="recap-tile">
+              <div class="recap-tile-head">
+                <span>${escapeHtml(resourceMeta[key].label)}</span>
+                <strong>${state.resources[key]}</strong>
+              </div>
+              <p>Average change: <strong class="${getDeltaClass(averages[key])}">${formatSignedValue(averages[key])}</strong></p>
+            </div>
+          `)
+          .join('')}
+      </div>
 
-function offsetPointAwayFromTarget(point, target, padding = 14) {
-  const dx = target.x - point.x;
-  const dy = target.y - point.y;
-  const length = Math.hypot(dx, dy) || 1;
-  return {
-    x: point.x - (dx / length) * padding,
-    y: point.y - (dy / length) * padding,
-  };
-}
+      <div class="overlay-section-stack">
+        <div class="overlay-section">
+          <h3>Most neglected on average</h3>
+          <p>${escapeHtml(resourceMeta[lowestKey].caution)}</p>
+        </div>
+        <div class="overlay-section">
+          <h3>Most pushed on average</h3>
+          <p>${escapeHtml(resourceMeta[highestKey].push)}</p>
+        </div>
+        <div class="overlay-section">
+          <h3>Recent threshold signals</h3>
+          <p>${escapeHtml(
+            recentThresholds.length
+              ? recentThresholds
+                  .map((entry) => `${resourceMeta[entry.resource].short} ${entry.level === 'low' ? 'fell under' : 'rose above'} ${entry.level === 'low' ? LOWER_LIMIT : UPPER_LIMIT}`)
+                  .join(' / ')
+              : 'No threshold warning has been triggered yet in this run.',
+          )}</p>
+        </div>
+      </div>
 
-function ensureArrowhead(line, active) {
-  let arrow = line._arrowhead;
-  if (!arrow) {
-    arrow = document.createElementNS('http://www.w3.org/2000/svg', 'polygon');
-    line.parentNode.appendChild(arrow);
-    line._arrowhead = arrow;
-  }
-  arrow.setAttribute('class', active ? 'arrowhead-active' : 'arrowhead-base');
-  return arrow;
-}
+      <div class="button-row">
+        <button type="button" class="ghost-btn" data-overlay-action="close">Close</button>
+      </div>
+    </div>
+  `;
 
-function updateBoardLines() {
-  if (!refs.boardLines) return;
-  refs.boardLines.querySelectorAll('line[data-from][data-to]').forEach((line) => {
-    const source = getNodeCenter(line.dataset.from);
-    const target = getNodeCenter(line.dataset.to);
-    if (!source || !target) return;
-    const startEdge = getEdgePoint(source, target);
-    const endEdge = getEdgePoint(target, source);
-    const dx = endEdge.x - startEdge.x;
-    const dy = endEdge.y - startEdge.y;
-    const length = Math.hypot(dx, dy) || 1;
-    const ux = dx / length;
-    const uy = dy / length;
-    const headLength = 18;
-    const headWidth = 7;
-    const tipX = endEdge.x + ux * headLength;
-    const tipY = endEdge.y + uy * headLength;
-    const baseX = endEdge.x;
-    const baseY = endEdge.y;
-    const perpX = -uy;
-    const perpY = ux;
-    line.setAttribute('x1', `${startEdge.x}`);
-    line.setAttribute('y1', `${startEdge.y}`);
-    line.setAttribute('x2', `${endEdge.x}`);
-    line.setAttribute('y2', `${endEdge.y}`);
-
-    const arrow = ensureArrowhead(line, line.classList.contains('funding-line'));
-    arrow.setAttribute(
-      'points',
-      `${tipX},${tipY} ${baseX + perpX * headWidth},${baseY + perpY * headWidth} ${baseX - perpX * headWidth},${baseY - perpY * headWidth}`,
-    );
+  showWindowOverlay(html, (card) => {
+    card.querySelector('[data-overlay-action="close"]').addEventListener('click', closeWindowOverlay);
   });
 }
 
-function applyTheme(theme) {
-  state.playerTheme = theme;
-  document.body.dataset.theme = theme;
+function openModalPanel(showResources = true) {
+  state.currentNodeId = state.currentNodeId || null;
+  refs.mainLayout.classList.remove('map-only');
+  refs.mainLayout.classList.add('modal-mode');
+  refs.storyPanel.classList.remove('hidden');
+  refs.storyPanel.classList.toggle('hide-resources', !showResources);
 }
 
-function showThemeStep() {
-  refs.setupNameStep.classList.add('hidden');
-  refs.setupThemeStep.classList.remove('hidden');
-}
-
-function showNameStep() {
-  refs.setupThemeStep.classList.add('hidden');
-  refs.setupNameStep.classList.remove('hidden');
-}
-
-function completeSetup() {
-  refs.setupOverlay.classList.add('hidden');
-  renderPlayerMarker();
-  updateBoardLines();
-  renderOnboardingPage(0);
-}
-
-function renderOnboardingPage(index) {
-  const page = onboardingPages[index];
-  if (!page) {
-    state.onboardingComplete = true;
-    closePanel();
-    return;
-  }
-
-  openModalPanel('center', { showResources: page.showResources });
-  mountTemplate('introTemplate');
-  document.getElementById('introBadge').textContent = page.badge;
-  document.getElementById('introTitle').textContent = page.title(state.playerName || 'Player');
-  document.getElementById('introText').textContent = page.text;
-  const introHint = document.getElementById('introHint');
-  introHint.classList.remove('hidden');
-  introHint.innerHTML = page.extraHtml;
-
-  const introActions = document.getElementById('introActions');
-  if (index > 0) {
-    introActions.appendChild(createButton({
-      label: 'Back',
-      className: 'ghost-btn',
-      onClick: () => renderOnboardingPage(index - 1),
-    }));
-  }
-  introActions.appendChild(createButton({
-    label: 'Skip and jump to the tutorial',
-    className: 'ghost-btn',
-    onClick: () => renderOnboardingPage(onboardingPages.length),
-  }));
-  introActions.appendChild(createButton({
-    label: index === onboardingPages.length - 1 ? 'Start tutorial' : 'Next',
-    className: 'primary-btn',
-    onClick: () => renderOnboardingPage(index + 1),
-  }));
+function closePanel() {
+  state.currentNodeId = null;
+  refs.mainLayout.classList.remove('modal-mode');
+  refs.mainLayout.classList.add('map-only');
+  refs.storyPanel.classList.add('hidden');
+  refs.storyPanel.classList.remove('hide-resources');
 }
 
 function mountTemplate(templateId) {
@@ -552,173 +2196,372 @@ function mountTemplate(templateId) {
   refs.contentCard.classList.add('card-animate');
 }
 
-function createButton({ label, className, onClick, disabled = false }) {
+function createButton({ label, className, onClick, disabled = false, id = '' }) {
   const button = document.createElement('button');
   button.className = className;
   button.textContent = label;
+  if (id) button.dataset.actionId = id;
   button.disabled = disabled;
   if (disabled) button.classList.add('is-disabled');
   button.addEventListener('click', onClick);
   return button;
 }
 
-function setResourcesVisibility(visible) {
-  refs.storyPanel.classList.toggle('hide-resources', !visible);
+function getNodeStatusLabel(nodeId) {
+  if (nodeId === 'center') return 'Start node';
+  const node = nodes[nodeId];
+  const typeLabel = node.type === 'info' ? 'Info' : node.type === 'quiz' ? 'Quiz' : 'Story';
+  if (state.closedNodes.has(nodeId)) return `Closed route · ${typeLabel}`;
+  if (state.completedNodes.has(nodeId)) return `Completed · ${typeLabel}`;
+  if (state.availableNodes.has(nodeId)) return `Available · ${typeLabel}`;
+  return `Blocked · ${typeLabel}`;
 }
 
-function focusBoardOn(nodeId) {
-  refs.board.className = 'board';
-  refs.board.classList.add('focused', `focus-${nodeId}`);
+function renderClusters(computedClusters) {
+  refs.boardClusters.innerHTML = computedClusters
+    .map(
+      (cluster) => `
+        <div class="cluster-zone cluster-${escapeHtml(cluster.id)}" style="left:${cluster.x}px; top:${cluster.y}px; width:${cluster.w}px; height:${cluster.h}px;">
+          <div class="cluster-kicker">${escapeHtml(cluster.kicker)}</div>
+          <h3>${escapeHtml(cluster.title)}</h3>
+          <p>${escapeHtml(cluster.blurb)}</p>
+        </div>
+      `,
+    )
+    .join('');
 }
 
-function restoreFullBoard() {
-  refs.board.className = 'board full-board';
-}
+function renderBoardNodes(offsets) {
+  refs.boardNodes.innerHTML = Object.values(nodes)
+    .map((node) => {
+      const frame = getResolvedNodeFrame(node, offsets);
+      const classes = [
+        'node',
+        node.id === 'center' ? 'node-center node-circle' : `node-${node.type}-shape`,
+      ];
+      if (state.closedNodes.has(node.id)) {
+        classes.push('closed-route', 'node-clickable');
+      } else if (state.completedNodes.has(node.id)) {
+        classes.push('completed', 'node-clickable');
+      } else if (state.availableNodes.has(node.id) || node.id === 'center') {
+        classes.push('node-available', 'node-clickable');
+        if (!state.completedNodes.has(node.id)) classes.push('pulse');
+      } else {
+        classes.push('node-locked');
+      }
 
-function resetBoardViewport() {
-  if (!refs.boardViewport) return;
-  refs.boardViewport.scrollLeft = 150;
-  refs.boardViewport.scrollTop = 40;
-}
+      const title = resolveValue(node.title, node);
+      return `
+        <div
+          id="node-${escapeHtml(node.id)}"
+          class="${classes.join(' ')}"
+          data-node="${escapeHtml(node.id)}"
+          style="left:${frame.x}px; top:${frame.y}px; width:${frame.w}px; min-height:${frame.h}px;"
+          tabindex="0"
+          role="button"
+        >
+          <span class="node-title">${escapeHtml(title)}</span>
+          <span class="node-tag">${escapeHtml(getNodeStatusLabel(node.id))}</span>
+        </div>
+      `;
+    })
+    .join('');
 
-function openSplitPanel(nodeId) {
-  state.currentNodeId = nodeId;
-  refs.mainLayout.classList.remove('map-only');
-  refs.mainLayout.classList.remove('modal-mode');
-  refs.mainLayout.classList.add('with-panel');
-  refs.storyPanel.classList.remove('hidden');
-  setResourcesVisibility(true);
-  if (refs.boardViewport) {
-    refs.boardViewport.scrollLeft = 0;
-    refs.boardViewport.scrollTop = 0;
-  }
-  focusBoardOn(nodeId);
-}
+  refs.boardNodes.querySelectorAll('[data-node]').forEach((element) => {
+    const nodeId = element.dataset.node;
+    element.addEventListener('click', () => handleBoardNodeClick(nodeId));
+    element.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        handleBoardNodeClick(nodeId);
+      }
+    });
+  });
 
-function openModalPanel(nodeId, { showResources = true } = {}) {
-  state.currentNodeId = nodeId;
-  refs.mainLayout.classList.remove('with-panel');
-  refs.mainLayout.classList.remove('map-only');
-  refs.mainLayout.classList.add('modal-mode');
-  refs.storyPanel.classList.remove('hidden');
-  setResourcesVisibility(showResources);
-  restoreFullBoard();
-}
-
-function closePanel() {
-  state.currentNodeId = null;
-  refs.mainLayout.classList.remove('with-panel');
-  refs.mainLayout.classList.remove('modal-mode');
-  refs.mainLayout.classList.add('map-only');
-  refs.storyPanel.classList.add('hidden');
-  setResourcesVisibility(true);
-  restoreFullBoard();
-  resetBoardViewport();
-}
-
-function markNodeAvailable(nodeId) {
-  const el = nodeElements[nodeId];
-  if (!el) return;
-  state.availableNodes.add(nodeId);
-  el.classList.remove('node-locked', 'completed');
-  el.classList.add('node-available', 'node-clickable', 'pulse');
-  el.setAttribute('tabindex', '0');
-  el.setAttribute('role', 'button');
-  const typeLabel = nodes[nodeId].type === 'story' ? 'Story' : nodes[nodeId].type === 'info' ? 'Info' : 'Quiz';
-  el.querySelector('.node-tag').textContent = `Available · ${typeLabel}`;
   renderPlayerMarker();
+}
+
+function renderPlayerMarker() {
+  refs.boardNodes.querySelectorAll('.player-marker').forEach((element) => element.remove());
+  if (!state.playerName) return;
+  const target = document.getElementById(`node-${state.lastCompletedNodeId}`);
+  if (!target) return;
+  const initials = state.playerName
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('') || 'P';
+
+  const marker = document.createElement('div');
+  marker.className = 'player-marker';
+  marker.innerHTML = `<span class="player-avatar">${escapeHtml(initials)}</span><span class="player-name">${escapeHtml(state.playerName)}</span>`;
+  target.appendChild(marker);
+}
+
+function renderBoardLines(offsets) {
+  const lines = [];
+  Object.values(nodes).forEach((node) => {
+    const from = getNodeCenterPoint(node, offsets);
+    getOutgoingLinks(node).forEach((targetId) => {
+      const target = nodes[targetId];
+      if (!target) return;
+      const to = getNodeCenterPoint(target, offsets);
+      lines.push(
+        `<line x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" class="chapter-line line-${escapeHtml(node.chapter)}"></line>`,
+      );
+    });
+  });
+  refs.boardLines.innerHTML = lines.join('');
+}
+
+function renderBoard() {
+  const offsets = getLayoutOffsets();
+  const computedClusters = getComputedChapterClusters(offsets);
+  const boardBounds = getBoardBounds(offsets, computedClusters);
+  refs.board.style.width = `${boardBounds.width}px`;
+  refs.board.style.height = `${boardBounds.height}px`;
+  refs.boardLines.setAttribute('viewBox', `0 0 ${boardBounds.width} ${boardBounds.height}`);
+  renderClusters(computedClusters);
+  renderBoardLines(offsets);
+  renderBoardNodes(offsets);
+}
+
+function refreshGlobalUnlocks() {
+  if (state.preScenarioComplete) {
+    unlockNodes(['funding_01', 'team_01', 'data_01']);
+  }
+  if (
+    state.chapterMilestones.has('funding') &&
+    state.chapterMilestones.has('team') &&
+    state.chapterMilestones.has('data')
+  ) {
+    unlockNodes(['launch_01']);
+  }
+}
+
+function unlockNodes(nodeIds = []) {
+  nodeIds.forEach((nodeId) => {
+    if (!nodeId || state.closedNodes.has(nodeId) || state.completedNodes.has(nodeId)) return;
+    state.availableNodes.add(nodeId);
+  });
+}
+
+function closeNodes(nodeIds = [], reason = '') {
+  nodeIds.forEach((nodeId) => {
+    if (!nodeId || state.completedNodes.has(nodeId)) return;
+    state.availableNodes.delete(nodeId);
+    state.closedNodes.add(nodeId);
+    if (reason) state.closedReasons[nodeId] = reason;
+  });
 }
 
 function markNodeCompleted(nodeId) {
-  const el = nodeElements[nodeId];
-  if (!el) return;
   state.availableNodes.delete(nodeId);
   state.completedNodes.add(nodeId);
   state.lastCompletedNodeId = nodeId;
-  el.classList.remove('node-available', 'pulse', 'node-locked');
-  el.classList.add('completed', 'node-clickable');
-  el.setAttribute('tabindex', '0');
-  el.setAttribute('role', 'button');
-  const typeLabel = nodes[nodeId].type === 'story' ? 'Story' : nodes[nodeId].type === 'info' ? 'Info' : 'Quiz';
-  el.querySelector('.node-tag').textContent = `Completed · ${typeLabel}`;
-  renderPlayerMarker();
+  if (nodes[nodeId].completeChapter) {
+    state.chapterMilestones.add(nodes[nodeId].completeChapter);
+  }
 }
 
-function getTutorialHint(nodeId, node) {
-  if (nodeId !== 'center') return '';
-  return '<h3>How the tutorial works</h3><p>You will open one small branch of the map and experience the three node types used in the game. Story nodes move the scenario forward, information nodes give short learning points, and quiz nodes ask you to choose between possible actions. You can always return to the full map, and once you complete a node you can click it again to review its feedback.</p>';
+function applyBranchFlags(flags = []) {
+  flags.forEach((flag) => state.branchFlags.add(flag));
+}
+
+function clampResource(value) {
+  return Math.max(0, Math.min(100, value));
+}
+
+function recordThresholdEvents(previousResources, nextResources) {
+  const events = [];
+  Object.keys(previousResources).forEach((resource) => {
+    const previous = previousResources[resource];
+    const next = nextResources[resource];
+    const lowKey = `low-${resource}`;
+    const highKey = `high-${resource}`;
+
+    if (previous > LOWER_LIMIT && next <= LOWER_LIMIT && !state.shownThresholds.has(lowKey)) {
+      state.shownThresholds.add(lowKey);
+      const meta = resourceMeta[resource];
+      state.thresholdHistory.push({ resource, level: 'low', value: next });
+      events.push({
+        resource,
+        level: 'low',
+        title: meta.lowTitle,
+        lead: meta.lowLead,
+        lesson: meta.lowLesson,
+        label: meta.label,
+      });
+    }
+
+    if (previous < UPPER_LIMIT && next >= UPPER_LIMIT && !state.shownThresholds.has(highKey)) {
+      state.shownThresholds.add(highKey);
+      const meta = resourceMeta[resource];
+      state.thresholdHistory.push({ resource, level: 'high', value: next });
+      events.push({
+        resource,
+        level: 'high',
+        title: meta.highTitle,
+        lead: meta.highLead,
+        lesson: meta.highLesson,
+        label: meta.label,
+      });
+    }
+  });
+  return events;
+}
+
+function applyImpact(impact = {}) {
+  const previous = { ...state.resources };
+  const appliedImpact = {
+    social: impact.social || 0,
+    financial: impact.financial || 0,
+    eco: impact.eco || 0,
+  };
+  if (appliedImpact.social || appliedImpact.financial || appliedImpact.eco) {
+    state.impactHistory.push(appliedImpact);
+  }
+  state.resources.social = clampResource(state.resources.social + appliedImpact.social);
+  state.resources.financial = clampResource(state.resources.financial + appliedImpact.financial);
+  state.resources.eco = clampResource(state.resources.eco + appliedImpact.eco);
+  updateResources();
+  return recordThresholdEvents(previous, state.resources);
+}
+
+function getChoiceConstraint(choice) {
+  const lowBlocked = (choice.requires || []).filter((resource) => state.resources[resource] <= LOWER_LIMIT);
+  if (lowBlocked.length) {
+    return {
+      blocked: true,
+      reason: choice.blockedReason || 'This path is unavailable because a necessary balance has been neglected.',
+      entries: lowBlocked.map((resource) => ({
+        resource,
+        level: 'low',
+        title: resourceMeta[resource].lowTitle,
+        lead: resourceMeta[resource].lowLead,
+        lesson: resourceMeta[resource].lowLesson,
+        label: resourceMeta[resource].label,
+      })),
+    };
+  }
+
+  const highBlocked = (choice.overRequires || []).filter((resource) => state.resources[resource] >= UPPER_LIMIT);
+  if (highBlocked.length) {
+    return {
+      blocked: true,
+      reason: choice.blockedReason || 'This path would over-concentrate a balance that is already too dominant.',
+      entries: highBlocked.map((resource) => ({
+        resource,
+        level: 'high',
+        title: resourceMeta[resource].highTitle,
+        lead: resourceMeta[resource].highLead,
+        lesson: resourceMeta[resource].highLesson,
+        label: resourceMeta[resource].label,
+      })),
+    };
+  }
+
+  return { blocked: false, reason: '', entries: [] };
 }
 
 function renderIntro(nodeId) {
   const node = nodes[nodeId];
-  openModalPanel(nodeId, { showResources: false });
+  state.currentNodeId = nodeId;
+  openModalPanel(node.showResources !== false);
   mountTemplate('introTemplate');
-  document.getElementById('introBadge').textContent = node.badge;
-  document.getElementById('introTitle').textContent = node.title;
-  document.getElementById('introText').textContent = node.introText || 'Open this node to continue the tutorial.';
+  document.getElementById('introBadge').textContent = getBadgeLabel(node);
+  document.getElementById('introTitle').textContent = resolveValue(node.title, node);
+  document.getElementById('introText').textContent = resolveValue(node.introText, node) || 'Open this node to continue the game.';
   const introHint = document.getElementById('introHint');
-  const hintHtml = getTutorialHint(nodeId, node);
+  const hintHtml =
+    node.id === 'center'
+      ? '<h3>How the game opens</h3><p>The center node records a starting-position answer without changing any resource. After that, the first chapter entry nodes unlock around the board and major decisions begin to close alternate routes.</p>'
+      : resolveValue(node.introHtml, node);
+
   if (hintHtml) {
+    introHint.classList.remove('hidden');
     introHint.innerHTML = hintHtml;
   } else {
     introHint.classList.add('hidden');
   }
 
   const introActions = document.getElementById('introActions');
-  const startLabel = nodeId === 'center' ? 'Open tutorial' : 'Start node';
-  introActions.appendChild(createButton({
-    label: startLabel,
-    className: 'primary-btn',
-    onClick: () => renderActionStage(nodeId),
-  }));
-  introActions.appendChild(createButton({
-    label: 'Back to full map',
-    className: 'ghost-btn',
-    onClick: closePanel,
-  }));
+  introActions.appendChild(
+    createButton({
+      label: node.evaluationOnly && state.preScenarioComplete ? 'Review answer' : 'Open node',
+      className: 'primary-btn',
+      onClick: () => renderActionStage(nodeId),
+    }),
+  );
+  introActions.appendChild(
+    createButton({
+      label: 'Back to board',
+      className: 'ghost-btn',
+      onClick: closePanel,
+    }),
+  );
 }
 
-function renderActionStage(nodeId, options = {}) {
+function renderActionStage(nodeId) {
   const node = nodes[nodeId];
-  const { preselectedChoice = null, lockedSelection = false } = options;
-  openModalPanel(nodeId, { showResources: true });
+  state.currentNodeId = nodeId;
+  openModalPanel(node.showResources !== false);
   mountTemplate('nodeTemplate');
-  document.getElementById('nodeTypeBadge').textContent = node.badge;
-  document.getElementById('nodeTitle').textContent = node.title;
-  document.getElementById('nodeText').textContent = node.text;
+  document.getElementById('nodeTypeBadge').textContent = getBadgeLabel(node);
+  document.getElementById('nodeTitle').textContent = resolveValue(node.title, node);
+  const introLead = resolveValue(node.introText, node);
+  const mainText = resolveValue(node.text, node);
+  const nodeText = document.getElementById('nodeText');
+  if (introLead && introLead !== mainText) {
+    nodeText.innerHTML = `<span class="story-lead">${escapeHtml(introLead)}</span><br><br>${escapeHtml(mainText)}`;
+  } else {
+    nodeText.textContent = mainText;
+  }
 
   const extra = document.getElementById('nodeExtra');
-  const choicesContainer = document.getElementById('choices');
-  const secondaryAction = document.getElementById('secondaryAction');
-
-  const actionHint = node.extraHtml;
-  if (actionHint) {
+  const extraHtml = resolveValue(node.extraHtml, node);
+  if (extraHtml) {
     extra.classList.remove('hidden');
-    extra.innerHTML = actionHint;
+    extra.innerHTML = extraHtml;
   } else {
     extra.classList.add('hidden');
   }
 
+  const choicesContainer = document.getElementById('choices');
+  const actions = document.getElementById('secondaryAction');
+
   if (node.choices) {
-    let selectedChoice = preselectedChoice;
+    let selectedChoice = null;
+    let lockedSelection = false;
+    if (node.evaluationOnly && state.preScenarioComplete && state.preScenarioAnswer) {
+      selectedChoice = node.choices.find((choice) => choice.text === state.preScenarioAnswer) || null;
+      lockedSelection = Boolean(selectedChoice);
+    }
+
     const nextButton = createButton({
-      label: 'Next',
+      label: node.evaluationOnly ? 'Record answer' : 'Next',
       className: 'primary-btn',
-      disabled: !selectedChoice,
+      disabled: !selectedChoice || lockedSelection,
       onClick: () => {
-        if (!selectedChoice) return;
-        handleChoice(nodeId, selectedChoice);
+        if (selectedChoice) handleChoice(nodeId, selectedChoice);
       },
     });
 
     node.choices.forEach((choice) => {
+      const constraint = getChoiceConstraint(choice);
       const button = document.createElement('button');
-      button.className = 'choice-btn';
-      button.textContent = choice.text;
-      if (preselectedChoice === choice) {
-        button.classList.add('is-selected');
+      button.className = `choice-btn${constraint.blocked ? ' is-blocked' : ''}${selectedChoice === choice ? ' is-selected' : ''}`;
+      button.innerHTML = `<span class="choice-label">${escapeHtml(choice.text)}</span>`;
+      if (constraint.blocked) {
+        button.innerHTML += `<span class="choice-note">${escapeHtml(constraint.reason)}</span>`;
       }
+
       button.addEventListener('click', () => {
+        if (constraint.blocked) {
+          openThresholdOverlay(constraint.entries, constraint.reason);
+          return;
+        }
         if (lockedSelection) return;
         selectedChoice = choice;
         Array.from(choicesContainer.children).forEach((child) => child.classList.remove('is-selected'));
@@ -726,44 +2569,41 @@ function renderActionStage(nodeId, options = {}) {
         nextButton.disabled = false;
         nextButton.classList.remove('is-disabled');
       });
+
       choicesContainer.appendChild(button);
     });
 
-    secondaryAction.appendChild(nextButton);
-    secondaryAction.appendChild(createButton({
+    actions.appendChild(nextButton);
+  } else {
+    actions.appendChild(
+      createButton({
+        label: node.continueLabel || 'Continue',
+        className: 'primary-btn',
+        onClick: () => completePassiveNode(nodeId),
+      }),
+    );
+  }
+
+  actions.appendChild(
+    createButton({
       label: 'Back',
       className: 'ghost-btn',
       onClick: () => renderIntro(nodeId),
-    }));
-    secondaryAction.appendChild(createButton({
-      label: 'Back to full map',
+    }),
+  );
+  actions.appendChild(
+    createButton({
+      label: 'Back to board',
       className: 'ghost-btn',
       onClick: closePanel,
-    }));
-    return;
-  }
-
-  if (node.secondaryAction) {
-    secondaryAction.appendChild(createButton({
-      label: node.secondaryAction.label,
-      className: 'primary-btn',
-      onClick: node.secondaryAction.action,
-    }));
-    secondaryAction.appendChild(createButton({
-      label: 'Back',
-      className: 'ghost-btn',
-      onClick: () => renderIntro(nodeId),
-    }));
-  }
-
-  secondaryAction.appendChild(createButton({
-    label: 'Back to full map',
-    className: 'ghost-btn',
-    onClick: closePanel,
-  }));
+    }),
+  );
 }
 
-function populateFeedback(feedback, options = {}) {
+function renderFeedbackModal(nodeId, feedback, options = {}) {
+  const node = nodes[nodeId];
+  state.currentNodeId = nodeId;
+  openModalPanel(node.showResources !== false);
   mountTemplate('feedbackTemplate');
   document.getElementById('feedbackTitle').textContent = feedback.feedbackTitle;
   document.getElementById('feedbackStory').textContent = feedback.feedbackStory;
@@ -771,239 +2611,220 @@ function populateFeedback(feedback, options = {}) {
 
   if (options.showImpact) {
     const impactBox = document.getElementById('impactBox');
-    impactBox.classList.remove('hidden');
     const deltaList = document.getElementById('deltaList');
+    impactBox.classList.remove('hidden');
     Object.entries(options.showImpact).forEach(([key, value]) => {
-      const labels = {
-        social: 'Social fairness',
-        financial: 'Financial viability',
-        eco: 'Eco-friendliness',
-      };
-      const row = document.createElement('div');
-      row.className = 'delta-item';
-      const sign = value > 0 ? '+' : '';
-      const cssClass = value > 0 ? 'delta-positive' : value < 0 ? 'delta-negative' : 'delta-neutral';
-      row.innerHTML = `<span>${labels[key]}</span><strong class="${cssClass}">${sign}${value}</strong>`;
-      deltaList.appendChild(row);
+      if (!value) return;
+      const item = document.createElement('div');
+      item.className = 'delta-item';
+      item.innerHTML = `<span>${escapeHtml(resourceMeta[key].label)}</span><strong class="${getDeltaClass(value)}">${formatSignedValue(value)}</strong>`;
+      deltaList.appendChild(item);
     });
   }
-}
 
-function renderFeedbackModal(nodeId, feedback, options = {}, actionButtons = []) {
-  openModalPanel(nodeId, { showResources: true });
-  populateFeedback(feedback, options);
   const feedbackActions = document.getElementById('feedbackActions');
-  actionButtons.forEach((button) => feedbackActions.appendChild(button));
-  if (!actionButtons.length) {
-    feedbackActions.appendChild(createButton({
-      label: 'Back to full map',
-      className: 'ghost-btn',
+  feedbackActions.appendChild(
+    createButton({
+      label: 'Back to board',
+      className: 'primary-btn',
       onClick: closePanel,
-    }));
-  }
-}
-
-function renderStoredReview(nodeId, feedback, options = {}) {
-  openSplitPanel(nodeId);
-  populateFeedback(feedback, options);
-  const feedbackActions = document.getElementById('feedbackActions');
-  feedbackActions.appendChild(createButton({
-    label: 'Back to full map',
-    className: 'ghost-btn',
-    onClick: closePanel,
-  }));
-}
-
-function storeFeedback(nodeId, feedback, options = {}) {
-  state.feedbackByNode[nodeId] = { feedback, options };
-}
-
-function clampResource(value) {
-  return Math.max(0, Math.min(100, value));
-}
-
-function applyImpact(impact = {}) {
-  state.resources.social = clampResource(state.resources.social + (impact.social || 0));
-  state.resources.financial = clampResource(state.resources.financial + (impact.financial || 0));
-  state.resources.eco = clampResource(state.resources.eco + (impact.eco || 0));
-  updateResources();
+    }),
+  );
+  feedbackActions.appendChild(
+    createButton({
+      label: 'Review node',
+      className: 'ghost-btn',
+      onClick: () => renderActionStage(nodeId),
+    }),
+  );
 }
 
 function handleRetry(nodeId, choice) {
-  const feedback = {
+  renderFeedbackModal(nodeId, {
     feedbackTitle: choice.feedbackTitle,
     feedbackStory: choice.feedbackStory,
-    feedbackText: `${choice.feedbackText} Try again to continue the tutorial.`,
-  };
-  storeFeedback(nodeId, feedback);
-  renderFeedbackModal(nodeId, feedback, {}, [
-    createButton({
-      label: 'Back',
-      className: 'ghost-btn',
-      onClick: () => renderActionStage(nodeId, { preselectedChoice: choice, lockedSelection: true }),
-    }),
-    createButton({
-      label: 'Back to full map',
-      className: 'ghost-btn',
-      onClick: closePanel,
-    }),
-  ]);
+    feedbackText: `${choice.feedbackText} Try again to continue the project.`,
+  });
 }
 
 function handleChoice(nodeId, choice) {
+  const node = nodes[nodeId];
+  const constraint = getChoiceConstraint(choice);
+  if (constraint.blocked) {
+    openThresholdOverlay(constraint.entries, constraint.reason);
+    return;
+  }
+
+  if (node.evaluationOnly) {
+    state.preScenarioAnswer = choice.text;
+    state.preScenarioComplete = true;
+    markNodeCompleted(nodeId);
+    state.feedbackByNode[nodeId] = {
+      feedbackTitle: 'Starting position recorded',
+      feedbackStory: 'This answer was stored as a starting-point evaluation before the game opened fully.',
+      feedbackText: choice.text,
+    };
+    unlockNodes(['funding_01', 'team_01', 'data_01']);
+    refreshGlobalUnlocks();
+    renderBoard();
+    closePanel();
+    return;
+  }
+
   if (choice.retry) {
     handleRetry(nodeId, choice);
     return;
   }
 
-  const feedback = {
-    feedbackTitle: choice.feedbackTitle,
-    feedbackStory: choice.feedbackStory,
-    feedbackText: choice.feedbackText,
-  };
-
-  if (choice.branch) {
-    state.branchChoice = choice.branch;
-  }
-
-  const impact = choice.impact || null;
-  if (impact) {
-    applyImpact(impact);
-  }
-
+  const thresholdEvents = applyImpact(choice.impact || {});
   markNodeCompleted(nodeId);
-  const options = impact ? { showImpact: impact } : {};
-  storeFeedback(nodeId, feedback, options);
-
-  if (choice.next) {
-    markNodeAvailable(choice.next);
+  applyBranchFlags(choice.branchFlagsSet || []);
+  if (choice.locks) {
+    closeNodes(choice.locks, choice.lockReason || 'This route was closed by an earlier project decision.');
   }
+  if (choice.next) unlockNodes([choice.next]);
+  if (choice.unlocks) unlockNodes(choice.unlocks);
+  refreshGlobalUnlocks();
 
-  renderFeedbackModal(nodeId, feedback, options, [
-    createButton({
-      label: 'Back to full map',
-      className: 'primary-btn',
-      onClick: closePanel,
-    }),
-    createButton({
-      label: 'Back',
-      className: 'ghost-btn',
-      onClick: () => renderActionStage(nodeId, { preselectedChoice: choice, lockedSelection: true }),
-    }),
-  ]);
+  const feedback = {
+    feedbackTitle: choice.feedbackTitle || 'Choice recorded',
+    feedbackStory: choice.feedbackStory || 'The project moved forward on the basis of this choice.',
+    feedbackText: choice.feedbackText || 'This decision changed how the project can proceed.',
+  };
+  const options = choice.impact ? { showImpact: choice.impact } : {};
+  state.feedbackByNode[nodeId] = { feedback, options };
+  renderBoard();
+  renderFeedbackModal(nodeId, feedback, options);
 
-  if (choice.completePrototype) {
-    return;
+  if (thresholdEvents.length) {
+    openThresholdOverlay(thresholdEvents);
   }
 }
 
-function completeInfoNodeAndAdvance() {
-  const nodeId = 'funding_info';
-  const feedback = {
-    feedbackTitle: 'You reviewed an information node.',
-    feedbackStory: 'This node did not ask you to choose between options. Instead, it added context before the last step of the tutorial.',
-    feedbackText: 'Information nodes can be used to strengthen understanding without interrupting the flow with a new dilemma every time.',
-  };
-  markNodeCompleted(nodeId);
-  storeFeedback(nodeId, feedback);
-  markNodeAvailable('funding_final_quiz');
-  renderFeedbackModal(nodeId, feedback, {}, [
-    createButton({
-      label: 'Back to full map',
-      className: 'primary-btn',
-      onClick: closePanel,
-    }),
-    createButton({
-      label: 'Back',
-      className: 'ghost-btn',
-      onClick: () => renderActionStage(nodeId),
-    }),
-  ]);
-}
-
-function openNode(nodeId) {
+function completePassiveNode(nodeId) {
   const node = nodes[nodeId];
-  if (!node) return;
-  if (!state.onboardingComplete) return;
+  markNodeCompleted(nodeId);
+  applyBranchFlags(node.branchFlagsSet || []);
+  if (node.unlocks) unlockNodes(node.unlocks);
+  if (node.continueTo) unlockNodes([node.continueTo]);
+  refreshGlobalUnlocks();
+  renderBoard();
+  closePanel();
+}
 
-  if (state.completedNodes.has(nodeId) && state.feedbackByNode[nodeId]) {
-    const stored = state.feedbackByNode[nodeId];
-    renderStoredReview(nodeId, stored.feedback, stored.options);
+function openCompletedReview(nodeId) {
+  const stored = state.feedbackByNode[nodeId];
+  if (!stored) {
+    renderIntro(nodeId);
+    return;
+  }
+  renderFeedbackModal(nodeId, stored.feedback, stored.options || {});
+}
+
+function handleBoardNodeClick(nodeId) {
+  if (!state.onboardingComplete) return;
+  if (state.closedNodes.has(nodeId)) {
+    openRouteClosedOverlay(nodeId);
+    return;
+  }
+  if (nodeId !== 'center' && !state.availableNodes.has(nodeId) && !state.completedNodes.has(nodeId)) {
+    return;
+  }
+  if (nodeId === 'center') {
+    renderIntro(nodeId);
+    return;
+  }
+  if (state.completedNodes.has(nodeId)) {
+    openCompletedReview(nodeId);
+    return;
+  }
+  renderIntro(nodeId);
+}
+
+function renderOnboardingPage(index) {
+  const page = onboardingPages[index];
+  if (!page) {
+    state.onboardingComplete = true;
+    closePanel();
+    renderBoard();
     return;
   }
 
-  if (state.availableNodes.has(nodeId) || nodeId === 'center') {
-    renderIntro(nodeId);
+  openModalPanel(page.showResources);
+  mountTemplate('introTemplate');
+  document.getElementById('introBadge').textContent = page.badge;
+  document.getElementById('introTitle').textContent = page.title(state.playerName || 'Player');
+  document.getElementById('introText').textContent = page.text;
+  const introHint = document.getElementById('introHint');
+  introHint.classList.remove('hidden');
+  introHint.innerHTML = page.extraHtml;
+
+  const introActions = document.getElementById('introActions');
+  if (index > 0) {
+    introActions.appendChild(
+      createButton({
+        label: 'Back',
+        className: 'ghost-btn',
+        onClick: () => renderOnboardingPage(index - 1),
+      }),
+    );
   }
+  introActions.appendChild(
+    createButton({
+      label: 'Skip and go to the board',
+      className: 'ghost-btn',
+      onClick: () => renderOnboardingPage(onboardingPages.length),
+    }),
+  );
+  introActions.appendChild(
+    createButton({
+      label: index === onboardingPages.length - 1 ? 'Enter project' : 'Next',
+      className: 'primary-btn',
+      onClick: () => renderOnboardingPage(index + 1),
+    }),
+  );
 }
 
-function attachNodeInteraction(nodeEl) {
-  if (!nodeEl) return;
-  const nodeId = nodeEl.dataset.node;
-  nodeEl.addEventListener('click', () => {
-    if (nodeEl.classList.contains('node-locked')) return;
-    openNode(nodeId);
-  });
-  nodeEl.addEventListener('keydown', (event) => {
-    if (event.key !== 'Enter' && event.key !== ' ') return;
-    if (nodeEl.classList.contains('node-locked')) return;
-    event.preventDefault();
-    openNode(nodeId);
-  });
-}
-
-function resetNodesVisuals() {
-  Object.keys(nodeElements).forEach((id) => {
-    const el = nodeElements[id];
-    const isCenter = id === 'center';
-    el.classList.remove('node-available', 'completed', 'pulse', 'node-clickable', 'node-locked');
-    if (isCenter) {
-      el.classList.add('completed', 'node-clickable');
-      el.setAttribute('tabindex', '0');
-      el.setAttribute('role', 'button');
-      el.querySelector('.node-tag').textContent = 'Story step';
-      return;
-    }
-    el.classList.add('node-locked');
-    el.removeAttribute('tabindex');
-    el.removeAttribute('role');
-    const typeLabel = nodes[id].type === 'story' ? 'Story' : nodes[id].type === 'info' ? 'Info' : 'Quiz';
-    el.querySelector('.node-tag').textContent = `Blocked · ${typeLabel}`;
-  });
-
-  markNodeAvailable('funding_quiz_intro');
-  nodeElements.funding_quiz_intro.querySelector('.node-tag').textContent = 'Available · Quiz';
-  nodeElements.team_creation.querySelector('.node-tag').textContent = 'Blocked';
-  nodeElements.data_management.querySelector('.node-tag').textContent = 'Blocked';
-  nodeElements.deployment.querySelector('.node-tag').textContent = 'Blocked';
+function completeSetup() {
+  refs.setupOverlay.classList.add('hidden');
+  renderBoard();
+  renderOnboardingPage(0);
 }
 
 function resetPrototype() {
   state = {
     resources: { ...initialResources },
     currentNodeId: null,
-    completedNodes: new Set(['center']),
-    availableNodes: new Set(['center', 'funding_quiz_intro']),
+    completedNodes: new Set(),
+    availableNodes: new Set(['center']),
+    closedNodes: new Set(),
+    closedReasons: {},
     feedbackByNode: {},
-    branchChoice: null,
     playerName: '',
     playerTheme: 'midnight',
     lastCompletedNodeId: 'center',
     onboardingComplete: false,
+    impactHistory: [],
+    preScenarioComplete: false,
+    preScenarioAnswer: '',
+    branchFlags: new Set(),
+    chapterMilestones: new Set(),
+    shownThresholds: new Set(),
+    thresholdHistory: [],
   };
+
   refs.playerNameInput.value = '';
   document.querySelector('input[name="themeChoice"][value="midnight"]').checked = true;
-  resetNodesVisuals();
   updateResources();
-  applyTheme(state.playerTheme);
-  renderPlayerMarker();
-  showNameStep();
-  refs.setupOverlay.classList.remove('hidden');
+  applyTheme('midnight');
+  closeWindowOverlay();
   closePanel();
+  refs.setupOverlay.classList.remove('hidden');
+  showNameStep();
+  renderBoard();
 }
 
-bindNodeElements();
-Object.values(nodeElements).forEach(attachNodeInteraction);
+refs.recapBtn.addEventListener('click', openRecapOverlay);
 refs.resetBtn.addEventListener('click', resetPrototype);
 refs.confirmNameBtn.addEventListener('click', () => {
   const name = refs.playerNameInput.value.trim();
@@ -1016,14 +2837,19 @@ refs.confirmNameBtn.addEventListener('click', () => {
 });
 refs.backToNameBtn.addEventListener('click', showNameStep);
 refs.confirmThemeBtn.addEventListener('click', () => {
-  const selectedTheme = document.querySelector('input[name="themeChoice"]:checked');
-  applyTheme(selectedTheme ? selectedTheme.value : 'midnight');
+  const selected = document.querySelector('input[name="themeChoice"]:checked');
+  applyTheme(selected ? selected.value : 'midnight');
   completeSetup();
 });
+
+refs.windowOverlay.addEventListener('click', (event) => {
+  if (event.target === refs.windowOverlay) {
+    closeWindowOverlay();
+  }
+});
+
 updateResources();
-resetNodesVisuals();
 applyTheme(state.playerTheme);
 showNameStep();
 closePanel();
-updateBoardLines();
-window.addEventListener('resize', updateBoardLines);
+renderBoard();

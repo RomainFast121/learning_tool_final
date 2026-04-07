@@ -3,16 +3,16 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AI Ethics & Sustainability Prototype</title>
+  <title>AI Ethics & Sustainability Game</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <div id="setupOverlay" class="setup-overlay">
     <div class="setup-panel">
       <div id="setupNameStep" class="setup-step">
-        <p class="setup-kicker">Tutorial Setup</p>
+        <p class="setup-kicker">Game Setup</p>
         <h2>Enter your name</h2>
-        <p class="setup-copy">Before entering the tutorial, choose the name that will appear on your player sticker and follow your latest completed node.</p>
+        <p class="setup-copy">Before entering the game, choose the name that will appear on your player sticker and follow your latest completed node on the board.</p>
         <label class="input-label" for="playerNameInput">Player name</label>
         <input id="playerNameInput" class="setup-input" type="text" maxlength="24" placeholder="Type your name" />
         <div class="button-row">
@@ -122,24 +122,30 @@
   <div class="app-shell">
     <header class="topbar">
       <div>
-        <p class="eyebrow">Designing Learning Tools – Prototype</p>
+        <p class="eyebrow">Designing Learning Tools – Full Game Build</p>
         <h1>AI for Sickness Detection</h1>
-        <p class="subtitle">Tutorial path with story, information, and quiz nodes</p>
+        <p class="subtitle">A connected project journey through funding, staffing, data governance, and launch</p>
       </div>
-      <button id="resetBtn" class="ghost-btn">Restart prototype</button>
     </header>
 
     <main id="mainLayout" class="layout map-only">
       <section class="panel board-panel">
-        <div class="panel-header">
-          <h2>Mind-map board</h2>
-          <p>
-            Click a node to open it. Completed nodes can be reopened to review the feedback. For now, only the funding tutorial path is available.
-          </p>
+        <div class="panel-header-row">
+          <div class="panel-header">
+            <h2>Project board</h2>
+            <p>
+              Click a node to open it. The map grows as the project becomes more real, and completed nodes can always be reopened to review what happened.
+            </p>
+          </div>
+          <div class="board-controls">
+            <button id="recapBtn" class="ghost-btn">Progress recap</button>
+            <button id="resetBtn" class="ghost-btn">Restart game</button>
+          </div>
         </div>
 
         <div class="legend">
           <span><i class="dot blocked"></i> Blocked</span>
+          <span><i class="dot closed"></i> Closed route</span>
           <span><i class="dot available"></i> Available</span>
           <span><i class="dot completed"></i> Completed</span>
           <span><i class="shape-demo shape-story"></i> Story node</span>
@@ -148,64 +154,10 @@
         </div>
 
         <div class="board-viewport">
-          <div id="board" class="board full-board" aria-label="Mind map prototype board">
-            <svg class="board-lines" viewBox="0 0 1600 1120" preserveAspectRatio="none" aria-hidden="true">
-              <line data-from="center" data-to="team_creation" />
-              <line data-from="center" data-to="data_management" />
-              <line data-from="center" data-to="deployment" />
-              <line data-from="center" data-to="funding_quiz_intro" />
-
-              <line data-from="funding_quiz_intro" data-to="funding_story" class="funding-line" />
-              <line data-from="funding_story" data-to="funding_branch_quiz" class="funding-line" />
-              <line data-from="funding_story" data-to="funding_info" class="funding-line" />
-              <line data-from="funding_branch_quiz" data-to="funding_info" class="funding-line" />
-              <line data-from="funding_info" data-to="funding_final_quiz" class="funding-line" />
-            </svg>
-
-            <div id="node-center" class="node node-center node-circle completed node-clickable" data-node="center" tabindex="0" role="button">
-              <span class="node-title">Project Start</span>
-              <span class="node-tag">Story step</span>
-            </div>
-
-            <div id="node-team" class="node node-locked node-story-shape" data-node="team_creation">
-              <span class="node-title">Team Creation</span>
-              <span class="node-tag">Blocked</span>
-            </div>
-
-            <div id="node-funding" class="node node-available pulse node-clickable node-quiz-shape" data-node="funding_quiz_intro" tabindex="0" role="button">
-              <span class="node-title">Funding</span>
-              <span class="node-tag">Available · Quiz</span>
-            </div>
-
-            <div id="node-data" class="node node-locked node-info-shape" data-node="data_management">
-              <span class="node-title">Data Management</span>
-              <span class="node-tag">Blocked</span>
-            </div>
-
-            <div id="node-deployment" class="node node-locked node-quiz-shape" data-node="deployment">
-              <span class="node-title">Deployment</span>
-              <span class="node-tag">Blocked</span>
-            </div>
-
-            <div id="node-funding-story" class="node node-locked tutorial-node node-story-shape" data-node="funding_story">
-              <span class="node-title">Funding Direction</span>
-              <span class="node-tag">Blocked · Story</span>
-            </div>
-
-            <div id="node-funding-branch-a" class="node node-locked tutorial-node node-quiz-shape" data-node="funding_branch_quiz">
-              <span class="node-title">Budget Review</span>
-              <span class="node-tag">Blocked · Quiz</span>
-            </div>
-
-            <div id="node-funding-merge" class="node node-locked tutorial-node node-info-shape" data-node="funding_info">
-              <span class="node-title">Funding Note</span>
-              <span class="node-tag">Blocked · Info</span>
-            </div>
-
-            <div id="node-funding-final" class="node node-locked tutorial-node node-quiz-shape" data-node="funding_final_quiz">
-              <span class="node-title">Final Check</span>
-              <span class="node-tag">Blocked · Quiz</span>
-            </div>
+          <div id="board" class="board full-board" aria-label="Mind map game board">
+            <svg id="boardLines" class="board-lines" viewBox="0 0 2360 2440" preserveAspectRatio="none" aria-hidden="true"></svg>
+            <div id="boardClusters" class="board-clusters" aria-hidden="true"></div>
+            <div id="boardNodes" class="board-nodes"></div>
           </div>
         </div>
       </section>
@@ -215,38 +167,43 @@
           <div class="resources-box">
             <div class="panel-header compact">
               <h2>Resources</h2>
-              <p>These three resources represent the main dimensions you should balance. If one drops too low, some future choices may become harder or unavailable.</p>
+              <p>These three resources model the balances you are trying to protect. If one is neglected or pushed too far, some later paths become harder to justify.</p>
             </div>
 
             <div class="resource">
               <div class="resource-label-row">
                 <span>Social fairness</span>
-                <strong id="socialValue">55</strong>
+                <strong id="socialValue">45</strong>
               </div>
-              <div class="bar"><div id="socialBar" class="fill" style="width: 55%"></div></div>
+              <div class="bar"><div id="socialBar" class="fill" style="width: 45%"></div></div>
             </div>
 
             <div class="resource">
               <div class="resource-label-row">
                 <span>Financial viability</span>
-                <strong id="financialValue">55</strong>
+                <strong id="financialValue">45</strong>
               </div>
-              <div class="bar"><div id="financialBar" class="fill" style="width: 55%"></div></div>
+              <div class="bar"><div id="financialBar" class="fill" style="width: 45%"></div></div>
             </div>
 
             <div class="resource">
               <div class="resource-label-row">
                 <span>Eco-friendliness</span>
-                <strong id="ecoValue">55</strong>
+                <strong id="ecoValue">45</strong>
               </div>
-              <div class="bar"><div id="ecoBar" class="fill" style="width: 55%"></div></div>
+              <div class="bar"><div id="ecoBar" class="fill" style="width: 45%"></div></div>
             </div>
           </div>
-
         </div>
 
-        <div id="contentCard" class="content-card"></div>
+        <div class="content-shell">
+          <div id="contentCard" class="content-card"></div>
+        </div>
       </section>
+
+      <div id="windowOverlay" class="window-overlay hidden" aria-hidden="true">
+        <div id="windowOverlayCard" class="window-overlay-card"></div>
+      </div>
     </main>
   </div>
 

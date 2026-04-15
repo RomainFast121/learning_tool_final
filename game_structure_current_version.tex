@@ -1,0 +1,926 @@
+\documentclass[11pt]{article}
+\usepackage[margin=1in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage{enumitem}
+\setlist[itemize]{leftmargin=1.4em}
+\begin{document}
+\title{Current Game Structure}
+\date{Generated from the current \texttt{second\_half/code/script.js} version}
+\maketitle
+Initial resources: Social 45, Financial 45, Eco 45. Thresholds: low at 30, high at 70.
+\section*{0. Start And Evaluation}
+\subsection*{0 [Start / Evaluation] Project Briefing}
+\textbf{Node id:} \texttt{center}\\
+\textbf{Intro:} This opening node frames the project and records three short pre-scenario answers before the first workstreams unlock.\\
+\textbf{Main text:} The city hospital network wants an AI tool that can help flag respiratory complications before the winter rush. The project has visible momentum, but its legitimacy is still fragile. Before the first workstreams open, answer three short questions about how you would approach pressure, staffing, and data uncertainty at the start of the project.\\
+\textbf{Extra note:} <h3>Opening evaluation</h3><p>These three questions do not change any resource and do not unlock special advantages. They simply record your starting reasoning so the same questions can come back near the end for comparison.</p>
+\subsection*{0.1 [Evaluation Question] Opening evaluation 1 of 3}
+\textbf{Prompt:} A hospital executive asks the team to publicly commit to a winter deployment date before governance checkpoints and rollback rules are fully defined. What would you do first?\\
+\textbf{Note:} There is no perfect answer here. The point is to choose the response you find most defensible under pressure.
+\begin{itemize}
+\item Accept the date so the project gains credibility and sort out the safeguards in parallel.
+\item Offer only a conditional timeline tied to review checkpoints, even if that weakens the announcement.
+\item Let communications staff shape the date while the project team concentrates on delivery.
+\item Avoid committing for now, but without defining what would make a later commitment responsible.
+\end{itemize}
+\textbf{Comparison reflection:} A broader analysis here considers momentum, governance, and whether the team keeps room to revise the project once public expectations begin to harden.
+\subsection*{0.2 [Evaluation Question] Opening evaluation 2 of 3}
+\textbf{Prompt:} You only have budget for one immediate hire. The options are a strong ML engineer, a clinical workflow specialist, or a stakeholder-facing governance role. Which stance feels most defensible first?\\
+\textbf{Note:} Choose the stance you would defend, not the one that sounds nicest in the abstract.
+\begin{itemize}
+\item Take the ML engineer first because technical progress creates the most options later.
+\item Use the first hire to bring in workflow or governance reality early, even if technical speed becomes less comfortable.
+\item Keep the core team technical for now and consult outside perspectives only when friction appears.
+\item Choose the option that can bridge technical and institutional concerns, even if it looks less efficient on paper.
+\end{itemize}
+\textbf{Comparison reflection:} Broader reasoning here asks not only who adds value fastest, but which constraint becomes expensive to hear too late if it is kept outside the team early on.
+\subsection*{0.3 [Evaluation Question] Opening evaluation 3 of 3}
+\textbf{Prompt:} The archive is large enough to start experimentation quickly, but consent wording and documentation quality vary across sites. What feels most defensible as a first posture?\\
+\textbf{Note:} This question is about what kind of uncertainty you are willing to carry into the projectâs early momentum.
+\begin{itemize}
+\item Start ingesting immediately so the team learns by doing, then document the important gaps once they become visible.
+\item Allow staged use, but record the uncertainties, scope, and known gaps before treating the archive as stable evidence.
+\item Exclude the ambiguous sites first so the project can move faster on cleaner ground.
+\item Push for more volume early because scale will reduce the practical importance of the archiveâs unevenness.
+\end{itemize}
+\textbf{Comparison reflection:} Stronger reasoning here looks at evidence quality, traceability, fairness risk, and whether the team can later explain what it knew about the data while choices were being made.
+\subsection*{5. Post-Evaluation And Comparison}
+The same three evaluation questions return after the ending. The game then shows a before/after comparison summary based on how broad, trade-off-aware, and governance-sensitive the reasoning became.
+\section*{1. Funding}
+\subsection*{1.1 [Story] Sponsor Rumor}
+\textbf{Node id:} \texttt{funding\_01}\\
+\textbf{Intro:} A rumor starts circulating that a diagnostics company wants to support the project.\\
+\textbf{Main text:} Before any formal contact has happened, people inside the hospital are already speculating. Some hear opportunity. Others hear dependency. The principal investigator asks you to help frame how the team should enter the first conversation.\\
+\textbf{Leads to:} \texttt{funding\_01b} (Continue to the internal scan)\\
+\subsection*{1.2 [Story] Internal Scan}
+\textbf{Node id:} \texttt{funding\_01b}\\
+\textbf{Intro:} Before the meeting, the team quietly maps what this money could change.\\
+\textbf{Main text:} A finance officer, a clinician, and the principal investigator each describe the sponsor differently: operating cushion, political risk, and possible loss of independence. The scene is useful because it reveals something students often miss at first. Funding pressure does not arrive only when the contract does. It starts earlier, when different parts of the institution begin imagining the project through different kinds of hope.\\
+\textbf{Leads to:} \texttt{funding\_02} (Continue to the funding meeting)\\
+\subsection*{1.3 [Story] How To Enter The Meeting}
+\textbf{Node id:} \texttt{funding\_02}\\
+\textbf{Intro:} The first internal funding discussion is about posture, not yet about contract terms.\\
+\textbf{Main text:} Two instincts emerge in the room. One group wants to treat the meeting as a showcase moment and convert energy into public momentum. Another wants to keep the conversation quiet, disciplined, and review-oriented until the project has stronger internal footing.\\
+\textbf{Extra / note:} <h3>What is really being decided?</h3><p>This is a large directional decision. It does not only affect tone. It shapes which later paths remain realistic, which routes close, and how much public pressure the team will have to absorb.</p>\\
+\begin{itemize}
+\item \textbf{Choice 1:} Enter as if this is a showcase opportunity and try to turn the sponsor meeting into visible momentum early.
+\begin{itemize}
+\item \textbf{Impact:} Social -10, Financial +13, Eco -3
+\item \textbf{Next node:} \texttt{funding\_03\_hype}
+\item \textbf{Unlocks:} funding\_08b
+\item \textbf{Locks:} funding\_08b
+\item \textbf{Lock reason:} This more public-facing posture closed the quieter diligence route. The team is now operating inside a higher-visibility funding path.
+\item \textbf{Branch flags set:} funding\_hype
+\end{itemize}
+\item \textbf{Choice 2:} Enter carefully, keep the meeting closed-door, and focus first on governance, milestones, and conditions of independence.
+\begin{itemize}
+\item \textbf{Impact:} Social +6, Financial -5, Eco +1
+\item \textbf{Next node:} \texttt{funding\_03\_guarded}
+\item \textbf{Unlocks:} funding\_08b
+\item \textbf{Locks:} funding\_08b
+\item \textbf{Lock reason:} This review-first posture closed the showcase route. The team is now moving through a more controlled funding path.
+\item \textbf{Branch flags set:} funding\_guarded
+\end{itemize}
+\end{itemize}
+\subsection*{1.3.1 [Story] Sponsor Pitch}
+\textbf{Node id:} \texttt{funding\_03\_hype}\\
+\textbf{Intro:} The meeting is moved to a polished presentation room with communications staff present.\\
+\textbf{Main text:} The sponsor talks in the language of scale, visibility, and rapid proof of value. Several people in the room look energized. A clinician beside you stays unusually quiet, taking notes every time the timeline gets shorter. When the meeting breaks, the room carries a slightly unsettling mix of enthusiasm and vagueness: everyone can describe the opportunity, but not yet the conditions under which it should remain acceptable.\\
+\textbf{Leads to:} \texttt{funding\_04\_hype} (Continue)\\
+\subsection*{1.3.1.1 [Quiz] First Safeguard}
+\textbf{Node id:} \texttt{funding\_04\_hype}\\
+\textbf{Intro:} The room is excited, but one basic question still matters.\\
+\textbf{Main text:} Under this more public funding posture, which safeguard is still the most important to protect before the project makes strong external promises?\\
+\begin{itemize}
+\item \textbf{Choice 1:} A visible timeline that reassures journalists and executives right away.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} Clear review checkpoints and room to revise milestones if evidence or governance concerns change.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{funding\_05\_hype}
+\end{itemize}
+\item \textbf{Choice 3:} A larger compute commitment so the project can keep demonstrating visible progress.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{1.3.1.2 [Story] Message Discipline}
+\textbf{Node id:} \texttt{funding\_05\_hype}\\
+\textbf{Intro:} A draft press line begins circulating before the meeting notes are even finished.\\
+\textbf{Main text:} Communications staff propose language about ârapid clinical readiness.â The sponsor likes it. The hospital board office wants something steadier. You are asked to decide how hard the team should lean into the momentum it just created. The disagreement is not loud, but it is important: the sentence chosen here will influence whether later caution sounds like responsible review or like an embarrassing retreat.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Keep the bold language and let the room feel the urgency of a fast-moving project.
+\begin{itemize}
+\item \textbf{Impact:} Social -8, Financial +7, Eco -2
+\item \textbf{Next node:} \texttt{funding\_06\_hype}
+\item \textbf{Branch flags set:} funding\_message\_bold
+\end{itemize}
+\item \textbf{Choice 2:} Keep the project visible, but remove anything that implies a fixed clinical-readiness promise.
+\begin{itemize}
+\item \textbf{Impact:} Social +2, Financial +1
+\item \textbf{Next node:} \texttt{funding\_06\_hype}
+\item \textbf{Branch flags set:} funding\_message\_tempered
+\end{itemize}
+\end{itemize}
+\subsection*{1.3.1.3 [Story] Momentum Briefing}
+\textbf{Node id:} \texttt{funding\_06\_hype}\\
+\textbf{Intro:} Before contract drafting begins, the hospital wants a clean internal line on what this sponsor momentum actually means.\\
+\textbf{Main text:} A deputy director asks whether teams should begin acting as if a bigger winter push is now likely. Even people who are skeptical can feel the institution leaning toward the new confidence the sponsor meeting created. Without anyone explicitly saying so, the hospital is beginning to coordinate around a future that still depends on assumptions the project has not fully tested.\\
+\textbf{Leads to:} \texttt{funding\_06} (Continue to expectation pressure)\\
+\subsection*{1.3.2 [Story] Closed-Door Diligence}
+\textbf{Node id:} \texttt{funding\_03\_guarded}\\
+\textbf{Intro:} The meeting is deliberately small, and the sponsor notices the difference immediately.\\
+\textbf{Main text:} Instead of a public showcase, the conversation turns into a practical exchange about review gates, publication freedom, and how much influence the sponsor expects over timeline decisions. The room feels cooler, but more honest. Instead of leaving with excitement, the team leaves with something less glamorous and more useful: a sharper sense of where later pressure would come from if the relationship deepened.\\
+\textbf{Leads to:} \texttt{funding\_04\_guarded} (Continue)\\
+\subsection*{1.3.2.1 [Quiz] Due Diligence Priority}
+\textbf{Node id:} \texttt{funding\_04\_guarded}\\
+\textbf{Intro:} The sponsor looks serious, but not hostile. The next move matters.\\
+\textbf{Main text:} In this quieter funding route, which question is the most important to clarify before the project starts treating the offer as stable?\\
+\begin{itemize}
+\item \textbf{Choice 1:} Whether the sponsor can help arrange a stronger public communications campaign.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} Whether the contract keeps audit checkpoints, publication room, and flexibility over rollout milestones.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{funding\_05\_guarded}
+\end{itemize}
+\item \textbf{Choice 3:} Whether the team can negotiate the largest possible compute package first and sort the rest later.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{1.3.2.2 [Story] Internal Briefing}
+\textbf{Node id:} \texttt{funding\_05\_guarded}\\
+\textbf{Intro:} The hospital staff now want to know how to describe the sponsor conversation internally.\\
+\textbf{Main text:} If you sound too cautious, some teams will fear the project is stalling. If you sound too positive, people will start acting as if support is already secure. The next internal message will shape how the organization interprets the negotiation. These early internal summaries matter because they often become the story people remember later, even when the actual agreement was much more conditional.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Describe the sponsor as promising, but make it clear that the project is still protecting review milestones and independence.
+\begin{itemize}
+\item \textbf{Impact:} Social +5
+\item \textbf{Next node:} \texttt{funding\_06\_guarded}
+\item \textbf{Branch flags set:} funding\_message\_guarded
+\end{itemize}
+\item \textbf{Choice 2:} Signal strong optimism so teams start behaving as if a larger funding phase is already coming.
+\begin{itemize}
+\item \textbf{Impact:} Social -6, Financial +5, Eco -1
+\item \textbf{Next node:} \texttt{funding\_06\_guarded}
+\item \textbf{Branch flags set:} funding\_message\_optimistic
+\end{itemize}
+\end{itemize}
+\subsection*{1.3.2.3 [Story] Procurement Questions}
+\textbf{Node id:} \texttt{funding\_06\_guarded}\\
+\textbf{Intro:} The quieter route buys the team time, but that time fills quickly with institutional questions.\\
+\textbf{Main text:} Procurement and governance staff now want concrete language about sponsor boundaries, review milestones, and what the hospital is promising internally. The route is calmer, but not easier. Careful governance creates work of its own, and the team is now learning that discipline must be maintained long before it becomes visible to anyone outside the project.\\
+\textbf{Leads to:} \texttt{funding\_06} (Continue to expectation pressure)\\
+\subsection*{1.4 [Story] Expectation Pressure}
+\textbf{Node id:} \texttt{funding\_06}\\
+\textbf{Intro:} [Dynamic content depending on state or branch]\\
+\textbf{Main text:} [Dynamic content depending on state or branch]\\
+\textbf{Leads to:} \texttt{funding\_06b} (Continue to the narrative meeting)\\
+\subsection*{1.5 [Story] Public Narrative Meeting}
+\textbf{Node id:} \texttt{funding\_06b}\\
+\textbf{Intro:} The sponsor conversation now turns into an internal language problem.\\
+\textbf{Main text:} A communications lead asks for a sentence that can travel safely between the hospital board, the sponsor, and clinical teams without becoming misleading in at least one of those rooms. It sounds like a small writing task, but it is really a governance test. In many projects, the first damaging oversimplification appears not in the contract, but in the sentence people repeat when they no longer have time to explain the full situation.\\
+\textbf{Leads to:} \texttt{funding\_07} (Move to contract terms)\\
+\subsection*{1.6 [Story] Contract Red Lines}
+\textbf{Node id:} \texttt{funding\_07}\\
+\textbf{Intro:} The draft agreement arrives with one decisive question left unresolved.\\
+\textbf{Main text:} The sponsor is willing to support the project, but not without shaping some part of its future behavior. The team must now choose which red lines it is willing to defend and which risks it is willing to absorb.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Accept a stronger sponsor footprint in exchange for a larger operational cushion and faster resourcing.
+\begin{itemize}
+\item \textbf{Impact:} Social -7, Financial +9, Eco -4
+\item \textbf{Next node:} \texttt{funding\_07b}
+\item \textbf{Branch flags set:} funding\_contract\_loose
+\end{itemize}
+\item \textbf{Choice 2:} Insist on audit checkpoints, publication room, and explicit limits on sponsor control over rollout timing.
+\begin{itemize}
+\item \textbf{Impact:} Social +8, Financial -5, Eco +3
+\item \textbf{Next node:} \texttt{funding\_07b}
+\item \textbf{Branch flags set:} funding\_contract\_strict
+\end{itemize}
+\item \textbf{Choice 3:} Take a smaller pilot-focused agreement that can be exited if governance tensions grow too strong.
+\begin{itemize}
+\item \textbf{Impact:} Social +4, Financial -3, Eco +2
+\item \textbf{Next node:} \texttt{funding\_07b}
+\item \textbf{Branch flags set:} funding\_contract\_pilot
+\end{itemize}
+\end{itemize}
+\subsection*{1.7 [Information] Influence Checklist}
+\textbf{Node id:} \texttt{funding\_07b}\\
+\textbf{Intro:} This information node turns the contract into a reusable student method.\\
+\textbf{Main text:} When reviewing a funding offer, ask four concrete questions: who can shape milestones, who can shape public messaging, who can shape publication or disclosure, and who can make delay feel politically unacceptable. Students often focus on budget size and miss these influence channels even though they usually decide how much independence remains once pressure rises.\\
+\textbf{Extra / note:} <h3>Reusable method</h3><p>Before signing, make a one-page âpressure mapâ with the actors who gain from speed, the actors who absorb reputational damage if things go wrong, and the specific moments when the team could still slow down. If that map is vague, the agreement is probably more constraining than it looks.</p>\\
+\textbf{Leads to:} \texttt{funding\_08} (Continue to the funding lesson)\\
+\subsection*{1.8 [Information] What Funding Really Changes}
+\textbf{Node id:} \texttt{funding\_08}\\
+\textbf{Intro:} This information node names the structural lesson behind the chapter.\\
+\textbf{Main text:} Funding is never just background infrastructure. It affects how quickly promises form, who can apply pressure, and how much room the project keeps for delay, review, and revision. In real projects, the funding structure often decides whether a team can still slow down once external momentum has already started to build.\\
+\textbf{Extra / note:} <h3>Useful method</h3><p>Draft a one-page funding memo before accepting support: who gains from speed, who carries risk if the project goes wrong, which commitments are non-negotiable, and what would justify revisiting the agreement later.</p><h3>Concrete questions</h3><p>Clarify influence over publication, communication, milestones, and rollout timing. If these remain vague, pressure often reappears later when the team is least able to resist it.</p>\\
+\textbf{Leads to:} \texttt{funding\_09} (Continue to board review)\\
+\subsection*{1.9 [Information] Stakeholder Map}
+\textbf{Node id:} \texttt{funding\_08b}\\
+\textbf{Intro:} This optional node gives a simple method a student could reuse later in a real project.\\
+\textbf{Main text:} Make a quick stakeholder map before taking support: who wants acceleration, who bears reputational risk, who carries hidden implementation work, and who can still say no later. This turns a vague partner discussion into a concrete governance picture.\\
+\textbf{Extra / note:} <h3>Practical checklist</h3><p>Write down incentives, likely pressure points, and one red line the team would defend even under time pressure. If nobody can name that red line, the project is usually more dependent than it thinks.</p>\\
+\subsection*{1.10 [Quiz] Board Review}
+\textbf{Node id:} \texttt{funding\_09}\\
+\textbf{Intro:} The hospital board asks one last question before signing off on the chapter.\\
+\textbf{Main text:} Which statement best captures the most responsible way to explain the funding arrangement to the board?\\
+\begin{itemize}
+\item \textbf{Choice 1:} The sponsor mostly solves the projectâs political risk, so the main task now is keeping the momentum high.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} The arrangement should be judged by whether it keeps support, review space, and institutional accountability in workable balance.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{funding\_09b}
+\end{itemize}
+\item \textbf{Choice 3:} If the budget is credible enough, later governance problems can be improvised when they appear.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{1.11 [Story] Funding Handover}
+\textbf{Node id:} \texttt{funding\_09b}\\
+\textbf{Intro:} The chapter closes not when the deal is signed, but when the team translates it into everyday work.\\
+\textbf{Main text:} A short handover note circulates to staff who were not in the negotiations. It has to explain what the sponsor relationship does and does not mean for deadlines, visibility, and who can push for acceleration later. This is more important than it sounds. In real projects, misunderstandings about funding often survive because the people living with the consequences never heard the cautious version, only the enthusiastic one.\\
+\textbf{Leads to:} \texttt{funding\_10} (Continue to the milestone)\\
+\subsection*{1.12 [Story] Funding Milestone}
+\textbf{Node id:} \texttt{funding\_10}\\
+\textbf{Intro:} The funding chapter closes with a more stable, but not necessarily comfortable, arrangement.\\
+\textbf{Main text:} [Dynamic content depending on state or branch]\\
+\textbf{Chapter milestone:} completes funding.\\
+\section*{2. Team Recruitment}
+\subsection*{2.1 [Story] Capacity Warning}
+\textbf{Node id:} \texttt{team\_01}\\
+\textbf{Intro:} The project can no longer run on goodwill and spare evenings alone.\\
+\textbf{Main text:} As the work becomes more visible, the principal investigator warns that the current staffing pattern is not sustainable. The question is no longer whether more people are needed, but what kinds of people the project is willing to prioritize.\\
+\textbf{Leads to:} \texttt{team\_01b} (Continue to the workload inventory)\\
+\subsection*{2.2 [Story] Workload Inventory}
+\textbf{Node id:} \texttt{team\_01b}\\
+\textbf{Intro:} Before hiring, the team tries to name the work that is currently hidden inside âgeneral coordination.â\\
+\textbf{Main text:} A whiteboard fills with tasks that nobody had been formally assigned: translating between clinicians and engineers, documenting decisions, calming worried collaborators, and checking whether rushed choices are becoming politically harder to reverse. The scene matters because it shows that staffing decisions are rarely only about adding capacity. They are also about deciding which kinds of labor the project is willing to admit are real.\\
+\textbf{Leads to:} \texttt{team\_02} (Continue to hiring priorities)\\
+\subsection*{2.3 [Story] First Hiring Priority}
+\textbf{Node id:} \texttt{team\_02}\\
+\textbf{Intro:} The first hiring decision will shape the culture of the project more than the job title suggests.\\
+\textbf{Main text:} One faction wants to keep the team compact and technically sharp, arguing that coordination overhead could become its own failure mode. Another wants to widen the table early so trust, clinical reality, and governance are not retrofitted later as damage control.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Keep the first hires narrow and technical so the core model effort stays fast and manageable.
+\begin{itemize}
+\item \textbf{Impact:} Social -10, Financial +8
+\item \textbf{Next node:} \texttt{team\_03\_narrow}
+\item \textbf{Unlocks:} team\_08b
+\item \textbf{Locks:} team\_08b
+\item \textbf{Lock reason:} This narrow hiring posture closed the broader early-governance route. The chapter now follows a more compact staffing path.
+\item \textbf{Branch flags set:} team\_narrow
+\end{itemize}
+\item \textbf{Choice 2:} Use the first hires to widen the room early with clinical, governance, and stakeholder-facing expertise.
+\begin{itemize}
+\item \textbf{Impact:} Social +9, Financial -8, Eco +1
+\item \textbf{Next node:} \texttt{team\_03\_broad}
+\item \textbf{Unlocks:} team\_08b
+\item \textbf{Locks:} team\_08b
+\item \textbf{Lock reason:} This broader hiring posture closed the narrow expert-core route. The chapter now follows a more distributed staffing path.
+\item \textbf{Branch flags set:} team\_broad
+\end{itemize}
+\end{itemize}
+\subsection*{2.3.1 [Story] Clinician Pushback}
+\textbf{Node id:} \texttt{team\_03\_narrow}\\
+\textbf{Intro:} The first reaction from clinicians is respectful but uneasy.\\
+\textbf{Main text:} A senior clinician says the project risks becoming technically elegant and operationally naive if hospital realities keep entering only after core decisions are already made. No one dismisses the concern, but the room is still leaning toward speed. What makes the scene memorable is not hostility, but the way everyone can feel that the warning is correct while still being tempted to postpone dealing with it.\\
+\textbf{Leads to:} \texttt{team\_04\_narrow} (Continue)\\
+\subsection*{2.3.1.1 [Quiz] What Makes A Team Responsible?}
+\textbf{Node id:} \texttt{team\_04\_narrow}\\
+\textbf{Intro:} The project now has to define what âgood staffingâ actually means.\\
+\textbf{Main text:} Under a narrow first-hiring posture, which principle is still the most important to preserve?\\
+\begin{itemize}
+\item \textbf{Choice 1:} Maximize technical specialization and assume missing perspectives can be added later without much cost.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} Keep a manageable team, but create explicit channels for clinical and stakeholder reality to shape the work early.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{team\_05\_narrow}
+\end{itemize}
+\item \textbf{Choice 3:} Measure staffing quality mainly by how little disagreement appears inside the project.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{2.3.1.2 [Story] Patch The Narrowness Or Double Down?}
+\textbf{Node id:} \texttt{team\_05\_narrow}\\
+\textbf{Intro:} The team can now either soften the narrow route or reinforce it.\\
+\textbf{Main text:} A proposal emerges to add a formal clinician liaison and review loop without fully widening the core team. Another proposal argues that even this would slow the project too much and blur responsibility. The question is less about goodwill than about design: what kinds of knowledge deserve a formal route into decisions before the project becomes expensive to revise?\\
+\begin{itemize}
+\item \textbf{Choice 1:} Add a clinician liaison and structured review moments, even if the core team stays compact.
+\begin{itemize}
+\item \textbf{Impact:} Social +5, Financial -3
+\item \textbf{Next node:} \texttt{team\_06\_narrow}
+\item \textbf{Branch flags set:} team\_liaison
+\end{itemize}
+\item \textbf{Choice 2:} Keep the team cleanly technical and consult outside groups only when specific blockers appear.
+\begin{itemize}
+\item \textbf{Impact:} Social -7, Financial +4
+\item \textbf{Next node:} \texttt{team\_06\_narrow}
+\item \textbf{Branch flags set:} team\_double\_down
+\end{itemize}
+\end{itemize}
+\subsection*{2.3.1.3 [Story] Shortlist Tension}
+\textbf{Node id:} \texttt{team\_06\_narrow}\\
+\textbf{Intro:} The narrow route reaches the first shortlist and the institutional consequences become much more concrete.\\
+\textbf{Main text:} Candidates are strong on technical work, but several people notice how little patient-facing, clinical translation, and governance labor would actually be represented in the formal team if the shortlist becomes the team. The shortlist is competent, yet it also makes visible what the project is quietly deciding not to center.\\
+\textbf{Leads to:} \texttt{team\_06} (Continue to workload reality)\\
+\subsection*{2.3.2 [Story] A Wider Table}
+\textbf{Node id:} \texttt{team\_03\_broad}\\
+\textbf{Intro:} The broader route changes the tone of meetings immediately.\\
+\textbf{Main text:} A clinician, a privacy specialist, and a patient-representation lead all frame the project differently. The conversation becomes slower, but much richer. Everyone can feel the cost of that difference in meeting time and staffing overhead, but they can also feel something else: the project is less likely to be surprised later by concerns it never structurally allowed into the room.\\
+\textbf{Leads to:} \texttt{team\_04\_broad} (Continue)\\
+\subsection*{2.3.2.1 [Quiz] Representation Check}
+\textbf{Node id:} \texttt{team\_04\_broad}\\
+\textbf{Intro:} The team now needs a principle to organize this wider room.\\
+\textbf{Main text:} Under a broader staffing route, which principle matters most for keeping the team responsible rather than simply larger?\\
+\begin{itemize}
+\item \textbf{Choice 1:} Invite many perspectives, but let the technical core absorb or ignore them informally as needed.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} Link broader participation to concrete review moments and responsibilities so extra voices are not purely symbolic.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{team\_05\_broad}
+\end{itemize}
+\item \textbf{Choice 3:} Protect harmony above all else so the broader team does not become too politically difficult to manage.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{2.3.2.2 [Story] Where To Spend The Extra Coordination}
+\textbf{Node id:} \texttt{team\_05\_broad}\\
+\textbf{Intro:} A broad team creates a second decision: where should the extra coordination actually go?\\
+\textbf{Main text:} One group wants to invest the extra time in patient-facing review and legitimacy. Another wants to focus it on clinical workflow integration so the project stays tied to hospital reality rather than external representation alone. The team is no longer arguing about whether broad participation matters, but about where its limited coordination energy should produce the most real value.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Prioritize patient-facing review and public legitimacy even if operational coordination stays messy for longer.
+\begin{itemize}
+\item \textbf{Impact:} Social +7, Financial -4
+\item \textbf{Next node:} \texttt{team\_06\_broad}
+\item \textbf{Branch flags set:} team\_patient\_voice
+\end{itemize}
+\item \textbf{Choice 2:} Prioritize clinical workflow integration so the broader team stays anchored in everyday practice.
+\begin{itemize}
+\item \textbf{Impact:} Social +4, Financial -3, Eco +1
+\item \textbf{Next node:} \texttt{team\_06\_broad}
+\item \textbf{Branch flags set:} team\_clinical\_anchor
+\end{itemize}
+\end{itemize}
+\subsection*{2.3.2.3 [Story] Coordination Cost}
+\textbf{Node id:} \texttt{team\_06\_broad}\\
+\textbf{Intro:} The broader route hears more constraints early, but that breadth comes with a visible cost.\\
+\textbf{Main text:} Calendar pressure is rising, role boundaries are blurrier than anyone hoped, and some team members quietly wonder whether the project can keep this level of representation without burning people out before launch season. A broad team can be more responsible, but only if its coordination design is strong enough to keep inclusion from becoming exhaustion.\\
+\textbf{Leads to:} \texttt{team\_06} (Continue to workload reality)\\
+\subsection*{2.4 [Story] Workload Reality}
+\textbf{Node id:} \texttt{team\_06}\\
+\textbf{Intro:} No matter which route the team took, capacity strain now becomes visible.\\
+\textbf{Main text:} [Dynamic content depending on state or branch]\\
+\textbf{Leads to:} \texttt{team\_06b} (Continue to the burnout signal)\\
+\subsection*{2.5 [Story] Burnout Signal}
+\textbf{Node id:} \texttt{team\_06b}\\
+\textbf{Intro:} The strain becomes real when people stop talking about workload in abstract terms.\\
+\textbf{Main text:} A junior researcher quietly says they can no longer tell which concerns are âimportant enoughâ to raise because everything already feels urgent. That moment changes the chapter. Burnout is not only a wellbeing issue here. It is also a governance issue, because exhausted teams get worse at surfacing weak signals before those signals become expensive failures.\\
+\textbf{Leads to:} \texttt{team\_07} (Continue to reorganization)\\
+\subsection*{2.6 [Story] Reorganize Or Hold The Line}
+\textbf{Node id:} \texttt{team\_07}\\
+\textbf{Intro:} The chapter turns from who is in the room to how the room is run.\\
+\textbf{Main text:} A project manager warns that the current structure will not scale through winter. The team now has to decide whether to protect speed, protect coordination, or try to balance the two more deliberately.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Keep decision-making centralized in a small core and consult others only at defined checkpoints.
+\begin{itemize}
+\item \textbf{Impact:} Social -6, Financial +6
+\item \textbf{Next node:} \texttt{team\_07b}
+\item \textbf{Branch flags set:} team\_centralized
+\end{itemize}
+\item \textbf{Choice 2:} Create a rotating steering rhythm that shares decision load, even if meetings become heavier.
+\begin{itemize}
+\item \textbf{Impact:} Social +6, Financial -6, Eco +1
+\item \textbf{Next node:} \texttt{team\_07b}
+\item \textbf{Branch flags set:} team\_rotating
+\end{itemize}
+\item \textbf{Choice 3:} Split the work into paired leads so technical and institutional questions are carried together instead of separately.
+\begin{itemize}
+\item \textbf{Impact:} Social +4, Financial -3, Eco +1
+\item \textbf{Next node:} \texttt{team\_07b}
+\item \textbf{Branch flags set:} team\_paired\_leads
+\end{itemize}
+\end{itemize}
+\subsection*{2.7 [Information] Representation In Practice}
+\textbf{Node id:} \texttt{team\_07b}\\
+\textbf{Intro:} This information node focuses on a practical staffing method rather than a slogan.\\
+\textbf{Main text:} A team becomes more responsible when important constraints have an assigned route into live decisions. That route might be a role, a standing review moment, or a paired-lead structure. What matters is not symbolic inclusion alone, but whether the concern can reliably interrupt the project before plans harden around it.\\
+\textbf{Extra / note:} <h3>Reusable method</h3><p>Take one planned decision and ask who can meaningfully alter it before it is announced, budgeted, or framed as too expensive to revisit. If the answer is âalmost nobody,â the structure is probably thinner than it looks.</p>\\
+\textbf{Leads to:} \texttt{team\_08} (Continue to the team lesson)\\
+\subsection*{2.8 [Information] What Team Design Really Does}
+\textbf{Node id:} \texttt{team\_08}\\
+\textbf{Intro:} This information node names the deeper point behind the chapter.\\
+\textbf{Main text:} A team is not only a list of competencies. It is a structure that decides which constraints become visible early, which ones stay outside the room, and how expensive it becomes to correct the project later. Many failures of âcommunicationâ are actually failures of team design: the right concern existed, but had no protected path into the decision.\\
+\textbf{Extra / note:} <h3>Useful method</h3><p>Before a project accelerates, write down which roles are responsible for technical quality, workflow fit, ethics or governance, and stakeholder impact. If one person is carrying several of these silently, the project is more fragile than it looks.</p><h3>What to watch for</h3><p>A warning sign is when important concerns only appear after a plan is already framed as too expensive to revisit.</p>\\
+\textbf{Leads to:} \texttt{team\_09} (Continue to the final team check)\\
+\subsection*{2.9 [Information] Missing Voices Check}
+\textbf{Node id:} \texttt{team\_08b}\\
+\textbf{Intro:} This optional node offers a quick reflection tool for team composition.\\
+\textbf{Main text:} Ask four questions: who understands the technical system, who understands the workflow, who understands governance, and who can speak for the people affected by mistakes. If one of these perspectives only appears informally, the team may be depending on luck.\\
+\textbf{Extra / note:} <h3>Practical use</h3><p>This check is especially useful before hiring, before pilot design, and whenever a team says it will âadd broader perspectives later.â Later often means after the expensive choices are already made.</p>\\
+\subsection*{2.10 [Quiz] Final Team Check}
+\textbf{Node id:} \texttt{team\_09}\\
+\textbf{Intro:} The chapter ends with one practical test of judgment.\\
+\textbf{Main text:} Which sign best suggests that a team structure may be becoming unhealthy, even if the project still appears productive?\\
+\begin{itemize}
+\item \textbf{Choice 1:} The team is moving quickly and disagreements are becoming rarer over time.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} Important concerns only appear after major decisions are already framed as too expensive to revisit.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{team\_09b}
+\end{itemize}
+\item \textbf{Choice 3:} Meetings are longer than they were during the projectâs earliest phase.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{2.11 [Story] Escalation Path}
+\textbf{Node id:} \texttt{team\_09b}\\
+\textbf{Intro:} The chapter closes by asking whether the team knows how concerns would actually travel upward once the pilot gets busy.\\
+\textbf{Main text:} A practical escalation path is finally written down: who hears concerns first, who can pause work, and what counts as a reason to reopen a decision instead of silently working around it. It is a small administrative artifact, but it often decides whether a team can remain reflective under pressure or whether people will simply adapt around problems until those problems feel normal.\\
+\textbf{Leads to:} \texttt{team\_10} (Continue to the milestone)\\
+\subsection*{2.12 [Story] Team Milestone}
+\textbf{Node id:} \texttt{team\_10}\\
+\textbf{Intro:} The team chapter closes with a structure that is workable, but not tension-free.\\
+\textbf{Main text:} [Dynamic content depending on state or branch]\\
+\textbf{Chapter milestone:} completes team.\\
+\section*{3. Data Management}
+\subsection*{3.1 [Story] First Dataset Offer}
+\textbf{Node id:} \texttt{data\_01}\\
+\textbf{Intro:} Three hospitals are willing to share historical data, but the records are unevenly documented.\\
+\textbf{Main text:} Everyone sees the same temptation: if the team moves fast, it can start experimenting almost immediately. But the archive is inconsistent, consent wording varies across sites, and no one is confident that the metadata tells a clean story.\\
+\textbf{Leads to:} \texttt{data\_01b} (Continue to the intake sheet)\\
+\subsection*{3.2 [Story] Archive Intake Sheet}
+\textbf{Node id:} \texttt{data\_01b}\\
+\textbf{Intro:} Before the archive is touched, someone asks the team to summarize what it actually knows about the records.\\
+\textbf{Main text:} The first intake sheet looks incomplete almost immediately: provenance differs by site, labels were produced in different ways, and nobody can yet say with confidence which assumptions are stable and which are merely convenient. That incompleteness is useful. It reminds the team that âhaving dataâ is not the same thing as understanding what kind of evidence relationship it is entering.\\
+\textbf{Leads to:} \texttt{data\_02} (Continue to the intake decision)\\
+\subsection*{3.3 [Story] How To Take In The Data}
+\textbf{Node id:} \texttt{data\_02}\\
+\textbf{Intro:} The first data decision is about discipline, not yet about model quality.\\
+\textbf{Main text:} One group argues that the project should ingest quickly and fix documentation later so the technical work can begin. Another argues for staged access, bias notes, and consent review before the team starts acting as if the archive is cleaner than it is.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Ingest quickly, begin experimentation, and fix the documentation once the team knows which records actually matter.
+\begin{itemize}
+\item \textbf{Impact:} Social -9, Financial +7, Eco -3
+\item \textbf{Next node:} \texttt{data\_03\_fast}
+\item \textbf{Unlocks:} data\_08b
+\item \textbf{Locks:} data\_08b
+\item \textbf{Lock reason:} This fast-ingestion posture closed the staged-audit route. The chapter now follows a quicker but riskier data path.
+\item \textbf{Branch flags set:} data\_fast
+\end{itemize}
+\item \textbf{Choice 2:} Start with staged access, document bias gaps, and treat consent ambiguity as part of the work rather than cleanup.
+\begin{itemize}
+\item \textbf{Impact:} Social +7, Financial -6, Eco +2
+\item \textbf{Next node:} \texttt{data\_03\_careful}
+\item \textbf{Unlocks:} data\_08b
+\item \textbf{Locks:} data\_08b
+\item \textbf{Lock reason:} This staged-audit posture closed the quick-ingestion route. The chapter now follows a more deliberate data path.
+\item \textbf{Branch flags set:} data\_careful
+\end{itemize}
+\end{itemize}
+\subsection*{3.3.1 [Story] Ingestion Sprint}
+\textbf{Node id:} \texttt{data\_03\_fast}\\
+\textbf{Intro:} The archive enters the project faster than anyone is entirely comfortable admitting.\\
+\textbf{Main text:} The technical team is relieved to finally move, but small inconsistencies start surfacing immediately: missing fields, uneven labels, and site-specific notes that no one fully understands yet. What felt like momentum a few hours earlier now begins to look more like borrowing certainty from an archive the team has only partly met.\\
+\textbf{Leads to:} \texttt{data\_04\_fast} (Continue)\\
+\subsection*{3.3.1.1 [Quiz] First Traceability Step}
+\textbf{Node id:} \texttt{data\_04\_fast}\\
+\textbf{Intro:} The route is fast, but it still needs one disciplined response.\\
+\textbf{Main text:} If the archive is already being ingested quickly, what is the most responsible first traceability step?\\
+\begin{itemize}
+\item \textbf{Choice 1:} Ignore the inconsistencies until the team knows whether the model can perform at all.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} Create a living record of known gaps, site-specific uncertainties, and assumptions as the archive is used.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{data\_05\_fast}
+\end{itemize}
+\item \textbf{Choice 3:} Push for larger data volume so the inconsistencies matter less statistically.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{3.3.1.2 [Story] Bias Gap Response}
+\textbf{Node id:} \texttt{data\_05\_fast}\\
+\textbf{Intro:} A fairness gap becomes visible sooner than the team expected.\\
+\textbf{Main text:} An early analysis suggests that the archive underrepresents some patient groups. The team now has to decide whether to keep pushing, pause for repair, or look for a faster compensating move that may ask a lot from the projectâs remaining trust.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Keep the route moving and document the representation limits for later correction.
+\begin{itemize}
+\item \textbf{Impact:} Social -8, Financial +4
+\item \textbf{Next node:} \texttt{data\_06\_fast}
+\item \textbf{Branch flags set:} data\_gap\_deferred
+\end{itemize}
+\item \textbf{Choice 2:} Pause and repair the representation gap before acting as if the archive is ready for stronger claims.
+\begin{itemize}
+\item \textbf{Impact:} Social +7, Financial -5, Eco +1
+\item \textbf{Next node:} \texttt{data\_06\_fast}
+\item \textbf{Branch flags set:} data\_gap\_repaired
+\end{itemize}
+\item \textbf{Choice 3:} Launch a fast community data collection push to fill the gap quickly.
+\begin{itemize}
+\item \textbf{Impact:} Social +3, Financial -3, Eco -2
+\item \textbf{Next node:} \texttt{data\_06\_fast}
+\item \textbf{Blocked if low:} social
+\item \textbf{Blocked reason:} This route depends on public trust and stakeholder willingness that the project no longer has strongly enough to request on short notice.
+\item \textbf{Branch flags set:} data\_gap\_expand
+\end{itemize}
+\end{itemize}
+\subsection*{3.3.1.3 [Story] Shortcut Pressure}
+\textbf{Node id:} \texttt{data\_06\_fast}\\
+\textbf{Intro:} The quick route keeps moving, but the archive now starts to push back in practical ways.\\
+\textbf{Main text:} Two engineers argue that the team is drifting into a patchwork of local fixes that works for experimentation but will be hard to justify once people ask how the archive was handled from site to site. Shortcut logic often feels efficient while it is happening, but it can create a trail of weak explanations that becomes obvious later all at once.\\
+\textbf{Leads to:} \texttt{data\_06} (Continue to compute and storage)\\
+\subsection*{3.3.2 [Story] Archive Inspection}
+\textbf{Node id:} \texttt{data\_03\_careful}\\
+\textbf{Intro:} The careful route begins by looking at the archive as institutional material, not only technical input.\\
+\textbf{Main text:} The team reads documentation, site notes, and consent language before treating the records as stable training material. It is slower, but the archive stops feeling like a silent object and starts feeling like a relationship with history behind it. That shift matters because it becomes harder to speak about the data as if it were neutral once the team has actually seen the unevenness of its provenance.\\
+\textbf{Leads to:} \texttt{data\_04\_careful} (Continue)\\
+\subsection*{3.3.2.1 [Quiz] Consent Ambiguity}
+\textbf{Node id:} \texttt{data\_04\_careful}\\
+\textbf{Intro:} The route is slower, but it still needs a judgment call.\\
+\textbf{Main text:} If consent language varies across sites and some reuse assumptions are unclear, what is the most responsible interpretation?\\
+\begin{itemize}
+\item \textbf{Choice 1:} Treat all ambiguity as effectively resolved unless someone formally challenges it.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} Document the ambiguity, scope data use accordingly, and avoid acting as if all sites carry the same level of reuse certainty.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{data\_05\_careful}
+\end{itemize}
+\item \textbf{Choice 3:} Drop the most ambiguous sites entirely before checking whether their removal creates fairness problems.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{3.3.2.2 [Story] How Much Documentation Is Enough?}
+\textbf{Node id:} \texttt{data\_05\_careful}\\
+\textbf{Intro:} The careful route now has to decide how far its discipline will really go.\\
+\textbf{Main text:} The documentation burden is beginning to irritate some of the technical team. One proposal keeps the audit light and pragmatic. Another argues that the project should invest more heavily now so later claims rest on something sturdier than memory and good intentions.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Keep documentation light and targeted so the team does not disappear into paperwork.
+\begin{itemize}
+\item \textbf{Impact:} Social +2, Financial +1
+\item \textbf{Next node:} \texttt{data\_06\_careful}
+\item \textbf{Branch flags set:} data\_docs\_light
+\end{itemize}
+\item \textbf{Choice 2:} Invest in stronger documentation and audit notes now, even if it delays visible model progress.
+\begin{itemize}
+\item \textbf{Impact:} Social +4, Financial -3, Eco +1
+\item \textbf{Next node:} \texttt{data\_06\_careful}
+\item \textbf{Branch flags set:} data\_docs\_strong
+\end{itemize}
+\end{itemize}
+\subsection*{3.3.2.3 [Story] Audit Patience}
+\textbf{Node id:} \texttt{data\_06\_careful}\\
+\textbf{Intro:} The careful route is more defensible, but some of the team is beginning to test its patience.\\
+\textbf{Main text:} People can now explain the archive more honestly, yet several members worry that the project is accumulating disciplined notes faster than visible model progress. The route is sturdier, but harder to sell internally. This is a recognizable research tension: good documentation often looks slow right up until the moment weak documentation becomes a serious liability.\\
+\textbf{Leads to:} \texttt{data\_06} (Continue to compute and storage)\\
+\subsection*{3.4 [Story] Compute And Storage}
+\textbf{Node id:} \texttt{data\_06}\\
+\textbf{Intro:} The archive is now real enough to produce a practical shock.\\
+\textbf{Main text:} The first storage and compute estimate lands on the table. What looked like a manageable technical step now has an environmental and financial profile that the team can no longer treat as background noise.\\
+\textbf{Leads to:} \texttt{data\_06b} (Continue to the fairness review note)\\
+\subsection*{3.5 [Story] Fairness Review Note}
+\textbf{Node id:} \texttt{data\_06b}\\
+\textbf{Intro:} The team pauses long enough to write down what it would otherwise keep in peopleâs heads.\\
+\textbf{Main text:} A short internal note captures the representation gaps, provenance uncertainties, and infrastructure costs that are now shaping the data conversation. It is not glamorous work, but it changes the chapterâs tone. Once these issues are written down in one place, it becomes harder for anyone to pretend they were minor side problems all along.\\
+\textbf{Leads to:} \texttt{data\_07} (Continue to the response)\\
+\subsection*{3.6 [Story] Responding To The Data Strain}
+\textbf{Node id:} \texttt{data\_07}\\
+\textbf{Intro:} The project now has to choose what kind of data discipline it wants under real resource pressure.\\
+\textbf{Main text:} One response is to push for more data quickly and hope scale improves the picture. Another is to work harder on the archive already in hand. A third is to redesign the technical path so it costs less to learn from the data without pretending that more is always better.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Expand data collection quickly so the model can learn from a broader pool as soon as possible.
+\begin{itemize}
+\item \textbf{Impact:} Social -2, Financial -4, Eco -3
+\item \textbf{Next node:} \texttt{data\_07b}
+\item \textbf{Blocked if low:} social
+\item \textbf{Blocked reason:} This route depends on enough social legitimacy to ask for more data cooperation. Right now that trust base is too thin to make the move realistic.
+\item \textbf{Branch flags set:} data\_expand
+\end{itemize}
+\item \textbf{Choice 2:} Invest in cleaning, documenting, and understanding the existing archive more deeply before broadening it.
+\begin{itemize}
+\item \textbf{Impact:} Social +6, Financial -5, Eco +2
+\item \textbf{Next node:} \texttt{data\_07b}
+\item \textbf{Branch flags set:} data\_deepen
+\end{itemize}
+\item \textbf{Choice 3:} Redesign the technical path to use less compute, even if that means giving up some early experimental ambition.
+\begin{itemize}
+\item \textbf{Impact:} Financial -2, Eco +8
+\item \textbf{Next node:} \texttt{data\_07b}
+\item \textbf{Branch flags set:} data\_low\_compute
+\end{itemize}
+\end{itemize}
+\subsection*{3.7 [Information] Documentation Habit}
+\textbf{Node id:} \texttt{data\_07b}\\
+\textbf{Intro:} This information node turns documentation into a practical research habit.\\
+\textbf{Main text:} A useful data log is not a bureaucratic afterthought. It is a decision aid. It helps teams explain why a dataset looked acceptable at a given moment, what was already known to be weak, and which assumptions would justify slowing down later. Students often think documentation matters only for audit. In practice, it also matters for memory, turnover, and the ability to reopen decisions honestly.\\
+\textbf{Extra / note:} <h3>Reusable method</h3><p>After any important data choice, write two sentences: what the team believes it knows, and what would make that belief weaker than it currently appears. That habit alone can make later correction much easier.</p>\\
+\textbf{Leads to:} \texttt{data\_08} (Continue to the data lesson)\\
+\subsection*{3.8 [Information] Traceability Is A Governance Tool}
+\textbf{Node id:} \texttt{data\_08}\\
+\textbf{Intro:} This information node names the chapterâs structural lesson.\\
+\textbf{Main text:} Data governance is not only about legality or performance. It is also about whether the project can later say what it used, what it knew, what it ignored, and why those decisions were made under pressure. Traceability is what lets a team correct itself without pretending that earlier uncertainty never existed.\\
+\textbf{Extra / note:} <h3>Useful method</h3><p>Keep a lightweight data log: provenance, consent basis, known gaps, exclusions, label definitions, and what would invalidate current use assumptions.</p><h3>What to avoid</h3><p>Do not rely on memory to reconstruct why a dataset seemed acceptable at the time. If the explanation cannot survive turnover or public scrutiny, the governance is too thin.</p>\\
+\textbf{Leads to:} \texttt{data\_09} (Continue to the final data check)\\
+\subsection*{3.9 [Information] Minimum Data Log}
+\textbf{Node id:} \texttt{data\_08b}\\
+\textbf{Intro:} This optional node gives a practical documentation structure students could reuse later.\\
+\textbf{Main text:} A minimal data log should answer six questions: where the data came from, what consent or reuse basis applies, what gaps are known, how labels were defined, what was excluded, and what would make the current use case no longer defensible.\\
+\textbf{Extra / note:} <h3>Why this helps</h3><p>This kind of log supports handover, review, and correction. It also forces the team to admit uncertainty explicitly instead of hiding it inside fast-moving technical progress.</p>\\
+\subsection*{3.10 [Quiz] Final Data Check}
+\textbf{Node id:} \texttt{data\_09}\\
+\textbf{Intro:} The chapter ends with one judgment test about readiness.\\
+\textbf{Main text:} Which condition best signals that the project is moving toward a defensible data posture rather than just a technically active one?\\
+\begin{itemize}
+\item \textbf{Choice 1:} The team can finally train repeatedly without stopping for metadata or consent questions.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} The team can explain the archiveâs limits, known gaps, and reuse conditions without pretending they have disappeared.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{data\_09b}
+\end{itemize}
+\item \textbf{Choice 3:} The project has accumulated enough data volume that bias concerns become less important to raise publicly.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{3.11 [Story] Data Transfer Note}
+\textbf{Node id:} \texttt{data\_09b}\\
+\textbf{Intro:} The chapter closes with a handover from data work to deployment work.\\
+\textbf{Main text:} A short transfer note is prepared for the team planning launch. It explains what the archive can support, where it remains weak, and which operational claims would now exceed what the data can honestly carry. That note matters because many projects do not fail at the data stage itself. They fail later, when launch decisions quietly assume more certainty than the data chapter ever really earned.\\
+\textbf{Leads to:} \texttt{data\_10} (Continue to the milestone)\\
+\subsection*{3.12 [Story] Data Milestone}
+\textbf{Node id:} \texttt{data\_10}\\
+\textbf{Intro:} The data chapter closes with a clearer, though still imperfect, evidentiary foundation.\\
+\textbf{Main text:} [Dynamic content depending on state or branch]\\
+\textbf{Chapter milestone:} completes data.\\
+\section*{4. Launch}
+\subsection*{4.1 [Story] Winter Pressure}
+\textbf{Node id:} \texttt{launch\_01}\\
+\textbf{Intro:} The launch chapter opens once the earlier foundations have become concrete enough to carry real consequences.\\
+\textbf{Main text:} Emergency admissions begin to rise. People inside the hospital stop talking about the project as a concept and start asking when it will actually appear in practice. Every earlier compromise now returns in the form of timing, trust, and operational risk.\\
+\textbf{Leads to:} \texttt{launch\_01b} (Continue to the launch room)\\
+\subsection*{4.2 [Story] Launch Room}
+\textbf{Node id:} \texttt{launch\_01b}\\
+\textbf{Intro:} The hospital finally gathers the people who would have to live with the first week of deployment.\\
+\textbf{Main text:} The room is more grounded than earlier meetings: ward staff, project leads, and operational managers are all trying to imagine the same future week from different angles. It becomes clear very quickly that âlaunchâ is not one event. It is a chain of small handovers, ambiguities, and expectations that will either stay governable or become friction points as soon as the winter rush turns abstract confidence into practical strain.\\
+\textbf{Leads to:} \texttt{launch\_02} (Continue to readiness posture)\\
+\subsection*{4.3 [Story] Launch Posture}
+\textbf{Node id:} \texttt{launch\_02}\\
+\textbf{Intro:} The first launch decision is about scope, visibility, and what kind of risk the hospital is willing to carry.\\
+\textbf{Main text:} One route pushes toward a broader, more visible multi-site pilot that shows confidence and momentum. Another route argues for a narrower first deployment that learns quietly, protects room for rollback, and resists the urge to turn a first launch into a public proof of inevitability.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Prepare for a visible multi-site pilot that demonstrates strong confidence in the project.
+\begin{itemize}
+\item \textbf{Impact:} Social -8, Financial +6, Eco -3
+\item \textbf{Next node:} \texttt{launch\_03\_ambitious}
+\item \textbf{Unlocks:} launch\_08b
+\item \textbf{Locks:} launch\_08b
+\item \textbf{Lock reason:} This broader launch posture closed the quieter pilot route. The chapter now follows a more exposed deployment path.
+\item \textbf{Branch flags set:} launch\_ambitious
+\end{itemize}
+\item \textbf{Choice 2:} Prepare for a narrower ward-level pilot that keeps room for correction and local trust-building.
+\begin{itemize}
+\item \textbf{Impact:} Social +7, Financial -3, Eco +1
+\item \textbf{Next node:} \texttt{launch\_03\_measured}
+\item \textbf{Unlocks:} launch\_08b
+\item \textbf{Locks:} launch\_08b
+\item \textbf{Lock reason:} This narrower launch posture closed the broader showcase route. The chapter now follows a more measured deployment path.
+\item \textbf{Branch flags set:} launch\_measured
+\end{itemize}
+\end{itemize}
+\subsection*{4.3.1 [Story] Coordination Call}
+\textbf{Node id:} \texttt{launch\_03\_ambitious}\\
+\textbf{Intro:} The broader route creates immediate coordination strain.\\
+\textbf{Main text:} Three hospital sites now want to know what will change for them, who owns the monitoring burden, and how quickly the system can be adjusted if reality turns out messier than the optimism in the room. The broader route now starts producing the kind of practical questions that enthusiasm alone cannot absorb.\\
+\textbf{Leads to:} \texttt{launch\_04\_ambitious} (Continue)\\
+\subsection*{4.3.1.1 [Quiz] Launch Condition}
+\textbf{Node id:} \texttt{launch\_04\_ambitious}\\
+\textbf{Intro:} The team needs a clear condition for proceeding responsibly.\\
+\textbf{Main text:} Under a broader launch route, which condition matters most before the hospital should treat the pilot as genuinely ready?\\
+\begin{itemize}
+\item \textbf{Choice 1:} A compelling external narrative that reassures executives the launch will look decisive.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} Clear monitoring ownership, rollback triggers, and a realistic understanding of where uncertainty still remains.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{launch\_05\_ambitious}
+\end{itemize}
+\item \textbf{Choice 3:} Enough technical excitement that the team feels motivated to handle operational problems later if they appear.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{4.3.1.2 [Story] How Visible Should Launch Be?}
+\textbf{Node id:} \texttt{launch\_05\_ambitious}\\
+\textbf{Intro:} A broader route now has to decide how much publicity it will carry with it.\\
+\textbf{Main text:} The sponsor wants a visible announcement. Some hospital staff want a quieter clinical-first rollout until the system behaves well under stress. The decision will shape how forgiving the environment becomes once the first problems appear.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Pair the pilot with a visible sponsor-backed announcement to secure future momentum early.
+\begin{itemize}
+\item \textbf{Impact:} Social -10, Financial +6, Eco -1
+\item \textbf{Next node:} \texttt{launch\_06\_ambitious}
+\item \textbf{Blocked if low:} social
+\item \textbf{Blocked reason:} This option depends on a level of public trust and institutional confidence that the project no longer has strongly enough to support such a visible launch.
+\item \textbf{Branch flags set:} launch\_public
+\end{itemize}
+\item \textbf{Choice 2:} Keep the rollout operationally broad but communication-light until the team sees the first live signals.
+\begin{itemize}
+\item \textbf{Impact:} Social +2, Financial +1
+\item \textbf{Next node:} \texttt{launch\_06\_ambitious}
+\item \textbf{Branch flags set:} launch\_broad\_quiet
+\end{itemize}
+\end{itemize}
+\subsection*{4.3.1.3 [Story] Site Readiness Gap}
+\textbf{Node id:} \texttt{launch\_06\_ambitious}\\
+\textbf{Intro:} The broader route exposes a problem that only appears once several sites compare notes side by side.\\
+\textbf{Main text:} One site is confident, another is under-trained, and a third is quietly depending on one local champion to absorb most of the operational uncertainty. The launch is no longer one thing; it is several uneven realities at once. Multi-site ambition looks clean from far away and much less uniform the closer people get to actual implementation work.\\
+\textbf{Leads to:} \texttt{launch\_06} (Continue to clinician trust)\\
+\subsection*{4.3.2 [Story] Ward Walkthrough}
+\textbf{Node id:} \texttt{launch\_03\_measured}\\
+\textbf{Intro:} The narrower route feels more modest, but much more concrete.\\
+\textbf{Main text:} A nurse manager walks through the pilot ward and points out several practical problems that no one had fully seen from the boardroom: alarm fatigue, handover timing, and how easily âdecision supportâ can still feel like pressure in a busy clinical setting. The quieter route suddenly feels less like caution in the abstract and more like respect for details that will decide whether staff can actually live with the tool.\\
+\textbf{Leads to:} \texttt{launch\_04\_measured} (Continue)\\
+\subsection*{4.3.2.1 [Quiz] Launch Condition}
+\textbf{Node id:} \texttt{launch\_04\_measured}\\
+\textbf{Intro:} The quieter route still needs a real test of readiness.\\
+\textbf{Main text:} Under a narrower pilot route, which condition matters most before the ward should treat the system as responsibly deployable?\\
+\begin{itemize}
+\item \textbf{Choice 1:} A well-designed message that reassures staff the pilot is low risk.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} Clear ownership for monitoring, practical workflow fit, and a visible path for pausing or stepping back if needed.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{launch\_05\_measured}
+\end{itemize}
+\item \textbf{Choice 3:} Enough technical confidence that the team will probably not need to use its rollback plan anyway.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{4.3.2.2 [Story] How Quiet Should The Pilot Be?}
+\textbf{Node id:} \texttt{launch\_05\_measured}\\
+\textbf{Intro:} A quieter route still has to decide how much of itself to reveal.\\
+\textbf{Main text:} Some people want the pilot framed as a learning exercise with careful expectations. Others worry that too much modesty will make the project look fragile and politically easier to defund if early results are mixed.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Frame the pilot explicitly as a learning phase with transparent limits and visible checkpoints.
+\begin{itemize}
+\item \textbf{Impact:} Social +8, Financial -3, Eco +1
+\item \textbf{Next node:} \texttt{launch\_06\_measured}
+\item \textbf{Branch flags set:} launch\_learning\_frame
+\end{itemize}
+\item \textbf{Choice 2:} Keep the pilot narrow operationally, but communicate it as a quiet sign that full rollout is mostly a matter of time.
+\begin{itemize}
+\item \textbf{Impact:} Social -4, Financial +4
+\item \textbf{Next node:} \texttt{launch\_06\_measured}
+\item \textbf{Branch flags set:} launch\_quiet\_confidence
+\end{itemize}
+\end{itemize}
+\subsection*{4.3.2.3 [Story] Local Confidence Check}
+\textbf{Node id:} \texttt{launch\_06\_measured}\\
+\textbf{Intro:} The quieter route still needs more than caution. It needs people on the ward to believe the caution is real.\\
+\textbf{Main text:} A ward lead says the pilot sounds careful on paper, but asks whether staff will actually feel permitted to pause or question the tool once the winter rush makes hesitation expensive. The question matters because many pilots are technically reversible and socially difficult to challenge once they are attached to hope or urgency.\\
+\textbf{Leads to:} \texttt{launch\_06} (Continue to clinician trust)\\
+\subsection*{4.4 [Story] Clinician Trust}
+\textbf{Node id:} \texttt{launch\_06}\\
+\textbf{Intro:} No launch route avoids the same basic institutional test.\\
+\textbf{Main text:} A consultant physician asks a simple question in a tense tone: âWhen this system is wrong, who will be expected to carry that wrongness first?â The room falls quiet because everyone knows the answer cannot be technical alone.\\
+\textbf{Leads to:} \texttt{launch\_06b} (Continue to the ward simulation)\\
+\subsection*{4.5 [Story] Ward Simulation}
+\textbf{Node id:} \texttt{launch\_06b}\\
+\textbf{Intro:} The team runs a brief simulation of what the first week could actually feel like.\\
+\textbf{Main text:} The exercise is not technically sophisticated, but it is revealing. It shows who gets called first when the tool behaves oddly, where uncertainty is likely to be explained badly, and how quickly a âpilotâ can start feeling mandatory once pressure is high. Students often imagine that launch problems begin with system errors alone. Here the room sees that many of them begin with roles, expectations, and communication paths that were never made explicit enough.\\
+\textbf{Leads to:} \texttt{launch\_07} (Continue to monitoring design)\\
+\subsection*{4.6 [Story] Monitoring And Rollback}
+\textbf{Node id:} \texttt{launch\_07}\\
+\textbf{Intro:} The final live decision is about how the project will behave once reality starts pressing back.\\
+\textbf{Main text:} One design uses strict monitoring ownership and clear rollback triggers. Another prioritizes rapid iteration and softer guardrails to preserve momentum. A third turns launch into a dashboard-heavy performance environment that risks treating visibility as reassurance.\\
+\begin{itemize}
+\item \textbf{Choice 1:} Use strict monitoring ownership, explicit rollback triggers, and limited automation while trust is still forming.
+\begin{itemize}
+\item \textbf{Impact:} Social +8, Financial -4, Eco +1
+\item \textbf{Next node:} \texttt{launch\_07b}
+\item \textbf{Branch flags set:} launch\_strict\_monitoring
+\end{itemize}
+\item \textbf{Choice 2:} Use softer guardrails and rapid iteration so the team can respond quickly without slowing the rollout too much.
+\begin{itemize}
+\item \textbf{Impact:} Social -6, Financial +4, Eco -1
+\item \textbf{Next node:} \texttt{launch\_07b}
+\item \textbf{Branch flags set:} launch\_soft\_monitoring
+\end{itemize}
+\item \textbf{Choice 3:} Center the launch around live performance dashboards and sponsor-facing visibility to prove the system is under control.
+\begin{itemize}
+\item \textbf{Impact:} Social -8, Financial +6, Eco -3
+\item \textbf{Next node:} \texttt{launch\_07b}
+\item \textbf{Blocked if high:} financial
+\item \textbf{Blocked reason:} This option would double down on financial and performance logic at a moment when that dimension is already too dominant to keep the project balanced.
+\item \textbf{Branch flags set:} launch\_dashboard
+\end{itemize}
+\end{itemize}
+\subsection*{4.7 [Information] Incident Framing}
+\textbf{Node id:} \texttt{launch\_07b}\\
+\textbf{Intro:} This information node focuses on a launch habit students can reuse later.\\
+\textbf{Main text:} Before deployment, decide how the team will talk about incidents, near-misses, and staff discomfort. If the only available language is success language, people will hide uncertainty for longer than they should. Incident framing is therefore part of governance, not just communication polish.\\
+\textbf{Extra / note:} <h3>Reusable method</h3><p>Write down one trigger for pause, one trigger for closer monitoring, and one trigger that should be logged even if it does not yet justify intervention. These categories help keep weak signals visible instead of collapsing them into âeverything is fine until it is not.â</p>\\
+\textbf{Leads to:} \texttt{launch\_08} (Continue to the launch lesson)\\
+\subsection*{4.8 [Information] Deployment Is A Legitimacy Event}
+\textbf{Node id:} \texttt{launch\_08}\\
+\textbf{Intro:} This information node names the final structural lesson.\\
+\textbf{Main text:} Deployment is not merely the moment a system begins running. It is also the moment an institution reveals what it believes counts as acceptable uncertainty, who it expects to absorb risk, and how honestly it can describe the limits of its own confidence. A launch says as much about governance as it does about technology.\\
+\textbf{Extra / note:} <h3>Useful method</h3><p>Before launch, define success criteria, monitoring ownership, rollback triggers, who can pause the system, and how incidents will be recorded and discussed.</p><h3>What students should remember</h3><p>A pilot is more responsible when people closest to the work know how to question it safely, not only when leadership knows how to present it confidently.</p>\\
+\textbf{Leads to:} \texttt{launch\_09} (Continue to the final question)\\
+\subsection*{4.9 [Information] Pilot Readiness Checklist}
+\textbf{Node id:} \texttt{launch\_08b}\\
+\textbf{Intro:} This optional node offers a reusable launch checklist.\\
+\textbf{Main text:} A basic readiness check should cover five things: who monitors, who can pause, what counts as a reportable incident, what evidence would justify broadening the pilot, and how staff concerns will be fed back into decisions.\\
+\textbf{Extra / note:} <h3>Why this helps</h3><p>It keeps launch from becoming only a confidence ritual. The point is not to remove uncertainty, but to decide in advance how the project will behave when uncertainty becomes real.</p>\\
+\subsection*{4.10 [Quiz] Final Launch Check}
+\textbf{Node id:} \texttt{launch\_09}\\
+\textbf{Intro:} The final quiz checks whether the whole gameâs logic has stayed intact.\\
+\textbf{Main text:} Which statement best captures what a responsible launch posture requires after all four chapters of the game?\\
+\begin{itemize}
+\item \textbf{Choice 1:} A launch is mainly successful if the project can show confidence strongly enough to avoid political hesitation.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\item \textbf{Choice 2:} A launch should match the projectâs actual balance of evidence, trust, feasibility, and correction capacity rather than only its ambition.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Next node:} \texttt{launch\_09b}
+\end{itemize}
+\item \textbf{Choice 3:} Once a project reaches deployment, most earlier funding, team, and data tensions matter much less than technical performance.
+\begin{itemize}
+\item \textbf{Impact:} No resource impact.
+\item \textbf{Quiz behavior:} retry until the player selects a valid answer.
+\end{itemize}
+\end{itemize}
+\subsection*{4.11 [Story] First Week Outlook}
+\textbf{Node id:} \texttt{launch\_09b}\\
+\textbf{Intro:} The chapter pauses one step before the ending to imagine the projectâs first week in practice.\\
+\textbf{Main text:} The team writes a short note describing what it expects to learn in the first week, what would count as a reassuring signal, and what would count as a sign that the pilot has been framed too optimistically. That note matters because responsible launch is not only about starting. It is also about deciding what kind of evidence will justify staying the course once the system is real enough to disappoint people.\\
+\textbf{Leads to:} \texttt{launch\_10} (Continue to the ending)\\
+\subsection*{4.12 [Ending] [Dynamic content depending on state or branch]}
+\textbf{Node id:} \texttt{launch\_10}\\
+\textbf{Intro:} The game ends with the kind of launch the project has made possible for itself.\\
+\textbf{Main text:} [Dynamic content depending on state or branch]\\
+\textbf{Extra / note:} [Dynamic content depending on state or branch]\\
+\textbf{Chapter milestone:} completes launch.\\
+\end{document}

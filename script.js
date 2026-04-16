@@ -2,9 +2,9 @@ const LOWER_LIMIT = 30;
 const UPPER_LIMIT = 70;
 
 const initialResources = {
-  social: 45,
-  financial: 45,
-  eco: 45,
+  social: 50,
+  financial: 50,
+  eco: 50,
 };
 
 const resourceMeta = {

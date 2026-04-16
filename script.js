@@ -117,7 +117,7 @@ const onboardingPages = [
     text:
       'You are stepping into the role of a researcher helping lead an AI-for-sickness-detection project. The pressure is real: hospitals want results, clinicians want credibility, and every shortcut creates a different kind of risk.',
     extraHtml:
-      '<p>This is a compact but complete game. It is not a tutorial branch anymore: it is a realistic project journey through funding, staffing, data governance, and launch.</p>',
+      '<p>The purpose of this game is to help learners develop a more balanced way of analysing project decisions. Rather than focusing only on the most immediate or intuitive option, players are encouraged to consider how choices can affect social fairness, financial viability, and project performance over time.</p><p>This is a compact but complete game. It is not a tutorial branch anymore: it is a realistic project journey through funding, staffing, data governance, and launch.</p>',
     showResources: false,
   },
   {

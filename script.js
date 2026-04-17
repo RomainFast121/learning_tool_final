@@ -140,113 +140,187 @@ const onboardingPages = [
   },
   {
     badge: 'Start',
-    title: () => 'The first node is an evaluation',
+    title: () => 'The first node is an assessment',
     text:
-      'The center node now contains three short pre-scenario questions. They record your starting instinct without changing resources, then open the first playable workstreams.',
+      'The center node now contains three short mirrored scenarios. Each one asks you to estimate impacts, rank what matters most, and then choose a response before the first playable workstreams open.',
     extraHtml:
-      '<p>The same three questions return near the end so you can compare how your reasoning changed after the game. After the opening evaluation, you will move between funding, team, and data chapters. The launch chapter opens once enough groundwork has been completed.</p>',
+      '<p>The same three scenarios return near the end so you can compare how your reasoning changed after the game. After the opening assessment, you will move between funding, team, and data chapters. The launch chapter opens once enough groundwork has been completed.</p>',
     showResources: true,
   },
 ];
 
-const evaluationQuestions = [
+const evaluationScenarios = [
   {
     id: 'timeline',
-    title: 'Opening evaluation 1 of 3',
-    prompt:
-      'A hospital executive asks the team to publicly commit to a winter deployment date before governance checkpoints and rollback rules are fully defined. What would you do first?',
-    note:
-      'There is no perfect answer here. The point is to choose the response you find most defensible under pressure.',
-    reflection:
-      'A broader analysis here considers momentum, governance, and whether the team keeps room to revise the project once public expectations begin to harden.',
+    title: 'Scenario 1: Public commitment under pressure',
+    context:
+      'A hospital executive wants the team to announce a winter deployment target before governance checkpoints, monitoring responsibilities, and rollback conditions are fully defined. The project has momentum, but that momentum is resting on assumptions the team cannot yet fully defend.',
+    impactPrompt:
+      'The team publicly commits to the timeline before those safeguards are settled. Rate how strongly that decision is likely to affect each resource.',
+    impactNote:
+      'Use 1 for limited impact and 10 for very strong impact. You are estimating how implicated each dimension is, not whether the effect is positive or negative.',
+    impactBenchmark: { social: 9, financial: 6, eco: 8 },
+    rankingPrompt:
+      'Before accepting that commitment, rank these themes from most important to least important to consider.',
+    rankingNote:
+      'Click the five terms in your preferred order. Click a selected term again if you want to remove it and reorder.',
+    rankingTerms: [
+      { id: 'governance', label: 'Governance' },
+      { id: 'trust', label: 'Trust' },
+      { id: 'timeline', label: 'Timeline' },
+      { id: 'credibility', label: 'Credibility' },
+      { id: 'budget', label: 'Budget' },
+    ],
+    benchmarkRanking: ['governance', 'trust', 'timeline', 'credibility', 'budget'],
+    choicePrompt: 'Which response feels the most defensible in this situation?',
+    choiceNote:
+      'None of these options is perfect. Choose the one that best balances pressure, feasibility, and long-term responsibility.',
     options: [
       {
-        id: 'push-now',
-        text: 'Accept the date so the project gains credibility and sort out the safeguards in parallel.',
-        profile: { balanced: 0, tradeoff: 0, governance: 0 },
+        id: 'lock-date-now',
+        short: 'Lock the date now',
+        score: 35,
+        text: 'Accept the public date immediately so the project looks credible, then build the safeguards in parallel as fast as possible.',
       },
       {
         id: 'conditional-date',
-        text: 'Offer only a conditional timeline tied to review checkpoints, even if that weakens the announcement.',
-        profile: { balanced: 2, tradeoff: 2, governance: 2 },
+        short: 'Tie the date to checkpoints',
+        score: 100,
+        text: 'Offer only a conditional public timeline tied to review checkpoints, monitoring ownership, and explicit rollback conditions.',
       },
       {
-        id: 'delegate-comms',
-        text: 'Let communications staff shape the date while the project team concentrates on delivery.',
-        profile: { balanced: 0, tradeoff: 0, governance: 0 },
+        id: 'delay-without-frame',
+        short: 'Delay without structure',
+        score: 55,
+        text: 'Refuse to discuss timing for now, but without defining what would later make a commitment responsible.',
       },
       {
-        id: 'delay-without-structure',
-        text: 'Avoid committing for now, but without defining what would make a later commitment responsible.',
-        profile: { balanced: 1, tradeoff: 1, governance: 0 },
+        id: 'delegate-communications',
+        short: 'Leave it to communications',
+        score: 25,
+        text: 'Let communications staff shape the public commitment while the project team concentrates on delivery.',
       },
     ],
+    reflection:
+      'Stronger reasoning here usually gives more weight to governance conditions and to the way public promises harden future options long before technical work is settled.',
   },
   {
-    id: 'representation',
-    title: 'Opening evaluation 2 of 3',
-    prompt:
-      'You only have budget for one immediate hire. The options are a strong ML engineer, a clinical workflow specialist, or a stakeholder-facing governance role. Which stance feels most defensible first?',
-    note:
-      'Choose the stance you would defend, not the one that sounds nicest in the abstract.',
-    reflection:
-      'Broader reasoning here asks not only who adds value fastest, but which constraint becomes expensive to hear too late if it is kept outside the team early on.',
+    id: 'team',
+    title: 'Scenario 2: Team composition and early hires',
+    context:
+      'The project can afford only one immediate hire. A strong ML engineer would accelerate technical progress, but workflow expertise, stakeholder representation, and governance input would remain outside the core team for now. The team knows this first hire will shape whose concerns are heard early and whose concerns arrive late.',
+    impactPrompt:
+      'The team uses its only immediate hire on a pure ML engineer while clinical workflow and governance knowledge stay outside the core group. Rate how strongly that decision is likely to affect each resource.',
+    impactNote:
+      'Think about the size of the impact, not whether you personally like the decision. A choice can strongly affect several dimensions at once.',
+    impactBenchmark: { social: 8, financial: 5, eco: 7 },
+    rankingPrompt:
+      'Before making that hire, rank these themes from most important to least important to consider.',
+    rankingNote:
+      'The terms are all relevant. The challenge is deciding which ones become most expensive to ignore too early.',
+    rankingTerms: [
+      { id: 'expertise', label: 'Expertise' },
+      { id: 'representation', label: 'Representation' },
+      { id: 'legitimacy', label: 'Legitimacy' },
+      { id: 'coordination', label: 'Coordination' },
+      { id: 'workload', label: 'Workload' },
+    ],
+    benchmarkRanking: ['expertise', 'representation', 'legitimacy', 'coordination', 'workload'],
+    choicePrompt: 'Which hiring posture feels the most defensible first?',
+    choiceNote:
+      'Aim for the option that seems most robust over time, not simply the one that creates the fastest early output.',
     options: [
       {
-        id: 'pure-technical',
-        text: 'Take the ML engineer first because technical progress creates the most options later.',
-        profile: { balanced: 0, tradeoff: 0, governance: 0 },
+        id: 'pure-ml',
+        short: 'Pure technical speed',
+        score: 35,
+        text: 'Take the ML engineer first because technical progress creates the most options later and the other concerns can be consulted when needed.',
       },
       {
-        id: 'hybrid-early',
-        text: 'Use the first hire to bring in workflow or governance reality early, even if technical speed becomes less comfortable.',
-        profile: { balanced: 2, tradeoff: 2, governance: 1 },
+        id: 'bridge-role',
+        short: 'Bridge technical and institutional needs',
+        score: 95,
+        text: 'Use the first hire on a profile that can bridge technical work with workflow or governance realities, even if the role looks less efficient on paper.',
       },
       {
-        id: 'temporary-consultation',
-        text: 'Keep the core team technical for now and consult outside perspectives only when friction appears.',
-        profile: { balanced: 1, tradeoff: 0, governance: 0 },
+        id: 'tech-plus-review',
+        short: 'Technical hire with formal review loops',
+        score: 75,
+        text: 'Take the technical hire, but immediately create structured clinician and governance review loops with real influence on key decisions.',
       },
       {
-        id: 'split-role',
-        text: 'Choose the option that can bridge technical and institutional concerns, even if it looks less efficient on paper.',
-        profile: { balanced: 2, tradeoff: 2, governance: 2 },
+        id: 'short-term-patchwork',
+        short: 'Temporary patchwork',
+        score: 55,
+        text: 'Distribute the missing perspectives informally across existing staff until the project becomes large enough to justify a broader team.',
       },
     ],
+    reflection:
+      'Stronger reasoning here usually treats team composition as a design decision about whose knowledge shapes the project early, not only as a staffing efficiency problem.',
   },
   {
-    id: 'data-posture',
-    title: 'Opening evaluation 3 of 3',
-    prompt:
-      'The archive is large enough to start experimentation quickly, but consent wording and documentation quality vary across sites. What feels most defensible as a first posture?',
-    note:
-      'This question is about what kind of uncertainty you are willing to carry into the project’s early momentum.',
-    reflection:
-      'Stronger reasoning here looks at evidence quality, traceability, fairness risk, and whether the team can later explain what it knew about the data while choices were being made.',
+    id: 'data',
+    title: 'Scenario 3: Uneven data and early evidence',
+    context:
+      'The archive is large enough to start experimentation quickly, but consent wording and documentation quality vary across sites. Some people argue that speed will reveal the important issues anyway. Others warn that the team is about to treat uncertain evidence as stable much earlier than it can justify.',
+    impactPrompt:
+      'The team starts using the archive immediately even though consent wording and documentation remain uneven across sites. Rate how strongly that decision is likely to affect each resource.',
+    impactNote:
+      'A decision can have strong impact even if its consequences appear only later. Rate how much each dimension is involved.',
+    impactBenchmark: { social: 8, financial: 4, eco: 9 },
+    rankingPrompt:
+      'Before treating that archive as stable evidence, rank these themes from most important to least important to consider.',
+    rankingNote:
+      'Try to rank what deserves the most attention in this exact situation, not what sounds generally important in any AI project.',
+    rankingTerms: [
+      { id: 'traceability', label: 'Traceability' },
+      { id: 'evidence', label: 'Evidence' },
+      { id: 'fairness', label: 'Fairness' },
+      { id: 'coverage', label: 'Coverage' },
+      { id: 'speed', label: 'Speed' },
+    ],
+    benchmarkRanking: ['traceability', 'evidence', 'fairness', 'coverage', 'speed'],
+    choicePrompt: 'Which initial data posture feels the most defensible?',
+    choiceNote:
+      'A good answer here usually protects future explainability, not only short-term experimentation comfort.',
     options: [
       {
-        id: 'ingest-first',
-        text: 'Start ingesting immediately so the team learns by doing, then document the important gaps once they become visible.',
-        profile: { balanced: 0, tradeoff: 0, governance: 0 },
+        id: 'ingest-now',
+        short: 'Ingest now, document later',
+        score: 30,
+        text: 'Start ingesting and experimenting immediately so the team learns by doing, then document the important uncertainties once they become visible.',
       },
       {
-        id: 'staged-traceability',
-        text: 'Allow staged use, but record the uncertainties, scope, and known gaps before treating the archive as stable evidence.',
-        profile: { balanced: 2, tradeoff: 2, governance: 2 },
+        id: 'staged-use',
+        short: 'Staged use with uncertainty log',
+        score: 100,
+        text: 'Allow staged use, but first record the archive scope, known uncertainties, reuse basis, and documentation gaps before treating it as stable evidence.',
       },
       {
-        id: 'drop-ambiguous-sites',
-        text: 'Exclude the ambiguous sites first so the project can move faster on cleaner ground.',
-        profile: { balanced: 1, tradeoff: 1, governance: 1 },
+        id: 'exclude-ambiguous-sites',
+        short: 'Exclude ambiguous sites first',
+        score: 72,
+        text: 'Exclude the ambiguous sites first so the team can move faster on cleaner ground, then reconsider coverage later if needed.',
       },
       {
-        id: 'volume-solves-risk',
-        text: 'Push for more volume early because scale will reduce the practical importance of the archive’s unevenness.',
-        profile: { balanced: 0, tradeoff: 0, governance: 0 },
+        id: 'seek-more-volume',
+        short: 'Seek more volume to offset risk',
+        score: 20,
+        text: 'Push for more volume early because larger scale will reduce the practical importance of the archive's unevenness.',
       },
     ],
+    reflection:
+      'Stronger reasoning here usually gives more weight to traceability and evidence quality before scale, because explanation becomes much harder once the team starts building on uncertain foundations.',
   },
 ];
+
+const evaluationTaskOrder = ['impact', 'ranking', 'choice'];
+const evaluationResourceKeys = ['social', 'financial', 'eco'];
+const EVALUATION_SCORE_WEIGHTS = {
+  impact: 0.4,
+  ranking: 0.3,
+  choice: 0.3,
+};
 
 let state = {
   resources: { ...initialResources },
@@ -264,6 +338,9 @@ let state = {
   preEvaluationAnswers: {},
   postEvaluationAnswers: {},
   comparisonSummary: null,
+  startAssessmentScore: null,
+  endAssessmentScore: null,
+  progressDelta: null,
   branchFlags: new Set(),
   chapterMilestones: new Set(),
   shownThresholds: new Set(),
@@ -356,11 +433,11 @@ const nodes = {
     w: 220,
     h: 220,
     introText:
-      'This opening node frames the project and records three short pre-scenario answers before the first workstreams unlock.',
+      'This opening node frames the project and records three mirrored assessment scenarios before the first workstreams unlock.',
     text:
-      'The city hospital network wants an AI tool that can help flag respiratory complications before the winter rush. The project has visible momentum, but its legitimacy is still fragile. Before the first workstreams open, answer three short questions about how you would approach pressure, staffing, and data uncertainty at the start of the project.',
+      'The city hospital network wants an AI tool that can help flag respiratory complications before the winter rush. The project has visible momentum, but its legitimacy is still fragile. Before the first workstreams open, work through three short scenario blocks about pressure, staffing, and data uncertainty. Each block asks you to estimate impacts, rank what matters most, and then choose a response.',
     extraHtml:
-      '<h3>Opening evaluation</h3><p>These three questions do not change any resource and do not unlock special advantages. They simply record your starting reasoning so the same questions can come back near the end for comparison.</p>',
+      '<h3>Opening assessment</h3><p>These three scenarios do not change any resource and do not unlock special advantages. They simply record your starting reasoning so the same scenarios can return near the end for comparison.</p>',
     evaluationOnly: 'pre',
   }),
 
@@ -2275,81 +2352,278 @@ function getEvaluationAnswers(mode) {
   return mode === 'post' ? state.postEvaluationAnswers : state.preEvaluationAnswers;
 }
 
-function getEvaluationOption(questionId, optionId) {
-  const question = evaluationQuestions.find((entry) => entry.id === questionId);
-  if (!question) return null;
-  return question.options.find((option) => option.id === optionId) || null;
+function getEvaluationScenario(scenarioId) {
+  return evaluationScenarios.find((entry) => entry.id === scenarioId) || null;
+}
+
+function getEvaluationChoice(scenarioId, optionId) {
+  const scenario = getEvaluationScenario(scenarioId);
+  if (!scenario) return null;
+  return scenario.options.find((option) => option.id === optionId) || null;
+}
+
+function getRankingTermLabel(scenario, termId) {
+  return scenario.rankingTerms.find((term) => term.id === termId)?.label || termId;
+}
+
+function ensureEvaluationAnswer(mode, scenarioId) {
+  const answers = getEvaluationAnswers(mode);
+  if (!answers[scenarioId]) {
+    answers[scenarioId] = {
+      impactRatings: {},
+      themeRanking: [],
+      selectedOption: null,
+    };
+  }
+  return answers[scenarioId];
+}
+
+function isImpactTaskComplete(answer) {
+  return evaluationResourceKeys.every((key) => Number.isInteger(answer?.impactRatings?.[key]));
+}
+
+function isRankingTaskComplete(answer) {
+  return Array.isArray(answer?.themeRanking) && answer.themeRanking.length === 5;
+}
+
+function isChoiceTaskComplete(answer) {
+  return Boolean(answer?.selectedOption);
 }
 
 function isEvaluationComplete(mode) {
-  return Object.keys(getEvaluationAnswers(mode)).length === evaluationQuestions.length;
+  return evaluationScenarios.every((scenario) => {
+    const answer = getEvaluationAnswers(mode)[scenario.id];
+    return isImpactTaskComplete(answer) && isRankingTaskComplete(answer) && isChoiceTaskComplete(answer);
+  });
 }
 
-function getFirstUnansweredEvaluationIndex(mode) {
-  const answers = getEvaluationAnswers(mode);
-  const index = evaluationQuestions.findIndex((question) => !answers[question.id]);
-  return index === -1 ? evaluationQuestions.length - 1 : index;
+function getFirstUnansweredEvaluationStage(mode) {
+  for (let index = 0; index < evaluationScenarios.length; index += 1) {
+    const scenario = evaluationScenarios[index];
+    const answer = getEvaluationAnswers(mode)[scenario.id];
+    if (!isImpactTaskComplete(answer)) return { scenarioIndex: index, task: 'impact' };
+    if (!isRankingTaskComplete(answer)) return { scenarioIndex: index, task: 'ranking' };
+    if (!isChoiceTaskComplete(answer)) return { scenarioIndex: index, task: 'choice' };
+  }
+  return null;
 }
 
-function getEvaluationProfile(answerMap) {
-  return Object.entries(answerMap).reduce(
-    (totals, [questionId, optionId]) => {
-      const option = getEvaluationOption(questionId, optionId);
-      if (!option) return totals;
-      totals.balanced += option.profile.balanced || 0;
-      totals.tradeoff += option.profile.tradeoff || 0;
-      totals.governance += option.profile.governance || 0;
-      return totals;
-    },
-    { balanced: 0, tradeoff: 0, governance: 0 },
+function getPreviousEvaluationStage(scenarioIndex, task) {
+  const taskIndex = evaluationTaskOrder.indexOf(task);
+  if (taskIndex > 0) {
+    return { scenarioIndex, task: evaluationTaskOrder[taskIndex - 1] };
+  }
+  if (scenarioIndex > 0) {
+    return { scenarioIndex: scenarioIndex - 1, task: 'choice' };
+  }
+  return null;
+}
+
+function getNextEvaluationStage(scenarioIndex, task) {
+  const taskIndex = evaluationTaskOrder.indexOf(task);
+  if (taskIndex < evaluationTaskOrder.length - 1) {
+    return { scenarioIndex, task: evaluationTaskOrder[taskIndex + 1] };
+  }
+  if (scenarioIndex < evaluationScenarios.length - 1) {
+    return { scenarioIndex: scenarioIndex + 1, task: 'impact' };
+  }
+  return null;
+}
+
+function scoreImpactTask(answer, scenario) {
+  const ratings = answer?.impactRatings || {};
+  const total = evaluationResourceKeys.reduce((sum, key) => {
+    const rating = ratings[key];
+    if (!Number.isInteger(rating)) return sum;
+    const closeness = Math.max(0, 10 - Math.abs(rating - scenario.impactBenchmark[key])) / 10;
+    return sum + closeness;
+  }, 0);
+  return roundAverage((total / evaluationResourceKeys.length) * 100);
+}
+
+function scoreRankingTask(answer, scenario) {
+  const ranking = answer?.themeRanking || [];
+  const selectedPositions = Object.fromEntries(ranking.map((termId, index) => [termId, index]));
+  const benchmarkPositions = Object.fromEntries(
+    scenario.benchmarkRanking.map((termId, index) => [termId, index]),
+  );
+  const maxDistance = scenario.rankingTerms.length - 1;
+  const total = scenario.rankingTerms.reduce((sum, term) => {
+    const diff = Math.abs((selectedPositions[term.id] ?? maxDistance) - benchmarkPositions[term.id]);
+    return sum + Math.max(0, maxDistance - diff) / maxDistance;
+  }, 0);
+  return roundAverage((total / scenario.rankingTerms.length) * 100);
+}
+
+function scoreChoiceTask(answer, scenario) {
+  return getEvaluationChoice(scenario.id, answer?.selectedOption)?.score || 0;
+}
+
+function buildScenarioScore(mode, scenario) {
+  const answer = getEvaluationAnswers(mode)[scenario.id];
+  const impactScore = scoreImpactTask(answer, scenario);
+  const rankingScore = scoreRankingTask(answer, scenario);
+  const choiceScore = scoreChoiceTask(answer, scenario);
+  const totalScore = roundAverage(
+    (impactScore * EVALUATION_SCORE_WEIGHTS.impact)
+      + (rankingScore * EVALUATION_SCORE_WEIGHTS.ranking)
+      + (choiceScore * EVALUATION_SCORE_WEIGHTS.choice),
+  );
+
+  return {
+    scenario,
+    answer,
+    impactScore,
+    rankingScore,
+    choiceScore,
+    totalScore,
+  };
+}
+
+function computeOverallEvaluationScore(mode) {
+  if (!isEvaluationComplete(mode)) return null;
+  const total = evaluationScenarios.reduce((sum, scenario) => sum + buildScenarioScore(mode, scenario).totalScore, 0);
+  return roundAverage(total / evaluationScenarios.length);
+}
+
+function getImpactBiasByResource(mode) {
+  const deltas = { social: 0, financial: 0, eco: 0 };
+  evaluationScenarios.forEach((scenario) => {
+    const ratings = getEvaluationAnswers(mode)[scenario.id]?.impactRatings || {};
+    evaluationResourceKeys.forEach((key) => {
+      deltas[key] += (ratings[key] || 0) - scenario.impactBenchmark[key];
+    });
+  });
+
+  return Object.fromEntries(
+    evaluationResourceKeys.map((key) => [key, roundAverage(deltas[key] / evaluationScenarios.length)]),
   );
 }
 
+function getImpactAccuracyByResource(mode) {
+  const totals = { social: 0, financial: 0, eco: 0 };
+  evaluationScenarios.forEach((scenario) => {
+    const ratings = getEvaluationAnswers(mode)[scenario.id]?.impactRatings || {};
+    evaluationResourceKeys.forEach((key) => {
+      const rating = ratings[key] || 0;
+      totals[key] += Math.max(0, 10 - Math.abs(rating - scenario.impactBenchmark[key])) / 10;
+    });
+  });
+
+  return Object.fromEntries(
+    evaluationResourceKeys.map((key) => [key, roundAverage((totals[key] / evaluationScenarios.length) * 100)]),
+  );
+}
+
+function formatImpactRatings(answer) {
+  if (!answer) return 'No ratings recorded.';
+  return evaluationResourceKeys
+    .map((key) => `${resourceMeta[key].short} ${answer.impactRatings?.[key] ?? '–'}/10`)
+    .join(' / ');
+}
+
+function formatRanking(answer, scenario) {
+  if (!answer?.themeRanking?.length) return 'No ranking recorded.';
+  return answer.themeRanking.map((termId) => getRankingTermLabel(scenario, termId)).join(' > ');
+}
+
+function describeTaskDelta(delta, positiveText, stableText, negativeText) {
+  if (delta >= 8) return positiveText;
+  if (delta <= -8) return negativeText;
+  return stableText;
+}
+
 function buildComparisonSummary() {
-  const preProfile = getEvaluationProfile(state.preEvaluationAnswers);
-  const postProfile = getEvaluationProfile(state.postEvaluationAnswers);
-  const preTotal = preProfile.balanced + preProfile.tradeoff + preProfile.governance;
-  const postTotal = postProfile.balanced + postProfile.tradeoff + postProfile.governance;
-  const delta = postTotal - preTotal;
-  const dimensionDeltas = [
-    ['balanced', postProfile.balanced - preProfile.balanced],
-    ['tradeoff', postProfile.tradeoff - preProfile.tradeoff],
-    ['governance', postProfile.governance - preProfile.governance],
-  ].sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]));
+  const preScores = evaluationScenarios.map((scenario) => buildScenarioScore('pre', scenario));
+  const postScores = evaluationScenarios.map((scenario) => buildScenarioScore('post', scenario));
+  const startScore = roundAverage(preScores.reduce((sum, entry) => sum + entry.totalScore, 0) / evaluationScenarios.length);
+  const endScore = roundAverage(postScores.reduce((sum, entry) => sum + entry.totalScore, 0) / evaluationScenarios.length);
+  const progressDelta = roundAverage(endScore - startScore);
+  const taskDeltas = {
+    impact: roundAverage(postScores.reduce((sum, entry, index) => sum + (entry.impactScore - preScores[index].impactScore), 0) / evaluationScenarios.length),
+    ranking: roundAverage(postScores.reduce((sum, entry, index) => sum + (entry.rankingScore - preScores[index].rankingScore), 0) / evaluationScenarios.length),
+    choice: roundAverage(postScores.reduce((sum, entry, index) => sum + (entry.choiceScore - preScores[index].choiceScore), 0) / evaluationScenarios.length),
+  };
 
-  let headline =
-    'Your final answers stayed close to your starting instinct, with only a modest shift in emphasis.';
-  if (delta >= 3) {
-    headline =
-      'Your final answers show a broader and more balanced reasoning pattern than your opening answers.';
-  } else if (delta <= -2) {
-    headline =
-      'Your final answers became narrower than your starting position, leaning more on speed or single-constraint reasoning.';
+  let headline = 'Your end assessment stayed close to your starting reasoning, with only a modest shift in overall score.';
+  if (progressDelta >= 12) {
+    headline = 'Your end assessment shows a meaningfully broader and more balanced reasoning pattern than your starting position.';
+  } else if (progressDelta >= 5) {
+    headline = 'Your end assessment shows a clear progression toward more balanced decision analysis.';
+  } else if (progressDelta <= -5) {
+    headline = 'Your end assessment became narrower than your starting position, leaning more on immediate or single-constraint reasoning.';
   }
 
-  const strongestShift = dimensionDeltas[0];
-  let detail =
-    'The game appears to have kept your priorities fairly stable overall, which can still be useful if you can now explain your trade-offs more explicitly.';
-  if (strongestShift[0] === 'balanced' && strongestShift[1] > 0) {
-    detail =
-      'The strongest shift is toward balancing several constraints at once instead of letting one lens dominate the decision.';
-  } else if (strongestShift[0] === 'tradeoff' && strongestShift[1] > 0) {
-    detail =
-      'The strongest shift is toward seeing project decisions as trade-offs that need to be managed rather than solved by speed alone.';
-  } else if (strongestShift[0] === 'governance' && strongestShift[1] > 0) {
-    detail =
-      'The strongest shift is toward governance and legitimacy questions that often stay invisible until pressure is already high.';
-  } else if (strongestShift[1] < 0) {
-    detail =
-      'Your later answers put less weight on one of the broader project lenses, which is a useful signal to reflect on alongside your playthrough.';
+  const strongestTask = Object.entries(taskDeltas).sort((a, b) => Math.abs(b[1]) - Math.abs(a[1]))[0];
+  let detail = 'Your assessment remained fairly stable overall. That can still be useful if you can now explain your trade-offs more explicitly.';
+  if (strongestTask[0] === 'impact' && strongestTask[1] > 0) {
+    detail = 'Your strongest progression is in estimating how widely a decision can ripple across the three resources, not only in its immediate headline effect.';
+  } else if (strongestTask[0] === 'ranking' && strongestTask[1] > 0) {
+    detail = 'Your strongest progression is in identifying what deserves attention first inside a complex situation, which suggests a broader sense of priority-setting.';
+  } else if (strongestTask[0] === 'choice' && strongestTask[1] > 0) {
+    detail = 'Your strongest progression is in the final posture you choose after reflecting, which suggests you are moving toward more balanced responses under uncertainty.';
+  } else if (strongestTask[1] < 0) {
+    detail = 'One part of the assessment became less aligned with the benchmark at the end, which is still useful because it points to the kind of trade-off that remains difficult for you.';
   }
+
+  const postBias = getImpactBiasByResource('post');
+  const postAccuracy = getImpactAccuracyByResource('post');
+  const weakestKey = Object.entries(postAccuracy).sort((a, b) => a[1] - b[1])[0][0];
+  let blindSpot = `${resourceMeta[weakestKey].label} remains the least precise part of your impact estimation so far.`;
+  if (postBias[weakestKey] <= -1) {
+    blindSpot = `You still tend to underestimate how much ${resourceMeta[weakestKey].label.toLowerCase()} can be affected in these decisions.`;
+  } else if (postBias[weakestKey] >= 1) {
+    blindSpot = `You still tend to overestimate ${resourceMeta[weakestKey].label.toLowerCase()} compared with the benchmark used in this assessment.`;
+  }
+
+  const scenarioSummaries = evaluationScenarios.map((scenario, index) => {
+    const pre = preScores[index];
+    const post = postScores[index];
+    const startChoice = getEvaluationChoice(scenario.id, pre.answer?.selectedOption);
+    const endChoice = getEvaluationChoice(scenario.id, post.answer?.selectedOption);
+
+    return {
+      id: scenario.id,
+      title: scenario.title,
+      startScore: pre.totalScore,
+      endScore: post.totalScore,
+      delta: roundAverage(post.totalScore - pre.totalScore),
+      impactShift: describeTaskDelta(
+        post.impactScore - pre.impactScore,
+        'Your impact estimation moved closer to the benchmark and captured more of the longer-term ripple effects.',
+        'Your impact estimation stayed relatively stable between the start and the end.',
+        'Your impact estimation became less aligned with the benchmark in this scenario.',
+      ),
+      rankingShift: describeTaskDelta(
+        post.rankingScore - pre.rankingScore,
+        'Your priority ranking became more aligned with the key tensions in this situation.',
+        'Your priority ranking stayed fairly similar from start to end.',
+        'Your priority ranking became less aligned with the benchmark in this situation.',
+      ),
+      choiceShift: describeTaskDelta(
+        post.choiceScore - pre.choiceScore,
+        'Your final posture moved toward a more balanced response after reflection.',
+        'Your final posture stayed close to your starting instinct in this scenario.',
+        'Your final posture moved toward a narrower response in this scenario.',
+      ),
+      startImpact: formatImpactRatings(pre.answer),
+      endImpact: formatImpactRatings(post.answer),
+      startRanking: formatRanking(pre.answer, scenario),
+      endRanking: formatRanking(post.answer, scenario),
+      startChoice: startChoice ? startChoice.short : 'No answer recorded.',
+      endChoice: endChoice ? endChoice.short : 'No answer recorded.',
+      reflection: scenario.reflection,
+    };
+  });
 
   return {
     headline,
     detail,
-    preProfile,
-    postProfile,
-    delta,
+    blindSpot,
+    startScore,
+    endScore,
+    progressDelta,
+    scenarioSummaries,
   };
 }
 
@@ -2549,12 +2823,12 @@ function openRecapOverlay() {
 
 function renderEvaluationReview(mode) {
   const answers = getEvaluationAnswers(mode);
-  const label = mode === 'post' ? 'End evaluation summary' : 'Opening evaluation summary';
+  const label = mode === 'post' ? 'End assessment summary' : 'Opening assessment summary';
   const title = mode === 'post' ? 'How you answered at the end' : 'How you answered at the start';
   const intro =
     mode === 'post'
-      ? 'These end-of-game answers are stored for comparison with your opening reasoning.'
-      : 'These opening answers record your starting position before the project began to generate consequences.';
+      ? 'These end-of-game responses are stored for comparison with your opening assessment.'
+      : 'These opening responses record your starting position before the project began to generate consequences.';
 
   openModalPanel(false);
   mountTemplate('nodeTemplate');
@@ -2563,14 +2837,16 @@ function renderEvaluationReview(mode) {
   document.getElementById('nodeText').textContent = intro;
   const extra = document.getElementById('nodeExtra');
   extra.classList.remove('hidden');
-  extra.innerHTML = evaluationQuestions
-    .map((question, index) => {
-      const selected = getEvaluationOption(question.id, answers[question.id]);
+  extra.innerHTML = evaluationScenarios
+    .map((scenario, index) => {
+      const answer = answers[scenario.id];
+      const choice = getEvaluationChoice(scenario.id, answer?.selectedOption);
       return `
         <div class="overlay-section">
-          <h3>Question ${index + 1}</h3>
-          <p><strong>${escapeHtml(question.prompt)}</strong></p>
-          <p>${escapeHtml(selected ? selected.text : 'No answer recorded.')}</p>
+          <h3>Scenario ${index + 1}: ${escapeHtml(scenario.title)}</h3>
+          <p><strong>Impact estimation:</strong> ${escapeHtml(formatImpactRatings(answer))}</p>
+          <p><strong>Priority ranking:</strong> ${escapeHtml(formatRanking(answer, scenario))}</p>
+          <p><strong>Final choice:</strong> ${escapeHtml(choice ? choice.text : 'No answer recorded.')}</p>
         </div>
       `;
     })
@@ -2599,13 +2875,14 @@ function renderEvaluationReview(mode) {
 }
 
 function finishPreEvaluation() {
+  state.startAssessmentScore = computeOverallEvaluationScore('pre');
   markNodeCompleted('center');
   state.feedbackByNode.center = {
     feedback: {
-      feedbackTitle: 'Opening evaluation recorded',
+      feedbackTitle: 'Opening assessment recorded',
       feedbackStory:
-        'Your three opening answers were stored as a starting point before the project began to shape your reasoning through consequences.',
-      feedbackText: 'You can reopen the center node later to review these answers.',
+        'Your three opening scenario blocks were stored as a starting point before the project began to shape your reasoning through consequences.',
+      feedbackText: 'You can reopen the center node later to review these answers. The quantitative comparison is revealed at the end of the game.',
     },
   };
   unlockNodes(['funding_01', 'team_01', 'data_01']);
@@ -2616,23 +2893,28 @@ function finishPreEvaluation() {
 
 function openComparisonOverlay() {
   const summary = state.comparisonSummary || buildComparisonSummary();
-  const rowsHtml = evaluationQuestions
-    .map((question, index) => {
-      const startOption = getEvaluationOption(question.id, state.preEvaluationAnswers[question.id]);
-      const endOption = getEvaluationOption(question.id, state.postEvaluationAnswers[question.id]);
-      return `
+  const rowsHtml = summary.scenarioSummaries
+    .map(
+      (entry, index) => `
         <div class="comparison-card">
           <div class="comparison-card-head">
-            <span>Question ${index + 1}</span>
-            <strong>${escapeHtml(question.title.replace('Opening ', '').replace('evaluation ', ''))}</strong>
+            <span>Scenario ${index + 1}</span>
+            <strong>${escapeHtml(entry.title)}</strong>
           </div>
-          <p class="comparison-prompt">${escapeHtml(question.prompt)}</p>
-          <p><strong>Start:</strong> ${escapeHtml(startOption ? startOption.text : 'No answer recorded.')}</p>
-          <p><strong>End:</strong> ${escapeHtml(endOption ? endOption.text : 'No answer recorded.')}</p>
-          <p class="comparison-reflection">${escapeHtml(question.reflection)}</p>
+          <p class="comparison-scoreline"><strong>Start ${entry.startScore}/100</strong> · <strong>End ${entry.endScore}/100</strong> · <strong class="${getDeltaClass(entry.delta)}">${formatSignedValue(entry.delta)}</strong></p>
+          <p><strong>Impact estimation:</strong> ${escapeHtml(entry.impactShift)}</p>
+          <p><strong>Start:</strong> ${escapeHtml(entry.startImpact)}</p>
+          <p><strong>End:</strong> ${escapeHtml(entry.endImpact)}</p>
+          <p><strong>Priority ranking:</strong> ${escapeHtml(entry.rankingShift)}</p>
+          <p><strong>Start:</strong> ${escapeHtml(entry.startRanking)}</p>
+          <p><strong>End:</strong> ${escapeHtml(entry.endRanking)}</p>
+          <p><strong>Final choice:</strong> ${escapeHtml(entry.choiceShift)}</p>
+          <p><strong>Start:</strong> ${escapeHtml(entry.startChoice)}</p>
+          <p><strong>End:</strong> ${escapeHtml(entry.endChoice)}</p>
+          <p class="comparison-reflection">${escapeHtml(entry.reflection)}</p>
         </div>
-      `;
-    })
+      `,
+    )
     .join('');
 
   const html = `
@@ -2640,10 +2922,28 @@ function openComparisonOverlay() {
       <div class="step-badge">Before / after comparison</div>
       <h2>How your reasoning moved through the game</h2>
       <p class="overlay-intro">${escapeHtml(summary.headline)}</p>
+      <div class="score-strip">
+        <div class="score-tile">
+          <span>Start score</span>
+          <strong>${summary.startScore}/100</strong>
+        </div>
+        <div class="score-tile">
+          <span>End score</span>
+          <strong>${summary.endScore}/100</strong>
+        </div>
+        <div class="score-tile">
+          <span>Progress</span>
+          <strong class="${getDeltaClass(summary.progressDelta)}">${formatSignedValue(summary.progressDelta)}</strong>
+        </div>
+      </div>
       <div class="overlay-section-stack">
         <div class="overlay-section">
           <h3>Overall synthesis</h3>
           <p>${escapeHtml(summary.detail)}</p>
+        </div>
+        <div class="overlay-section">
+          <h3>Remaining blind spot</h3>
+          <p>${escapeHtml(summary.blindSpot)}</p>
         </div>
       </div>
       <div class="comparison-grid">
@@ -2661,17 +2961,21 @@ function openComparisonOverlay() {
 }
 
 function finishPostEvaluation() {
+  state.endAssessmentScore = computeOverallEvaluationScore('post');
+  state.progressDelta = roundAverage((state.endAssessmentScore || 0) - (state.startAssessmentScore || 0));
   state.comparisonSummary = buildComparisonSummary();
   renderBoard();
   closePanel();
   openComparisonOverlay();
 }
 
-function renderEvaluationStage(mode, index = null) {
-  const answers = { ...getEvaluationAnswers(mode) };
-  const questionIndex = index ?? getFirstUnansweredEvaluationIndex(mode);
-  const question = evaluationQuestions[questionIndex];
-  if (!question) {
+function renderEvaluationStage(mode, scenarioIndex = null, task = null) {
+  const targetStage =
+    scenarioIndex === null || task === null
+      ? getFirstUnansweredEvaluationStage(mode)
+      : { scenarioIndex, task };
+
+  if (!targetStage) {
     if (mode === 'post') {
       finishPostEvaluation();
     } else {
@@ -2680,66 +2984,177 @@ function renderEvaluationStage(mode, index = null) {
     return;
   }
 
+  const scenario = evaluationScenarios[targetStage.scenarioIndex];
+  const answer = ensureEvaluationAnswer(mode, scenario.id);
+  const previousStage = getPreviousEvaluationStage(targetStage.scenarioIndex, targetStage.task);
+  const nextStage = getNextEvaluationStage(targetStage.scenarioIndex, targetStage.task);
+  const stageMeta = {
+    impact: {
+      step: 'Task 1 of 3',
+      title: 'Impact estimation',
+      prompt: scenario.impactPrompt,
+      note: scenario.impactNote,
+    },
+    ranking: {
+      step: 'Task 2 of 3',
+      title: 'Priority ranking',
+      prompt: scenario.rankingPrompt,
+      note: scenario.rankingNote,
+    },
+    choice: {
+      step: 'Task 3 of 3',
+      title: 'Final decision choice',
+      prompt: scenario.choicePrompt,
+      note: scenario.choiceNote,
+    },
+  }[targetStage.task];
+
   state.currentNodeId = mode === 'pre' ? 'center' : 'post_evaluation';
   openModalPanel(false);
   mountTemplate('nodeTemplate');
-  document.getElementById('nodeTypeBadge').textContent =
-    mode === 'pre' ? 'Opening evaluation' : 'End evaluation';
-  document.getElementById('nodeTitle').textContent = question.title;
-  document.getElementById('nodeText').textContent = question.prompt;
+  document.getElementById('nodeTypeBadge').textContent = `${mode === 'pre' ? 'Opening assessment' : 'End assessment'} · Scenario ${targetStage.scenarioIndex + 1} of ${evaluationScenarios.length}`;
+  document.getElementById('nodeTitle').textContent = scenario.title;
+  document.getElementById('nodeText').textContent = scenario.context;
 
   const extra = document.getElementById('nodeExtra');
   extra.classList.remove('hidden');
-  extra.innerHTML = `<p>${escapeHtml(question.note)}</p>`;
+  extra.innerHTML = `
+    <div class="assessment-meta">
+      <div class="assessment-step">${escapeHtml(stageMeta.step)} · ${escapeHtml(stageMeta.title)}</div>
+      <h3>${escapeHtml(stageMeta.title)}</h3>
+      <p>${escapeHtml(stageMeta.prompt)}</p>
+      <p>${escapeHtml(stageMeta.note)}</p>
+    </div>
+  `;
 
   const choicesContainer = document.getElementById('choices');
   const actions = document.getElementById('secondaryAction');
-  let selectedChoice = question.options.find((option) => option.id === answers[question.id]) || null;
 
-  const nextButton = createButton({
-    label: questionIndex === evaluationQuestions.length - 1 ? 'Finish evaluation' : 'Next question',
-    className: 'primary-btn',
-    disabled: !selectedChoice,
-    onClick: () => {
-      if (!selectedChoice) return;
-      const target = mode === 'post' ? state.postEvaluationAnswers : state.preEvaluationAnswers;
-      target[question.id] = selectedChoice.id;
-      if (questionIndex === evaluationQuestions.length - 1) {
+  if (targetStage.task === 'impact') {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'assessment-stack';
+    evaluationResourceKeys.forEach((key) => {
+      const selected = answer.impactRatings?.[key];
+      const card = document.createElement('div');
+      card.className = 'assessment-card';
+      const head = document.createElement('div');
+      head.className = 'assessment-card-head';
+      head.innerHTML = `<strong>${escapeHtml(resourceMeta[key].label)}</strong><span>${selected ? `${selected}/10` : 'Not rated yet'}</span>`;
+      card.appendChild(head);
+      const scale = document.createElement('div');
+      scale.className = 'rating-scale';
+      for (let value = 1; value <= 10; value += 1) {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = `rating-btn${selected === value ? ' is-selected' : ''}`;
+        button.textContent = String(value);
+        button.addEventListener('click', () => {
+          answer.impactRatings[key] = value;
+          renderEvaluationStage(mode, targetStage.scenarioIndex, targetStage.task);
+        });
+        scale.appendChild(button);
+      }
+      card.appendChild(scale);
+      wrapper.appendChild(card);
+    });
+    choicesContainer.appendChild(wrapper);
+  } else if (targetStage.task === 'ranking') {
+    const wrapper = document.createElement('div');
+    wrapper.className = 'assessment-stack';
+    const preview = document.createElement('div');
+    preview.className = 'ranking-preview';
+    for (let index = 0; index < scenario.rankingTerms.length; index += 1) {
+      const termId = answer.themeRanking[index];
+      const slot = document.createElement('div');
+      slot.className = 'rank-slot';
+      slot.innerHTML = `<span class="rank-slot-index">${index + 1}</span><span class="rank-slot-label">${escapeHtml(termId ? getRankingTermLabel(scenario, termId) : 'Select a term')}</span>`;
+      preview.appendChild(slot);
+    }
+    wrapper.appendChild(preview);
+
+    const pool = document.createElement('div');
+    pool.className = 'ranking-pool';
+    scenario.rankingTerms.forEach((term) => {
+      const isSelected = answer.themeRanking.includes(term.id);
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = `term-btn${isSelected ? ' is-selected' : ''}`;
+      button.textContent = term.label;
+      button.addEventListener('click', () => {
+        if (isSelected) {
+          answer.themeRanking = answer.themeRanking.filter((entry) => entry !== term.id);
+        } else if (answer.themeRanking.length < scenario.rankingTerms.length) {
+          answer.themeRanking = [...answer.themeRanking, term.id];
+        }
+        renderEvaluationStage(mode, targetStage.scenarioIndex, targetStage.task);
+      });
+      pool.appendChild(button);
+    });
+    wrapper.appendChild(pool);
+    choicesContainer.appendChild(wrapper);
+  } else {
+    scenario.options.forEach((option) => {
+      const button = document.createElement('button');
+      button.className = `choice-btn${answer.selectedOption === option.id ? ' is-selected' : ''}`;
+      button.innerHTML = `<span class="choice-label">${escapeHtml(option.text)}</span>`;
+      button.addEventListener('click', () => {
+        answer.selectedOption = option.id;
+        renderEvaluationStage(mode, targetStage.scenarioIndex, targetStage.task);
+      });
+      choicesContainer.appendChild(button);
+    });
+  }
+
+  const isCurrentTaskComplete =
+    targetStage.task === 'impact'
+      ? isImpactTaskComplete(answer)
+      : targetStage.task === 'ranking'
+        ? isRankingTaskComplete(answer)
+        : isChoiceTaskComplete(answer);
+
+  actions.appendChild(
+    createButton({
+      label: nextStage ? 'Confirm and continue' : 'Finish assessment',
+      className: 'primary-btn',
+      disabled: !isCurrentTaskComplete,
+      onClick: () => {
+        if (!isCurrentTaskComplete) return;
+        if (nextStage) {
+          renderEvaluationStage(mode, nextStage.scenarioIndex, nextStage.task);
+          return;
+        }
         if (mode === 'post') {
           finishPostEvaluation();
         } else {
           finishPreEvaluation();
         }
-        return;
-      }
-      renderEvaluationStage(mode, questionIndex + 1);
-    },
-  });
+      },
+    }),
+  );
 
-  question.options.forEach((option) => {
-    const button = document.createElement('button');
-    button.className = `choice-btn${selectedChoice?.id === option.id ? ' is-selected' : ''}`;
-    button.innerHTML = `<span class="choice-label">${escapeHtml(option.text)}</span>`;
-    button.addEventListener('click', () => {
-      selectedChoice = option;
-      Array.from(choicesContainer.children).forEach((child) => child.classList.remove('is-selected'));
-      button.classList.add('is-selected');
-      nextButton.disabled = false;
-      nextButton.classList.remove('is-disabled');
-    });
-    choicesContainer.appendChild(button);
-  });
+  if (targetStage.task === 'ranking') {
+    actions.appendChild(
+      createButton({
+        label: 'Reset ranking',
+        className: 'ghost-btn',
+        onClick: () => {
+          answer.themeRanking = [];
+          renderEvaluationStage(mode, targetStage.scenarioIndex, targetStage.task);
+        },
+      }),
+    );
+  }
 
-  actions.appendChild(nextButton);
-  if (questionIndex > 0) {
+  if (previousStage) {
     actions.appendChild(
       createButton({
         label: 'Back',
         className: 'ghost-btn',
-        onClick: () => renderEvaluationStage(mode, questionIndex - 1),
+        onClick: () => renderEvaluationStage(mode, previousStage.scenarioIndex, previousStage.task),
       }),
     );
   }
+
   actions.appendChild(
     createButton({
       label: 'Back to board',
@@ -3054,7 +3469,7 @@ function renderIntro(nodeId) {
   const introHint = document.getElementById('introHint');
   const hintHtml =
     node.id === 'center'
-      ? '<h3>How the game opens</h3><p>The center node records three starting-position answers without changing any resource. After that, the first chapter entry nodes unlock around the board and major decisions begin to close alternate routes.</p>'
+      ? '<h3>How the game opens</h3><p>The center node records three mirrored scenario blocks without changing any resource. After that, the first chapter entry nodes unlock around the board and major decisions begin to close alternate routes.</p>'
       : resolveValue(node.introHtml, node);
 
   if (hintHtml) {
@@ -3067,7 +3482,7 @@ function renderIntro(nodeId) {
   const introActions = document.getElementById('introActions');
   introActions.appendChild(
     createButton({
-      label: node.evaluationOnly && isEvaluationComplete('pre') ? 'Review answers' : 'Open node',
+      label: node.evaluationOnly && isEvaluationComplete('pre') ? 'Review assessment' : 'Open node',
       className: 'primary-btn',
       onClick: () => renderActionStage(nodeId),
     }),
@@ -3389,6 +3804,9 @@ function resetPrototype() {
     preEvaluationAnswers: {},
     postEvaluationAnswers: {},
     comparisonSummary: null,
+    startAssessmentScore: null,
+    endAssessmentScore: null,
+    progressDelta: null,
     branchFlags: new Set(),
     chapterMilestones: new Set(),
     shownThresholds: new Set(),

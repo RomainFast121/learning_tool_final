@@ -306,7 +306,7 @@ const evaluationScenarios = [
         id: 'seek-more-volume',
         short: 'Seek more volume to offset risk',
         score: 20,
-        text: 'Push for more volume early because larger scale will reduce the practical importance of the archive's unevenness.',
+        text: 'Push for more volume early because larger scale will reduce the practical importance of the archive\'s unevenness.',
       },
     ],
     reflection:

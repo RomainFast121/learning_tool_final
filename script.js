@@ -4,7 +4,7 @@ const UPPER_LIMIT = 70;
 const initialResources = {
   social: 50,
   financial: 50,
-  eco: 50,
+  performance: 50,
 };
 
 const resourceMeta = {
@@ -44,7 +44,7 @@ const resourceMeta = {
     push:
       'Financial viability is receiving the strongest average push so far. Keep the project viable, but do not let cost logic dominate every other concern.',
   },
-  eco: {
+  performance: {
     label: 'Project performance',
     short: 'Performance',
     lowTitle: 'Project performance is under strain',
@@ -159,7 +159,7 @@ const evaluationScenarios = [
       'The team publicly commits to the timeline before those safeguards are settled. Rate how strongly that decision is likely to affect each resource.',
     impactNote:
       'Use 1 for limited impact and 10 for very strong impact. You are estimating how implicated each dimension is, not whether the effect is positive or negative.',
-    impactBenchmark: { social: 9, financial: 6, eco: 8 },
+    impactBenchmark: { social: 9, financial: 6, performance: 8 },
     rankingPrompt:
       'Before accepting that commitment, rank these themes from most important to least important to consider.',
     rankingNote:
@@ -213,7 +213,7 @@ const evaluationScenarios = [
       'The team uses its only immediate hire on a pure ML engineer while clinical workflow and governance knowledge stay outside the core group. Rate how strongly that decision is likely to affect each resource.',
     impactNote:
       'Think about the size of the impact, not whether you personally like the decision. A choice can strongly affect several dimensions at once.',
-    impactBenchmark: { social: 8, financial: 5, eco: 7 },
+    impactBenchmark: { social: 8, financial: 5, performance: 7 },
     rankingPrompt:
       'Before making that hire, rank these themes from most important to least important to consider.',
     rankingNote:
@@ -267,7 +267,7 @@ const evaluationScenarios = [
       'The team starts using the archive immediately even though consent wording and documentation remain uneven across sites. Rate how strongly that decision is likely to affect each resource.',
     impactNote:
       'A decision can have strong impact even if its consequences appear only later. Rate how much each dimension is involved.',
-    impactBenchmark: { social: 8, financial: 4, eco: 9 },
+    impactBenchmark: { social: 8, financial: 4, performance: 9 },
     rankingPrompt:
       'Before treating that archive as stable evidence, rank these themes from most important to least important to consider.',
     rankingNote:
@@ -315,7 +315,7 @@ const evaluationScenarios = [
 ];
 
 const evaluationTaskOrder = ['impact', 'ranking', 'choice'];
-const evaluationResourceKeys = ['social', 'financial', 'eco'];
+const evaluationResourceKeys = ['social', 'financial', 'performance'];
 const EVALUATION_SCORE_WEIGHTS = {
   impact: 0.4,
   ranking: 0.3,
@@ -365,10 +365,10 @@ const refs = {
   contentCard: document.getElementById('contentCard'),
   socialBar: document.getElementById('socialBar'),
   financialBar: document.getElementById('financialBar'),
-  ecoBar: document.getElementById('ecoBar'),
+  performanceBar: document.getElementById('performanceBar'),
   socialValue: document.getElementById('socialValue'),
   financialValue: document.getElementById('financialValue'),
-  ecoValue: document.getElementById('ecoValue'),
+  performanceValue: document.getElementById('performanceValue'),
   recapBtn: document.getElementById('recapBtn'),
   resetBtn: document.getElementById('resetBtn'),
   windowOverlay: document.getElementById('windowOverlay'),
@@ -394,13 +394,23 @@ function getBadgeLabel(node) {
       ? 'Information node'
       : node.type === 'quiz'
         ? 'Quiz node'
-        : 'Story node'
+        : node.type === 'decision'
+          ? 'Decision node'
+          : 'Story node'
   );
 }
 
 function makeStoryNode(config) {
   return {
     type: 'story',
+    showResources: true,
+    ...config,
+  };
+}
+
+function makeDecisionNode(config) {
+  return {
+    type: 'decision',
     showResources: true,
     ...config,
   };
@@ -465,7 +475,7 @@ const nodes = {
     continueTo: 'funding_02',
     continueLabel: 'Continue to the funding meeting',
   }),
-  funding_02: makeStoryNode({
+  funding_02: makeDecisionNode({
     id: 'funding_02',
     chapter: 'funding',
     title: 'How To Enter The Meeting',
@@ -483,7 +493,7 @@ const nodes = {
         feedbackTitle: 'You chose a high-visibility entry.',
         feedbackStory: 'The project gains speed and attention, but expectations begin to form before the team has fully stabilized its internal review process.',
         feedbackText: 'This route may improve financing quickly, but it makes later caution harder to communicate and can weaken the project if promises outrun reality.',
-        impact: { social: -10, financial: 13, eco: -4 },
+        impact: { social: -10, financial: 13, performance: -4 },
         next: 'funding_03_hype',
         unlocks: ['funding_08b'],
         locks: ['funding_03_guarded', 'funding_04_guarded', 'funding_05_guarded', 'funding_06_guarded'],
@@ -496,7 +506,7 @@ const nodes = {
         feedbackTitle: 'You chose a guarded opening.',
         feedbackStory: 'The room loses some early momentum, but it keeps more space for due diligence and internal alignment.',
         feedbackText: 'This route protects legitimacy and review, even if it softens the first funding wave.',
-        impact: { social: 6, financial: -5, eco: 3 },
+        impact: { social: 6, financial: -5, performance: 3 },
         next: 'funding_03_guarded',
         unlocks: ['funding_08b'],
         locks: ['funding_03_hype', 'funding_04_hype', 'funding_05_hype', 'funding_06_hype'],
@@ -506,7 +516,7 @@ const nodes = {
       },
     ],
   }),
-  funding_03_hype: makeStoryNode({
+  funding_03_hype: makeDecisionNode({
     id: 'funding_03_hype',
     chapter: 'funding',
     title: 'Sponsor Pitch',
@@ -551,7 +561,7 @@ const nodes = {
       },
     ],
   }),
-  funding_05_hype: makeStoryNode({
+  funding_05_hype: makeDecisionNode({
     id: 'funding_05_hype',
     chapter: 'funding',
     title: 'Message Discipline',
@@ -567,7 +577,7 @@ const nodes = {
         feedbackTitle: 'You reinforced the public momentum.',
         feedbackStory: 'The route becomes easier to finance and harder to slow down. From now on, caution will sound more expensive in the room.',
         feedbackText: 'This creates a stronger top-line story, but it also narrows the space for later correction.',
-        impact: { social: -8, financial: 7, eco: -3 },
+        impact: { social: -8, financial: 7, performance: -3 },
         next: 'funding_06_hype',
         branchFlagsSet: ['funding_message_bold'],
       },
@@ -576,7 +586,7 @@ const nodes = {
         feedbackTitle: 'You kept some momentum without overcommitting.',
         feedbackStory: 'The sponsor loses a little rhetorical energy, but the team preserves room to admit uncertainty later on.',
         feedbackText: 'This keeps the high-visibility route from collapsing entirely into hype.',
-        impact: { social: 2, financial: 1, eco: 1 },
+        impact: { social: 2, financial: 1, performance: 1 },
         next: 'funding_06_hype',
         branchFlagsSet: ['funding_message_tempered'],
       },
@@ -594,7 +604,7 @@ const nodes = {
     continueTo: 'funding_06',
     continueLabel: 'Continue to expectation pressure',
   }),
-  funding_03_guarded: makeStoryNode({
+  funding_03_guarded: makeDecisionNode({
     id: 'funding_03_guarded',
     chapter: 'funding',
     title: 'Closed-Door Diligence',
@@ -639,7 +649,7 @@ const nodes = {
       },
     ],
   }),
-  funding_05_guarded: makeStoryNode({
+  funding_05_guarded: makeDecisionNode({
     id: 'funding_05_guarded',
     chapter: 'funding',
     title: 'Internal Briefing',
@@ -655,7 +665,7 @@ const nodes = {
         feedbackTitle: 'You kept expectations measured and intelligible.',
         feedbackStory: 'The project does not surge, but staff are less likely to mistake a possible partnership for a finished deal.',
         feedbackText: 'This preserves organizational trust without pretending that uncertainty has already been solved.',
-        impact: { social: 5, financial: 0, eco: 1 },
+        impact: { social: 5, financial: 0, performance: 1 },
         next: 'funding_06_guarded',
         branchFlagsSet: ['funding_message_guarded'],
       },
@@ -664,7 +674,7 @@ const nodes = {
         feedbackTitle: 'You imported momentum into the hospital before the deal existed.',
         feedbackStory: 'This may help internal energy, but it also risks making later caution look like retreat.',
         feedbackText: 'Even a guarded funding route can recreate hype if the institution begins acting on promises too early.',
-        impact: { social: -6, financial: 5, eco: -2 },
+        impact: { social: -6, financial: 5, performance: -2 },
         next: 'funding_06_guarded',
         branchFlagsSet: ['funding_message_optimistic'],
       },
@@ -711,7 +721,7 @@ const nodes = {
     continueTo: 'funding_07',
     continueLabel: 'Move to contract terms',
   }),
-  funding_07: makeStoryNode({
+  funding_07: makeDecisionNode({
     id: 'funding_07',
     chapter: 'funding',
     title: 'Contract Red Lines',
@@ -727,7 +737,7 @@ const nodes = {
         feedbackTitle: 'You protected feasibility by conceding influence.',
         feedbackStory: 'The project becomes easier to finance, but harder to defend if the sponsor later pushes for speed or visibility over review.',
         feedbackText: 'This route increases flexibility in the short term while making governance more fragile later on.',
-        impact: { social: -7, financial: 9, eco: -5 },
+        impact: { social: -7, financial: 9, performance: -5 },
         next: 'funding_07b',
         branchFlagsSet: ['funding_contract_loose'],
       },
@@ -736,7 +746,7 @@ const nodes = {
         feedbackTitle: 'You defended a stricter contract.',
         feedbackStory: 'The final package is leaner, but the project keeps more space to remain accountable when pressures sharpen later.',
         feedbackText: 'This is less comfortable financially, but it protects the team from becoming politically dependent on one actor.',
-        impact: { social: 8, financial: -5, eco: 4 },
+        impact: { social: 8, financial: -5, performance: 4 },
         next: 'funding_07b',
         branchFlagsSet: ['funding_contract_strict'],
       },
@@ -745,7 +755,7 @@ const nodes = {
         feedbackTitle: 'You chose a narrower commitment.',
         feedbackStory: 'The project gains less support, but it keeps a realistic escape path if the relationship becomes constraining.',
         feedbackText: 'This option trades scale for resilience and makes it easier to protect future correction.',
-        impact: { social: 4, financial: -3, eco: 2 },
+        impact: { social: 4, financial: -3, performance: 2 },
         next: 'funding_07b',
         branchFlagsSet: ['funding_contract_pilot'],
       },
@@ -878,7 +888,7 @@ const nodes = {
     continueTo: 'team_02',
     continueLabel: 'Continue to hiring priorities',
   }),
-  team_02: makeStoryNode({
+  team_02: makeDecisionNode({
     id: 'team_02',
     chapter: 'team',
     title: 'First Hiring Priority',
@@ -894,7 +904,7 @@ const nodes = {
         feedbackTitle: 'You chose a tighter expert core.',
         feedbackStory: 'The team becomes easier to steer operationally, but several forms of experience and legitimacy remain outside the room.',
         feedbackText: 'This route can protect short-term feasibility while making later representation work more reactive.',
-        impact: { social: -10, financial: 8, eco: -2 },
+        impact: { social: -10, financial: 8, performance: -2 },
         next: 'team_03_narrow',
         unlocks: ['team_08b'],
         locks: ['team_03_broad', 'team_04_broad', 'team_05_broad', 'team_06_broad'],
@@ -907,7 +917,7 @@ const nodes = {
         feedbackTitle: 'You chose a broader staffing base.',
         feedbackStory: 'The team gains perspective and legitimacy, but it also becomes more expensive and harder to coordinate cleanly.',
         feedbackText: 'This route invests early in representation and review, even at the cost of immediate operational simplicity.',
-        impact: { social: 9, financial: -8, eco: 2 },
+        impact: { social: 9, financial: -8, performance: 2 },
         next: 'team_03_broad',
         unlocks: ['team_08b'],
         locks: ['team_03_narrow', 'team_04_narrow', 'team_05_narrow', 'team_06_narrow'],
@@ -917,7 +927,7 @@ const nodes = {
       },
     ],
   }),
-  team_03_narrow: makeStoryNode({
+  team_03_narrow: makeDecisionNode({
     id: 'team_03_narrow',
     chapter: 'team',
     title: 'Clinician Pushback',
@@ -962,7 +972,7 @@ const nodes = {
       },
     ],
   }),
-  team_05_narrow: makeStoryNode({
+  team_05_narrow: makeDecisionNode({
     id: 'team_05_narrow',
     chapter: 'team',
     title: 'Patch The Narrowness Or Double Down?',
@@ -978,7 +988,7 @@ const nodes = {
         feedbackTitle: 'You softened the narrow route.',
         feedbackStory: 'The team remains operationally tight, but some real-world friction is now allowed to enter before damage accumulates.',
         feedbackText: 'This does not fully solve the chapter, but it prevents narrowness from becoming pure tunnel vision.',
-        impact: { social: 5, financial: -3, eco: 2 },
+        impact: { social: 5, financial: -3, performance: 2 },
         next: 'team_06_narrow',
         branchFlagsSet: ['team_liaison'],
       },
@@ -987,7 +997,7 @@ const nodes = {
         feedbackTitle: 'You doubled down on the expert core.',
         feedbackStory: 'The project may remain faster to coordinate, but several tensions will now re-enter later and with less patience around them.',
         feedbackText: 'This sharpens the project’s internal speed at the cost of earlier legitimacy work.',
-        impact: { social: -7, financial: 4, eco: -2 },
+        impact: { social: -7, financial: 4, performance: -2 },
         next: 'team_06_narrow',
         branchFlagsSet: ['team_double_down'],
       },
@@ -1005,7 +1015,7 @@ const nodes = {
     continueTo: 'team_06',
     continueLabel: 'Continue to workload reality',
   }),
-  team_03_broad: makeStoryNode({
+  team_03_broad: makeDecisionNode({
     id: 'team_03_broad',
     chapter: 'team',
     title: 'A Wider Table',
@@ -1050,7 +1060,7 @@ const nodes = {
       },
     ],
   }),
-  team_05_broad: makeStoryNode({
+  team_05_broad: makeDecisionNode({
     id: 'team_05_broad',
     chapter: 'team',
     title: 'Where To Spend The Extra Coordination',
@@ -1066,7 +1076,7 @@ const nodes = {
         feedbackTitle: 'You pushed the route toward legitimacy work.',
         feedbackStory: 'The project builds stronger outward trust, but some internal workflow questions will now take longer to settle cleanly.',
         feedbackText: 'This increases social grounding while making coordination a bit more expensive.',
-        impact: { social: 7, financial: -4, eco: 1 },
+        impact: { social: 7, financial: -4, performance: 1 },
         next: 'team_06_broad',
         branchFlagsSet: ['team_patient_voice'],
       },
@@ -1075,7 +1085,7 @@ const nodes = {
         feedbackTitle: 'You made the broader route more operational.',
         feedbackStory: 'The project stays grounded in hospital use, even if some external legitimacy work becomes lighter than it could have been.',
         feedbackText: 'This does not abandon representation, but it directs the extra coordination toward practical integration first.',
-        impact: { social: 4, financial: -3, eco: 2 },
+        impact: { social: 4, financial: -3, performance: 2 },
         next: 'team_06_broad',
         branchFlagsSet: ['team_clinical_anchor'],
       },
@@ -1119,7 +1129,7 @@ const nodes = {
     continueTo: 'team_07',
     continueLabel: 'Continue to reorganization',
   }),
-  team_07: makeStoryNode({
+  team_07: makeDecisionNode({
     id: 'team_07',
     chapter: 'team',
     title: 'Reorganize Or Hold The Line',
@@ -1135,7 +1145,7 @@ const nodes = {
         feedbackTitle: 'You protected a tighter command structure.',
         feedbackStory: 'Coordination becomes simpler, but some people now feel that they influence the project only after major directions are already set.',
         feedbackText: 'This improves feasibility in the short term while risking thinner ownership across the broader project.',
-        impact: { social: -6, financial: 6, eco: -1 },
+        impact: { social: -6, financial: 6, performance: -1 },
         next: 'team_07b',
         branchFlagsSet: ['team_centralized'],
       },
@@ -1144,7 +1154,7 @@ const nodes = {
         feedbackTitle: 'You distributed responsibility more widely.',
         feedbackStory: 'The project becomes harder to schedule, but more people can see where the hard trade-offs are actually happening.',
         feedbackText: 'This protects governance and legitimacy, though it costs more coordination energy.',
-        impact: { social: 6, financial: -6, eco: 1 },
+        impact: { social: 6, financial: -6, performance: 1 },
         next: 'team_07b',
         branchFlagsSet: ['team_rotating'],
       },
@@ -1153,7 +1163,7 @@ const nodes = {
         feedbackTitle: 'You chose a balancing structure.',
         feedbackStory: 'The structure is not simple, but it may stop the project from becoming either too inward-looking or too meeting-heavy.',
         feedbackText: 'This option tries to preserve operational clarity without isolating the project from its wider responsibilities.',
-        impact: { social: 4, financial: -3, eco: 2 },
+        impact: { social: 4, financial: -3, performance: 2 },
         next: 'team_07b',
         branchFlagsSet: ['team_paired_leads'],
       },
@@ -1284,7 +1294,7 @@ const nodes = {
     continueTo: 'data_02',
     continueLabel: 'Continue to the intake decision',
   }),
-  data_02: makeStoryNode({
+  data_02: makeDecisionNode({
     id: 'data_02',
     chapter: 'data',
     title: 'How To Take In The Data',
@@ -1300,7 +1310,7 @@ const nodes = {
         feedbackTitle: 'You chose a faster intake route.',
         feedbackStory: 'The project gains immediate technical momentum, but it also builds on an archive whose weaknesses may become visible later and at higher cost.',
         feedbackText: 'This route favors progress-first logic and risks learning the data’s institutional limits only after they are already operationally embedded.',
-        impact: { social: -9, financial: 7, eco: -5 },
+        impact: { social: -9, financial: 7, performance: -5 },
         next: 'data_03_fast',
         unlocks: ['data_08b'],
         locks: ['data_03_careful', 'data_04_careful', 'data_05_careful', 'data_06_careful'],
@@ -1313,7 +1323,7 @@ const nodes = {
         feedbackTitle: 'You chose a more disciplined intake route.',
         feedbackStory: 'The project slows down, but it gains a clearer picture of what kind of data relationship it is actually entering.',
         feedbackText: 'This route protects traceability and legitimacy even though it delays early model experimentation.',
-        impact: { social: 7, financial: -6, eco: 4 },
+        impact: { social: 7, financial: -6, performance: 4 },
         next: 'data_03_careful',
         unlocks: ['data_08b'],
         locks: ['data_03_fast', 'data_04_fast', 'data_05_fast', 'data_06_fast'],
@@ -1323,7 +1333,7 @@ const nodes = {
       },
     ],
   }),
-  data_03_fast: makeStoryNode({
+  data_03_fast: makeDecisionNode({
     id: 'data_03_fast',
     chapter: 'data',
     title: 'Ingestion Sprint',
@@ -1368,7 +1378,7 @@ const nodes = {
       },
     ],
   }),
-  data_05_fast: makeStoryNode({
+  data_05_fast: makeDecisionNode({
     id: 'data_05_fast',
     chapter: 'data',
     title: 'Bias Gap Response',
@@ -1384,7 +1394,7 @@ const nodes = {
         feedbackTitle: 'You protected momentum, but left a serious gap exposed.',
         feedbackStory: 'The project can keep moving technically, yet it now carries a fairness limitation that will be expensive to explain later.',
         feedbackText: 'This is a recognizable real-world move, but it shifts a difficult problem forward rather than resolving it.',
-        impact: { social: -8, financial: 4, eco: -3 },
+        impact: { social: -8, financial: 4, performance: -3 },
         next: 'data_06_fast',
         branchFlagsSet: ['data_gap_deferred'],
       },
@@ -1393,7 +1403,7 @@ const nodes = {
         feedbackTitle: 'You slowed the route to protect legitimacy.',
         feedbackStory: 'The data path becomes less efficient, but the project avoids building too much confidence on top of a known blind spot.',
         feedbackText: 'This choice protects social and evidentiary quality at a real operational cost.',
-        impact: { social: 7, financial: -5, eco: 4 },
+        impact: { social: 7, financial: -5, performance: 4 },
         next: 'data_06_fast',
         branchFlagsSet: ['data_gap_repaired'],
       },
@@ -1405,7 +1415,7 @@ const nodes = {
         feedbackTitle: 'You tried to compensate quickly by asking for more trust.',
         feedbackStory: 'The move could help the archive, but it also asks communities to extend confidence to a project that may not yet have earned it.',
         feedbackText: 'Rapid expansion can look responsible, but it depends on whether the project still has the legitimacy to ask for more from people.',
-        impact: { social: 3, financial: -3, eco: 1 },
+        impact: { social: 3, financial: -3, performance: 1 },
         next: 'data_06_fast',
         branchFlagsSet: ['data_gap_expand'],
       },
@@ -1423,7 +1433,7 @@ const nodes = {
     continueTo: 'data_06',
     continueLabel: 'Continue to compute and storage',
   }),
-  data_03_careful: makeStoryNode({
+  data_03_careful: makeDecisionNode({
     id: 'data_03_careful',
     chapter: 'data',
     title: 'Archive Inspection',
@@ -1468,7 +1478,7 @@ const nodes = {
       },
     ],
   }),
-  data_05_careful: makeStoryNode({
+  data_05_careful: makeDecisionNode({
     id: 'data_05_careful',
     chapter: 'data',
     title: 'How Much Documentation Is Enough?',
@@ -1484,7 +1494,7 @@ const nodes = {
         feedbackTitle: 'You kept the careful route leaner.',
         feedbackStory: 'The archive remains more accountable than in the fast path, but some future questions will still depend on how much the team can reconstruct later.',
         feedbackText: 'This protects feasibility, though it limits how strong the project’s later traceability claims can be.',
-        impact: { social: 2, financial: 1, eco: 1 },
+        impact: { social: 2, financial: 1, performance: 1 },
         next: 'data_06_careful',
         branchFlagsSet: ['data_docs_light'],
       },
@@ -1493,7 +1503,7 @@ const nodes = {
         feedbackTitle: 'You made the careful route more robust.',
         feedbackStory: 'The team slows down, but it gains a record strong enough to explain how the archive was interpreted and constrained over time.',
         feedbackText: 'This route is less comfortable in the short term and much stronger if the project later needs to justify itself publicly.',
-        impact: { social: 4, financial: -3, eco: 2 },
+        impact: { social: 4, financial: -3, performance: 2 },
         next: 'data_06_careful',
         branchFlagsSet: ['data_docs_strong'],
       },
@@ -1535,7 +1545,7 @@ const nodes = {
     continueTo: 'data_07',
     continueLabel: 'Continue to the response',
   }),
-  data_07: makeStoryNode({
+  data_07: makeDecisionNode({
     id: 'data_07',
     chapter: 'data',
     title: 'Responding To The Data Strain',
@@ -1554,7 +1564,7 @@ const nodes = {
         feedbackTitle: 'You chose the expansion route.',
         feedbackStory: 'The project may improve its archive, but it also increases what it is asking from institutions and patients at a moment when trust may still be uneven.',
         feedbackText: 'Data expansion is not only technical. It depends on whether the project has earned enough legitimacy to ask for more.',
-        impact: { social: -2, financial: -4, eco: 2 },
+        impact: { social: -2, financial: -4, performance: 2 },
         next: 'data_07b',
         branchFlagsSet: ['data_expand'],
       },
@@ -1563,7 +1573,7 @@ const nodes = {
         feedbackTitle: 'You chose depth over expansion.',
         feedbackStory: 'The route may look slower, but the project becomes better able to explain what its evidence actually means and where it remains weak.',
         feedbackText: 'This protects social and epistemic quality at a visible cost in time and budget.',
-        impact: { social: 6, financial: -5, eco: 4 },
+        impact: { social: 6, financial: -5, performance: 4 },
         next: 'data_07b',
         branchFlagsSet: ['data_deepen'],
       },
@@ -1572,7 +1582,7 @@ const nodes = {
         feedbackTitle: 'You reduced the footprint of the route.',
         feedbackStory: 'The archive path becomes more disciplined and technically defensible, though some ambitions now have to be postponed or made narrower.',
         feedbackText: 'This protects project performance by refusing to treat weak validation or fragile evidence as acceptable shortcuts.',
-        impact: { social: 0, financial: -2, eco: 8 },
+        impact: { social: 0, financial: -2, performance: 8 },
         next: 'data_07b',
         branchFlagsSet: ['data_low_compute'],
       },
@@ -1703,7 +1713,7 @@ const nodes = {
     continueTo: 'launch_02',
     continueLabel: 'Continue to readiness posture',
   }),
-  launch_02: makeStoryNode({
+  launch_02: makeDecisionNode({
     id: 'launch_02',
     chapter: 'launch',
     title: 'Launch Posture',
@@ -1719,7 +1729,7 @@ const nodes = {
         feedbackTitle: 'You chose a broader and more exposed launch route.',
         feedbackStory: 'The project may now look more convincing from the outside, but it also becomes less able to treat uncertainty as normal.',
         feedbackText: 'This route can amplify momentum, yet it makes every unresolved weakness more public and less forgiving.',
-        impact: { social: -8, financial: 6, eco: -4 },
+        impact: { social: -8, financial: 6, performance: -4 },
         next: 'launch_03_ambitious',
         unlocks: ['launch_08b'],
         locks: ['launch_03_measured', 'launch_04_measured', 'launch_05_measured', 'launch_06_measured'],
@@ -1732,7 +1742,7 @@ const nodes = {
         feedbackTitle: 'You chose a more measured launch route.',
         feedbackStory: 'The project may look less triumphant, but it stays closer to the kind of deployment that can still learn without overclaiming.',
         feedbackText: 'This route protects correction capacity and reduces the political cost of admitting uncertainty.',
-        impact: { social: 7, financial: -3, eco: 3 },
+        impact: { social: 7, financial: -3, performance: 3 },
         next: 'launch_03_measured',
         unlocks: ['launch_08b'],
         locks: ['launch_03_ambitious', 'launch_04_ambitious', 'launch_05_ambitious', 'launch_06_ambitious'],
@@ -1742,7 +1752,7 @@ const nodes = {
       },
     ],
   }),
-  launch_03_ambitious: makeStoryNode({
+  launch_03_ambitious: makeDecisionNode({
     id: 'launch_03_ambitious',
     chapter: 'launch',
     title: 'Coordination Call',
@@ -1787,7 +1797,7 @@ const nodes = {
       },
     ],
   }),
-  launch_05_ambitious: makeStoryNode({
+  launch_05_ambitious: makeDecisionNode({
     id: 'launch_05_ambitious',
     chapter: 'launch',
     title: 'How Visible Should Launch Be?',
@@ -1806,7 +1816,7 @@ const nodes = {
         feedbackTitle: 'You turned the ambitious route into a public event.',
         feedbackStory: 'The project gains attention and possible leverage, but it also becomes much harder to treat early corrections as normal learning.',
         feedbackText: 'Publicity can help momentum, yet it also raises the political cost of uncertainty exactly when the project most needs room to acknowledge it.',
-        impact: { social: -10, financial: 6, eco: -3 },
+        impact: { social: -10, financial: 6, performance: -3 },
         next: 'launch_06_ambitious',
         branchFlagsSet: ['launch_public'],
       },
@@ -1815,7 +1825,7 @@ const nodes = {
         feedbackTitle: 'You protected the route from some of its own visibility.',
         feedbackStory: 'The pilot remains large, but it gains a little more space to absorb its first surprises without immediate public staging.',
         feedbackText: 'This does not remove the risks of breadth, but it does reduce the cost of learning in public.',
-        impact: { social: 2, financial: 1, eco: 1 },
+        impact: { social: 2, financial: 1, performance: 1 },
         next: 'launch_06_ambitious',
         branchFlagsSet: ['launch_broad_quiet'],
       },
@@ -1833,7 +1843,7 @@ const nodes = {
     continueTo: 'launch_06',
     continueLabel: 'Continue to clinician trust',
   }),
-  launch_03_measured: makeStoryNode({
+  launch_03_measured: makeDecisionNode({
     id: 'launch_03_measured',
     chapter: 'launch',
     title: 'Ward Walkthrough',
@@ -1878,7 +1888,7 @@ const nodes = {
       },
     ],
   }),
-  launch_05_measured: makeStoryNode({
+  launch_05_measured: makeDecisionNode({
     id: 'launch_05_measured',
     chapter: 'launch',
     title: 'How Quiet Should The Pilot Be?',
@@ -1894,7 +1904,7 @@ const nodes = {
         feedbackTitle: 'You made the route openly provisional.',
         feedbackStory: 'The project may look less triumphant, but it gains a stronger public language for correction, adjustment, and trust-building.',
         feedbackText: 'This protects legitimacy by refusing to confuse modesty with weakness.',
-        impact: { social: 8, financial: -3, eco: 3 },
+        impact: { social: 8, financial: -3, performance: 3 },
         next: 'launch_06_measured',
         branchFlagsSet: ['launch_learning_frame'],
       },
@@ -1903,7 +1913,7 @@ const nodes = {
         feedbackTitle: 'You softened the caution without fully abandoning it.',
         feedbackStory: 'The route may keep institutional support stronger, but it also begins recreating some of the expectation pressure it was meant to avoid.',
         feedbackText: 'This is more ambitious rhetorically than it first appears, even if the rollout itself remains narrow.',
-        impact: { social: -4, financial: 4, eco: -2 },
+        impact: { social: -4, financial: 4, performance: -2 },
         next: 'launch_06_measured',
         branchFlagsSet: ['launch_quiet_confidence'],
       },
@@ -1945,7 +1955,7 @@ const nodes = {
     continueTo: 'launch_07',
     continueLabel: 'Continue to monitoring design',
   }),
-  launch_07: makeStoryNode({
+  launch_07: makeDecisionNode({
     id: 'launch_07',
     chapter: 'launch',
     title: 'Monitoring And Rollback',
@@ -1961,7 +1971,7 @@ const nodes = {
         feedbackTitle: 'You designed the launch around correction capacity.',
         feedbackStory: 'The system may feel more cautious, but clinicians can now see how the project intends to behave when uncertainty becomes real rather than theoretical.',
         feedbackText: 'This protects legitimacy and learning, even though it may look less bold in the short term.',
-        impact: { social: 8, financial: -4, eco: 4 },
+        impact: { social: 8, financial: -4, performance: 4 },
         next: 'launch_07b',
         branchFlagsSet: ['launch_strict_monitoring'],
       },
@@ -1970,7 +1980,7 @@ const nodes = {
         feedbackTitle: 'You protected momentum over firmness.',
         feedbackStory: 'The project stays agile, but some staff now feel that the system’s correction logic may depend too much on trust in the core team’s judgment.',
         feedbackText: 'This can work operationally, yet it makes legitimacy and clarity harder to secure under stress.',
-        impact: { social: -6, financial: 4, eco: -3 },
+        impact: { social: -6, financial: 4, performance: -3 },
         next: 'launch_07b',
         branchFlagsSet: ['launch_soft_monitoring'],
       },
@@ -1982,7 +1992,7 @@ const nodes = {
         feedbackTitle: 'You made the launch highly performative.',
         feedbackStory: 'The dashboards may reassure some executives, but they also risk turning correction into something politically harder to admit in real time.',
         feedbackText: 'Performance visibility is not the same thing as accountability. In some cases, it can make accountability harder to practice honestly.',
-        impact: { social: -8, financial: 6, eco: -4 },
+        impact: { social: -8, financial: 6, performance: -4 },
         next: 'launch_07b',
         branchFlagsSet: ['launch_dashboard'],
       },
@@ -2093,7 +2103,7 @@ function getEnding(currentState) {
   const minResource = Math.min(
     currentState.resources.social,
     currentState.resources.financial,
-    currentState.resources.eco,
+    currentState.resources.performance,
   );
   const lowCount = Object.values(currentState.resources).filter((value) => value <= LOWER_LIMIT).length;
   const highVisibility =
@@ -2487,7 +2497,7 @@ function computeOverallEvaluationScore(mode) {
 }
 
 function getImpactBiasByResource(mode) {
-  const deltas = { social: 0, financial: 0, eco: 0 };
+  const deltas = { social: 0, financial: 0, performance: 0 };
   evaluationScenarios.forEach((scenario) => {
     const ratings = getEvaluationAnswers(mode)[scenario.id]?.impactRatings || {};
     evaluationResourceKeys.forEach((key) => {
@@ -2501,7 +2511,7 @@ function getImpactBiasByResource(mode) {
 }
 
 function getImpactAccuracyByResource(mode) {
-  const totals = { social: 0, financial: 0, eco: 0 };
+  const totals = { social: 0, financial: 0, performance: 0 };
   evaluationScenarios.forEach((scenario) => {
     const ratings = getEvaluationAnswers(mode)[scenario.id]?.impactRatings || {};
     evaluationResourceKeys.forEach((key) => {
@@ -2661,10 +2671,10 @@ function applyTheme(theme) {
 function updateResources() {
   refs.socialBar.style.width = `${state.resources.social}%`;
   refs.financialBar.style.width = `${state.resources.financial}%`;
-  refs.ecoBar.style.width = `${state.resources.eco}%`;
+  refs.performanceBar.style.width = `${state.resources.performance}%`;
   refs.socialValue.textContent = state.resources.social;
   refs.financialValue.textContent = state.resources.financial;
-  refs.ecoValue.textContent = state.resources.eco;
+  refs.performanceValue.textContent = state.resources.performance;
 }
 
 function closeWindowOverlay() {
@@ -2752,17 +2762,17 @@ function openThresholdOverlay(entries, reasonOverride = '') {
 }
 
 function openRecapOverlay() {
-  const totals = { social: 0, financial: 0, eco: 0 };
+  const totals = { social: 0, financial: 0, performance: 0 };
   state.impactHistory.forEach((impact) => {
     totals.social += impact.social || 0;
     totals.financial += impact.financial || 0;
-    totals.eco += impact.eco || 0;
+    totals.performance += impact.performance || 0;
   });
   const count = state.impactHistory.length;
   const averages = {
     social: count ? roundAverage(totals.social / count) : 0,
     financial: count ? roundAverage(totals.financial / count) : 0,
-    eco: count ? roundAverage(totals.eco / count) : 0,
+    performance: count ? roundAverage(totals.performance / count) : 0,
   };
   const sorted = Object.entries(averages).sort((a, b) => a[1] - b[1]);
   const lowestKey = sorted[0][0];
@@ -3410,14 +3420,14 @@ function applyImpact(impact = {}) {
   const appliedImpact = {
     social: impact.social || 0,
     financial: impact.financial || 0,
-    eco: impact.eco || 0,
+    performance: impact.performance || 0,
   };
-  if (appliedImpact.social || appliedImpact.financial || appliedImpact.eco) {
+  if (appliedImpact.social || appliedImpact.financial || appliedImpact.performance) {
     state.impactHistory.push(appliedImpact);
   }
   state.resources.social = clampResource(state.resources.social + appliedImpact.social);
   state.resources.financial = clampResource(state.resources.financial + appliedImpact.financial);
-  state.resources.eco = clampResource(state.resources.eco + appliedImpact.eco);
+  state.resources.performance = clampResource(state.resources.performance + appliedImpact.performance);
   updateResources();
   return recordThresholdEvents(previous, state.resources);
 }
@@ -3496,8 +3506,12 @@ function renderIntro(nodeId) {
   );
 }
 
-function renderActionStage(nodeId) {
+function renderActionStage(nodeId, options = {}) {
   const node = nodes[nodeId];
+  const reviewMode = options.reviewMode === true;
+  const storedReview = state.feedbackByNode[nodeId];
+  const reviewChoiceIndex =
+    reviewMode && node.type === 'decision' ? storedReview?.selectedChoiceIndex : null;
   if (node.evaluationOnly === 'pre') {
     if (isEvaluationComplete('pre')) {
       renderEvaluationReview('pre');
@@ -3535,23 +3549,35 @@ function renderActionStage(nodeId) {
 
   if (node.choices) {
     let selectedChoice = null;
+    const readOnlyDecisionReview =
+      reviewMode && node.type === 'decision' && Number.isInteger(reviewChoiceIndex);
 
-    const nextButton = createButton({
-      label: 'Next',
-      className: 'primary-btn',
-      disabled: !selectedChoice,
-      onClick: () => {
-        if (selectedChoice) handleChoice(nodeId, selectedChoice);
-      },
-    });
+    const nextButton = readOnlyDecisionReview
+      ? null
+      : createButton({
+          label: 'Next',
+          className: 'primary-btn',
+          disabled: !selectedChoice,
+          onClick: () => {
+            if (selectedChoice) handleChoice(nodeId, selectedChoice);
+          },
+        });
 
-    node.choices.forEach((choice) => {
+    node.choices.forEach((choice, index) => {
       const constraint = getChoiceConstraint(choice);
       const button = document.createElement('button');
-      button.className = `choice-btn${constraint.blocked ? ' is-blocked' : ''}${selectedChoice === choice ? ' is-selected' : ''}`;
+      const isRecordedChoice = readOnlyDecisionReview && reviewChoiceIndex === index;
+      const isDimmedChoice = readOnlyDecisionReview && reviewChoiceIndex !== index;
+      button.className = `choice-btn${constraint.blocked ? ' is-blocked' : ''}${selectedChoice === choice ? ' is-selected' : ''}${isRecordedChoice ? ' is-selected' : ''}${isDimmedChoice ? ' is-review-dimmed' : ''}`;
       button.innerHTML = `<span class="choice-label">${escapeHtml(choice.text)}</span>`;
       if (constraint.blocked) {
         button.innerHTML += `<span class="choice-note">${escapeHtml(constraint.reason)}</span>`;
+      }
+
+      if (readOnlyDecisionReview) {
+        button.disabled = true;
+        choicesContainer.appendChild(button);
+        return;
       }
 
       button.addEventListener('click', () => {
@@ -3569,7 +3595,9 @@ function renderActionStage(nodeId) {
       choicesContainer.appendChild(button);
     });
 
-    actions.appendChild(nextButton);
+    if (nextButton) {
+      actions.appendChild(nextButton);
+    }
   } else {
     actions.appendChild(
       createButton({
@@ -3630,7 +3658,10 @@ function renderFeedbackModal(nodeId, feedback, options = {}) {
     createButton({
       label: 'Review node',
       className: 'ghost-btn',
-      onClick: () => renderActionStage(nodeId),
+      onClick: () =>
+        renderActionStage(nodeId, {
+          reviewMode: node.type === 'decision',
+        }),
     }),
   );
 }
@@ -3645,6 +3676,7 @@ function handleRetry(nodeId, choice) {
 
 function handleChoice(nodeId, choice) {
   const node = nodes[nodeId];
+  const selectedChoiceIndex = node.choices ? node.choices.indexOf(choice) : -1;
   const constraint = getChoiceConstraint(choice);
   if (constraint.blocked) {
     openThresholdOverlay(constraint.entries, constraint.reason);
@@ -3672,7 +3704,7 @@ function handleChoice(nodeId, choice) {
     feedbackText: choice.feedbackText || 'This decision changed how the project can proceed.',
   };
   const options = choice.impact ? { showImpact: choice.impact } : {};
-  state.feedbackByNode[nodeId] = { feedback, options };
+  state.feedbackByNode[nodeId] = { feedback, options, selectedChoiceIndex };
   renderBoard();
   renderFeedbackModal(nodeId, feedback, options);
 

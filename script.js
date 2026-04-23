@@ -3192,11 +3192,7 @@ function closePanel() {
 
 function mountTemplate(templateId) {
   const template = document.getElementById(templateId);
-  refs.contentCard.innerHTML = '';
-  refs.contentCard.appendChild(template.content.cloneNode(true));
-  refs.contentCard.classList.remove('card-animate');
-  void refs.contentCard.offsetWidth;
-  refs.contentCard.classList.add('card-animate');
+  refs.contentCard.replaceChildren(template.content.cloneNode(true));
 }
 
 function createButton({ label, className, onClick, disabled = false, id = '' }) {

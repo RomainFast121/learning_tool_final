@@ -2622,6 +2622,9 @@ function buildComparisonSummary() {
       endRanking: formatRanking(post.answer, scenario),
       startChoice: startChoice ? startChoice.short : 'No answer recorded.',
       endChoice: endChoice ? endChoice.short : 'No answer recorded.',
+      benchmarkImpact: formatImpactRatings({ impactRatings: scenario.impactBenchmark }),
+      benchmarkRanking: scenario.benchmarkRanking.map((termId) => getRankingTermLabel(scenario, termId)).join(' > '),
+      benchmarkChoice: scenario.options.slice().sort((a, b) => b.score - a.score)[0]?.text || 'No benchmark recorded.',
       reflection: scenario.reflection,
     };
   });
@@ -2915,12 +2918,15 @@ function openComparisonOverlay() {
           <p><strong>Impact estimation:</strong> ${escapeHtml(entry.impactShift)}</p>
           <p><strong>Start:</strong> ${escapeHtml(entry.startImpact)}</p>
           <p><strong>End:</strong> ${escapeHtml(entry.endImpact)}</p>
+          <p><strong>Benchmark:</strong> ${escapeHtml(entry.benchmarkImpact)}</p>
           <p><strong>Priority ranking:</strong> ${escapeHtml(entry.rankingShift)}</p>
           <p><strong>Start:</strong> ${escapeHtml(entry.startRanking)}</p>
           <p><strong>End:</strong> ${escapeHtml(entry.endRanking)}</p>
+          <p><strong>Benchmark:</strong> ${escapeHtml(entry.benchmarkRanking)}</p>
           <p><strong>Final choice:</strong> ${escapeHtml(entry.choiceShift)}</p>
           <p><strong>Start:</strong> ${escapeHtml(entry.startChoice)}</p>
           <p><strong>End:</strong> ${escapeHtml(entry.endChoice)}</p>
+          <p><strong>Reference posture:</strong> ${escapeHtml(entry.benchmarkChoice)}</p>
           <p class="comparison-reflection">${escapeHtml(entry.reflection)}</p>
         </div>
       `,

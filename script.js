@@ -2378,14 +2378,9 @@ function getNodeCenterPoint(node, offsets = getLayoutOffsets()) {
 function getOutgoingLinks(node) {
   const links = new Set();
   if (node.continueTo) links.add(node.continueTo);
-  if (Array.isArray(node.unlocks)) {
-    node.unlocks.forEach((id) => links.add(id));
-  }
   if (node.choices) {
     node.choices.forEach((choice) => {
       if (choice.next) links.add(choice.next);
-      if (Array.isArray(choice.unlocks)) choice.unlocks.forEach((id) => links.add(id));
-      if (Array.isArray(choice.locks)) choice.locks.forEach((id) => links.add(id));
     });
   }
   return [...links];

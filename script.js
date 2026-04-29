@@ -870,347 +870,371 @@ const nodes = {
     title: 'Capacity Warning',
     x: 150,
     y: 1160,
-    introText: 'The project can no longer run on goodwill and spare evenings alone.',
+    introText: 'The project progression starts to slow down, it can no longer run on goodwill.',
     text:
-      'As the work becomes more visible, the principal investigator warns that the current staffing pattern is not sustainable. The question is no longer whether more people are needed, but what kinds of people the project is willing to prioritize.',
+      "At first, everything seems on track. But after a few days, small issues appear.\n\nMessages sit unanswered. Tasks are discussed but not clearly assigned. Some parts move fast, others are blocked.\n\nDuring a meeting, the principal investigator says:\n\"We’re starting to lose track of who is doing what.\"\n\nNo one disagrees.",
     continueTo: 'team_01b',
-    continueLabel: 'Continue to the workload inventory',
+    continueLabel: 'Continue to look closer',
   }),
   team_01b: makeStoryNode({
     id: 'team_01b',
     chapter: 'team',
-    title: 'Workload Inventory',
+    title: 'Looking closer',
     x: 130,
     y: 1310,
-    introText: 'Before hiring, the team tries to name the work that is currently hidden inside “general coordination.”',
+    introText: 'The issue is not motivation, it\'s organization.',
     text:
-      'A whiteboard fills with tasks that nobody had been formally assigned: translating between clinicians and engineers, documenting decisions, calming worried collaborators, and checking whether rushed choices are becoming politically harder to reverse. The scene matters because it shows that staffing decisions are rarely only about adding capacity. They are also about deciding which kinds of labor the project is willing to admit are real.',
-    continueTo: 'team_02',
+      "You look more closely at how the team works.\n\nEveryone is putting in effort. But roles are unclear, priorities shift, and decisions are informal.\n\nSome people are overloaded. Others are waiting.\n\nThe problem isn’t motivation. It’s structure.",
+    continueTo: "team_02",
     continueLabel: 'Continue to hiring priorities',
   }),
   team_02: makeDecisionNode({
     id: 'team_02',
     chapter: 'team',
-    title: 'First Hiring Priority',
-    badge: 'Major decision',
+    title: 'What to fix first',
+    badge: 'Decision node',
     x: 390,
     y: 1140,
-    introText: 'The first hiring decision will shape the culture of the project more than the job title suggests.',
+    introText: 'Where do you focus first?',
     text:
-      'One faction wants to keep the team compact and technically sharp, arguing that coordination overhead could become its own failure mode. Another wants to widen the table early so trust, clinical reality, and governance are not retrofitted later as damage control.',
+      'One option is to clarify roles and responsibilities before adding more pressure. This could make the team more stable and improve coordination.\n\n' +
+      'Another option is to push for faster delivery, hoping that visible progress will keep funders and partners confident.\n\n' +
+      'A third option is to wait and observe, avoiding a heavy structural change too early.',
     choices: [
       {
-        text: 'Keep the first hires narrow and technical so the core model effort stays fast and manageable.',
-        feedbackTitle: 'You chose a tighter expert core.',
-        feedbackStory: 'The team becomes easier to steer operationally, but several forms of experience and legitimacy remain outside the room.',
-        feedbackText: 'This route can protect short-term feasibility while making later representation work more reactive.',
-        impact: { social: -10, financial: 8, performance: -2 },
-        next: 'team_03_narrow',
-        unlocks: ['team_08b'],
-        locks: ['team_03_broad', 'team_04_broad', 'team_05_broad', 'team_06_broad'],
-        lockReason:
-          'This narrow hiring posture closed the broader early-governance route. The chapter now follows a more compact staffing path.',
-        branchFlagsSet: ['team_narrow'],
+        text: 'Clarify roles and responsibilities before pushing the team further.',
+        feedbackTitle: 'You chose to stabilize the team first.',
+        feedbackStory:
+          'The team slows down briefly to define who is responsible for what. Some confusion is reduced, and overloaded members become easier to identify.',
+        feedbackText:
+          'This improves project performance by reducing bottlenecks. It also supports social fairness because workload becomes more visible and easier to distribute.',
+        impact: { social: 6, financial: 0, performance: 10 },
+        next: 'team_04',
       },
       {
-        text: 'Use the first hires to widen the room early with clinical, governance, and stakeholder-facing expertise.',
-        feedbackTitle: 'You chose a broader staffing base.',
-        feedbackStory: 'The team gains perspective and legitimacy, but it also becomes more expensive and harder to coordinate cleanly.',
-        feedbackText: 'This route invests early in representation and review, even at the cost of immediate operational simplicity.',
-        impact: { social: 9, financial: -8, performance: 2 },
-        next: 'team_03_broad',
-        unlocks: ['team_08b'],
-        locks: ['team_03_narrow', 'team_04_narrow', 'team_05_narrow', 'team_06_narrow'],
-        lockReason:
-          'This broader hiring posture closed the narrow expert-core route. The chapter now follows a more distributed staffing path.',
-        branchFlagsSet: ['team_broad'],
+        text: 'Push for faster delivery so the project shows visible progress quickly.',
+        feedbackTitle: 'You chose speed first.',
+        feedbackStory:
+          'The team focuses on short-term output. Progress becomes more visible, but unclear responsibilities remain underneath the surface.',
+        feedbackText:
+          'This can support financial viability in the short term because funders and partners see movement. However, it risks increasing pressure on already overloaded people.',
+        impact: { social: -5, financial: 6, performance: 4 },
+        next: 'team_04',
+      },
+      {
+        text: 'Wait and observe before changing the way the team works.',
+        feedbackTitle: 'You chose to delay the structural decision.',
+        feedbackStory:
+          'For now, the team keeps working in the same way. No one is disrupted, but the same delays and unclear responsibilities continue.',
+        feedbackText:
+          'This avoids immediate conflict, but it weakens project performance because the organizational problems are left unresolved.',
+        impact: { social: 0, financial: 0, performance: -8 },
+        next: 'team_04',
       },
     ],
   }),
-  team_03_narrow: makeDecisionNode({
-    id: 'team_03_narrow',
+  team_03: makeInfoNode({
+    id: 'team_03',
     chapter: 'team',
-    title: 'Clinician Pushback',
+    title: 'Structure vs Effort',
     x: 650,
     y: 1100,
-    introText: 'The first reaction from clinicians is respectful but uneasy.',
+    introText: 'In growing teams, performance issues are often caused by lack of structure, not lack of effort.',
     text:
-      'A senior clinician says the project risks becoming technically elegant and operationally naive if hospital realities keep entering only after core decisions are already made. No one dismisses the concern, but the room is still leaning toward speed. What makes the scene memorable is not hostility, but the way everyone can feel that the warning is correct while still being tempted to postpone dealing with it.',
-    continueTo: 'team_04_narrow',
-    continueLabel: 'Continue',
+      "Without clear roles:\n\nWork is delayed or duplicated\nBottlenecks appear\nDecisions slow down\n\nImproving organization often has a bigger impact than working more.",
+    continueTo: 'team_04',
+    continueLabel: 'Continue'
   }),
-  team_04_narrow: makeQuizNode({
-    id: 'team_04_narrow',
+  team_04: makeStoryNode({
+    id: 'team_04',
     chapter: 'team',
-    title: 'What Makes A Team Responsible?',
+    title: 'Hiring discussion',
     x: 870,
     y: 1210,
-    introText: 'The project now has to define what “good staffing” actually means.',
+    introText: 'The team considers expanding.',
     text:
-      'Under a narrow first-hiring posture, which principle is still the most important to preserve?',
-    choices: [
-      {
-        text: 'Maximize technical specialization and assume missing perspectives can be added later without much cost.',
-        retry: true,
-        feedbackTitle: 'That underestimates path dependence.',
-        feedbackStory: 'Once a narrow team culture hardens, adding broader perspectives later becomes slower and more politically difficult than it first appears.',
-        feedbackText: 'Responsible staffing is not only about raw expertise. It is also about when and how different constraints are allowed into the room.',
-      },
-      {
-        text: 'Keep a manageable team, but create explicit channels for clinical and stakeholder reality to shape the work early.',
-        feedbackTitle: 'You preserved the strongest principle in this route.',
-        feedbackStory: 'The team may stay compact, but it avoids treating outside perspectives as an afterthought.',
-        feedbackText: 'This is the best answer because it keeps feasibility without pretending the project can remain inward-looking forever.',
-        next: 'team_05_narrow',
-      },
-      {
-        text: 'Measure staffing quality mainly by how little disagreement appears inside the project.',
-        retry: true,
-        feedbackTitle: 'Low disagreement can hide the wrong thing.',
-        feedbackStory: 'The absence of visible tension may simply mean that difficult perspectives were never allowed into the process early enough to matter.',
-        feedbackText: 'A responsible team is not necessarily the quietest one. It is the one that can surface constraints before they turn into crises.',
-      },
-    ],
+      "The discussion shifts toward hiring.\n\nSome want developers to move faster.\n\nOthers insist on including people focused on ethics and fairness.\n\nHiring now means choosing what the project prioritizes.",
+    continueTo: 'team_05',
+    continueLabel: 'Continue'
   }),
-  team_05_narrow: makeDecisionNode({
-    id: 'team_05_narrow',
+  team_05: makeDecisionNode({
+    id: 'team_05',
     chapter: 'team',
-    title: 'Patch The Narrowness Or Double Down?',
+    title: 'Hiring strategy',
     badge: 'Decision node',
     x: 650,
     y: 1310,
-    introText: 'The team can now either soften the narrow route or reinforce it.',
-    text:
-      'A proposal emerges to add a formal clinician liaison and review loop without fully widening the core team. Another proposal argues that even this would slow the project too much and blur responsibility. The question is less about goodwill than about design: what kinds of knowledge deserve a formal route into decisions before the project becomes expensive to revise?',
-    choices: [
+    introText: 'Who should the team bring in first?',
+  text:
+    'The team agrees that hiring is needed, but not everyone agrees on what kind of hiring should come first.\n\n' +
+    'The project is still under pressure to improve the AI tool quickly. Technical experts could help build, test, and optimize the system faster.\n\n' +
+    'At the same time, the tool is connected to health decisions. If fairness, clinical use, and governance are treated as secondary concerns, the project may become harder to justify later.\n\n' +
+    'This is not only a staffing choice. It is a decision about what kind of project the team wants to become.',
+  choices: [
       {
-        text: 'Add a clinician liaison and structured review moments, even if the core team stays compact.',
-        feedbackTitle: 'You softened the narrow route.',
-        feedbackStory: 'The team remains operationally tight, but some real-world friction is now allowed to enter before damage accumulates.',
-        feedbackText: 'This does not fully solve the chapter, but it prevents narrowness from becoming pure tunnel vision.',
-        impact: { social: 5, financial: -3, performance: 2 },
-        next: 'team_06_narrow',
-        branchFlagsSet: ['team_liaison'],
+        text: 'Prioritize technical experts so the team can improve the model and deliver faster.',
+        feedbackTitle: 'You chose a speed-focused team.',
+        feedbackStory:
+          'The new hires strengthen the technical core. Development becomes faster, and progress is easier to show in meetings.',
+        feedbackText:
+          'This improves project performance in the short term, but it leaves fairness and governance questions less represented inside the team. Costs also increase because specialized technical hires are expensive.',
+        impact: { social: -7, financial: -5, performance: 10 },
+        next: 'team_06_speed',
+        unlocks: ['team_06_speed', 'team_07_speed'],
+        locks: ['team_06_balanced', 'team_07_balanced'],
+        lockReason:
+          'By prioritizing technical hiring, the team follows a speed-focused path. The broader balanced-team path is now closed.',
+        branchFlagsSet: ['team_speed'],
       },
       {
-        text: 'Keep the team cleanly technical and consult outside groups only when specific blockers appear.',
-        feedbackTitle: 'You doubled down on the expert core.',
-        feedbackStory: 'The project may remain faster to coordinate, but several tensions will now re-enter later and with less patience around them.',
-        feedbackText: 'This sharpens the project’s internal speed at the cost of earlier legitimacy work.',
-        impact: { social: -7, financial: 4, performance: -2 },
-        next: 'team_06_narrow',
-        branchFlagsSet: ['team_double_down'],
+        text: 'Build a balanced team with both technical and fairness-focused expertise.',
+        feedbackTitle: 'You chose a broader team.',
+        feedbackStory:
+          'The team now includes people who can work on the model, but also people who question how it will affect patients, clinicians, and trust in the system.',
+        feedbackText:
+          'This improves social fairness and makes the project more robust. However, it costs more and makes coordination slower because more perspectives need to be included.',
+        impact: { social: 10, financial: -7, performance: 5 },
+        next: 'team_06_balanced',
+        unlocks: ['team_06_balanced', 'team_07_balanced'],
+        locks: ['team_06_speed', 'team_07_speed'],
+        lockReason:
+          'By choosing a balanced hiring strategy, the team follows a broader governance-aware path. The narrow speed-focused path is now closed.',
+        branchFlagsSet: ['team_balanced'],
       },
     ],
   }),
-  team_06_narrow: makeStoryNode({
-    id: 'team_06_narrow',
+  team_06_speed: makeStoryNode({
+    id: 'team_06_speed',
     chapter: 'team',
-    title: 'Shortlist Tension',
+    title: 'Fast execution',
     x: 910,
     y: 1410,
-    introText: 'The narrow route reaches the first shortlist and the institutional consequences become much more concrete.',
+    introText: 'Development accelerates.',
     text:
-      'Candidates are strong on technical work, but several people notice how little patient-facing, clinical translation, and governance labor would actually be represented in the formal team if the shortlist becomes the team. The shortlist is competent, yet it also makes visible what the project is quietly deciding not to center.',
-    continueTo: 'team_06',
-    continueLabel: 'Continue to workload reality',
+      'With more technical hires, progress becomes visible quickly.\n\nFeatures are delivered faster. Deadlines are met.\n\nBut some questions start to be postponed — especially around fairness and long-term impact.\n\n“These can be handled later.”\n\nFor now, speed is winning.',
+    continueTo: 'team_07_speed',
+    continueLabel: 'Continue to speed check',
   }),
-  team_03_broad: makeDecisionNode({
-    id: 'team_03_broad',
+  team_07_speed: makeQuizNode({
+    id: 'team_07_speed',
     chapter: 'team',
-    title: 'A Wider Table',
+    title: 'Speed Check',
     x: 400,
     y: 1300,
-    introText: 'The broader route changes the tone of meetings immediately.',
+    introText: 'The team is moving faster, but some concerns are being postponed.',
     text:
-      'A clinician, a privacy specialist, and a patient-representation lead all frame the project differently. The conversation becomes slower, but much richer. Everyone can feel the cost of that difference in meeting time and staffing overhead, but they can also feel something else: the project is less likely to be surprised later by concerns it never structurally allowed into the room.',
-    continueTo: 'team_04_broad',
-    continueLabel: 'Continue',
+      'In a speed-focused hiring route, what is the main risk the team needs to manage?',
+    choices: [
+      {
+        text: 'There is no real risk if the technical progress is fast enough.',
+        retry: true,
+        feedbackTitle: 'Speed can hide problems instead of solving them.',
+        feedbackStory:
+          'Fast progress may make the project look healthy, while fairness and coordination issues continue to grow underneath.',
+        feedbackText:
+          'Technical progress is important, but it does not automatically make the project socially fair or sustainable.',
+      },
+      {
+        text: 'Fairness and governance questions may be delayed until they are harder to fix.',
+        feedbackTitle: 'You identified the strongest risk here.',
+        feedbackStory:
+          'The team keeps delivering, but postponed concerns can later become more expensive and more difficult to correct.',
+        feedbackText:
+          'This is the best answer because early technical choices can shape who benefits from the tool and who may be excluded.',
+        next: 'team_08',
+      },
+      {
+        text: 'Hiring technical experts removes the need for coordination.',
+        retry: true,
+        feedbackTitle: 'More expertise still needs coordination.',
+        feedbackStory:
+          'Even a technically strong team can slow down if responsibilities, priorities, and review points are unclear.',
+        feedbackText:
+          'A larger team usually needs more structure, not less.',
+      },
+    ],
   }),
-  team_04_broad: makeQuizNode({
-    id: 'team_04_broad',
+  team_06_balanced: makeStoryNode({
+    id: 'team_06_balanced',
     chapter: 'team',
-    title: 'Representation Check',
+    title: 'Slower but broader discussions',
     x: 610,
     y: 1500,
-    introText: 'The team now needs a principle to organize this wider room.',
+    introText: 'Progress becomes more cautious.',
     text:
-      'Under a broader staffing route, which principle matters most for keeping the team responsible rather than simply larger?',
-    choices: [
-      {
-        text: 'Invite many perspectives, but let the technical core absorb or ignore them informally as needed.',
-        retry: true,
-        feedbackTitle: 'That creates the appearance of inclusion without its effect.',
-        feedbackStory: 'If broader perspectives are not linked to real decision points, the project may look more legitimate without actually becoming more accountable.',
-        feedbackText: 'Representation matters most when it has a defined place in how decisions get made.',
-      },
-      {
-        text: 'Link broader participation to concrete review moments and responsibilities so extra voices are not purely symbolic.',
-        feedbackTitle: 'You identified the strongest principle here.',
-        feedbackStory: 'The team becomes more complex, but the added voices now shape actual process rather than decorative consultation.',
-        feedbackText: 'This is the best answer because broader staffing only matters if it changes how the project is governed.',
-        next: 'team_05_broad',
-      },
-      {
-        text: 'Protect harmony above all else so the broader team does not become too politically difficult to manage.',
-        retry: true,
-        feedbackTitle: 'Harmony is not the same as accountability.',
-        feedbackStory: 'A broader room that cannot surface friction early may simply delay disagreement rather than prevent it.',
-        feedbackText: 'In a complex project, some productive disagreement is evidence that constraints are entering early enough to matter.',
-      },
-    ],
+      'With a more diverse team, discussions become deeper.\n\nQuestions about fairness and impact are raised early.\n\nBut decisions take longer. Some technical members feel slowed down.\n\nProgress is steady — but less visible.',
+    continueTo: 'team_07_balanced',
+    continueLabel: 'Continue to trade-off awareness'
   }),
-  team_05_broad: makeDecisionNode({
-    id: 'team_05_broad',
+  team_07_balanced: makeQuizNode({
+    id: 'team_07_balanced',
     chapter: 'team',
-    title: 'Where To Spend The Extra Coordination',
-    badge: 'Decision node',
+    title: 'Trade-off Awareness',
     x: 390,
     y: 1610,
-    introText: 'A broad team creates a second decision: where should the extra coordination actually go?',
+    introText: 'The team now includes more perspectives, but coordination is harder.',
     text:
-      'One group wants to invest the extra time in patient-facing review and legitimacy. Another wants to focus it on clinical workflow integration so the project stays tied to hospital reality rather than external representation alone. The team is no longer arguing about whether broad participation matters, but about where its limited coordination energy should produce the most real value.',
+      'How do you make that diversity actually useful instead of just slowing things down?',
     choices: [
       {
-        text: 'Prioritize patient-facing review and public legitimacy even if operational coordination stays messy for longer.',
-        feedbackTitle: 'You pushed the route toward legitimacy work.',
-        feedbackStory: 'The project builds stronger outward trust, but some internal workflow questions will now take longer to settle cleanly.',
-        feedbackText: 'This increases social grounding while making coordination a bit more expensive.',
-        impact: { social: 7, financial: -4, performance: 1 },
-        next: 'team_06_broad',
-        branchFlagsSet: ['team_patient_voice'],
+        text: 'Include fairness-focused roles, but keep them separate from technical decisions.',
+        retry: true,
+        feedbackTitle: 'That creates weak inclusion.',
+        feedbackStory:
+          'If fairness-focused people are present but disconnected from real decisions, their role becomes symbolic.',
+        feedbackText:
+          'A balanced team only helps if different forms of expertise influence the project at the right moments.',
       },
       {
-        text: 'Prioritize clinical workflow integration so the broader team stays anchored in everyday practice.',
-        feedbackTitle: 'You made the broader route more operational.',
-        feedbackStory: 'The project stays grounded in hospital use, even if some external legitimacy work becomes lighter than it could have been.',
-        feedbackText: 'This does not abandon representation, but it directs the extra coordination toward practical integration first.',
-        impact: { social: 4, financial: -3, performance: 2 },
-        next: 'team_06_broad',
-        branchFlagsSet: ['team_clinical_anchor'],
+        text: 'Connect different roles to clear decision points, responsibilities, and review moments.',
+        feedbackTitle: 'You identified the strongest principle here.',
+        feedbackStory:
+          'The team is broader, but the added perspectives now shape the process instead of only adding discussion.',
+        feedbackText:
+          'This is the best answer because social fairness, financial viability, and project performance all depend on how responsibilities are organized.',
+        next: 'team_08',
+      },
+      {
+        text: 'Let every decision be discussed by everyone until there is full agreement.',
+        retry: true,
+        feedbackTitle: 'Full agreement can become a bottleneck.',
+        feedbackStory:
+          'Including more voices does not mean every person must decide everything. That can slow the project without adding useful accountability.',
+        feedbackText:
+          'The goal is structured participation, not endless consensus.',
       },
     ],
   }),
-  team_06_broad: makeStoryNode({
-    id: 'team_06_broad',
-    chapter: 'team',
-    title: 'Coordination Cost',
-    x: 720,
-    y: 1810,
-    introText: 'The broader route hears more constraints early, but that breadth comes with a visible cost.',
-    text:
-      'Calendar pressure is rising, role boundaries are blurrier than anyone hoped, and some team members quietly wonder whether the project can keep this level of representation without burning people out before launch season. A broad team can be more responsible, but only if its coordination design is strong enough to keep inclusion from becoming exhaustion.',
-    continueTo: 'team_06',
-    continueLabel: 'Continue to workload reality',
-  }),
-  team_06: makeStoryNode({
-    id: 'team_06',
+  team_08: makeStoryNode({
+    id: 'team_08',
     chapter: 'team',
     title: 'Workload Reality',
     x: 280,
     y: 1470,
-    introText: 'No matter which route the team took, capacity strain now becomes visible.',
+    introText: 'No matter which hiring route the team took, capacity strain now becomes visible.',
     text: (currentState) =>
-      currentState.branchFlags.has('team_broad')
-        ? 'The broader team catches more issues early, but several members are now stretched across governance, coordination, and clinical translation work.'
-        : 'The tighter team moves quickly, but the same people are now carrying technical, operational, and institutional responsibilities at once.',
-    continueTo: 'team_06b',
+      currentState.branchFlags.has('team_balanced')
+        ? 'The balanced team catches more fairness and governance issues early, but coordination now takes more time. Several members are stretched between technical work, review meetings, and clinical expectations.'
+        : 'The speed-focused team delivers faster, but the same people are now carrying technical, operational, and fairness-related questions at once. Some concerns are handled only when they become urgent.',
+    continueTo: 'team_09',
     continueLabel: 'Continue to the burnout signal',
   }),
-  team_06b: makeStoryNode({
-    id: 'team_06b',
+
+  team_09: makeStoryNode({
+    id: 'team_09',
     chapter: 'team',
     title: 'Burnout Signal',
     x: 580,
     y: 1630,
     introText: 'The strain becomes real when people stop talking about workload in abstract terms.',
     text:
-      'A junior researcher quietly says they can no longer tell which concerns are “important enough” to raise because everything already feels urgent. That moment changes the chapter. Burnout is not only a wellbeing issue here. It is also a governance issue, because exhausted teams get worse at surfacing weak signals before those signals become expensive failures.',
-    continueTo: 'team_07',
+      'A junior researcher quietly says they no longer know which concerns are “important enough” to raise, because everything already feels urgent.\n\n' +
+      'That moment changes the discussion. Burnout is not only a wellbeing issue here. It also affects the project itself: exhausted teams are worse at noticing small problems before they become expensive failures.',
+    continueTo: 'team_10',
     continueLabel: 'Continue to reorganization',
   }),
-  team_07: makeDecisionNode({
-    id: 'team_07',
+
+  team_10: makeDecisionNode({
+    id: 'team_10',
     chapter: 'team',
-    title: 'Reorganize Or Hold The Line',
+    title: 'Reorganize the Team',
     badge: 'Decision node',
     x: 120,
     y: 1610,
-    introText: 'The chapter turns from who is in the room to how the room is run.',
+    introText: 'The question is no longer only who is in the team, but how the team is run.',
     text:
-      'A project manager warns that the current structure will not scale through winter. The team now has to decide whether to protect speed, protect coordination, or try to balance the two more deliberately.',
+      'The project manager warns that the current structure will not hold if the workload keeps increasing.\n\n' +
+      'The team now has to decide how decisions should be organized.\n\n' +
+      'One option is to keep decision-making centralized in a small core. This is simpler and cheaper, but it may leave some voices outside important decisions.\n\n' +
+      'Another option is to share responsibility more widely through rotating steering meetings. This gives more people influence, but it also takes more time and coordination.\n\n' +
+      'A third option is to create paired leads, so technical and fairness-related questions are handled together instead of separately.',
     choices: [
       {
         text: 'Keep decision-making centralized in a small core and consult others only at defined checkpoints.',
-        feedbackTitle: 'You protected a tighter command structure.',
-        feedbackStory: 'Coordination becomes simpler, but some people now feel that they influence the project only after major directions are already set.',
-        feedbackText: 'This improves feasibility in the short term while risking thinner ownership across the broader project.',
+        feedbackTitle: 'You protected a tighter structure.',
+        feedbackStory:
+          'Coordination becomes simpler. Decisions are faster, and the project is easier to manage day to day.',
+        feedbackText:
+          'This supports financial viability because it limits coordination costs. However, it can reduce social fairness because some concerns may only enter after key decisions are already made.',
         impact: { social: -6, financial: 6, performance: -1 },
-        next: 'team_07b',
+        next: 'team_11',
         branchFlagsSet: ['team_centralized'],
       },
       {
-        text: 'Create a rotating steering rhythm that shares decision load, even if meetings become heavier.',
+        text: 'Create a rotating steering rhythm that shares decision-making across the team.',
         feedbackTitle: 'You distributed responsibility more widely.',
-        feedbackStory: 'The project becomes harder to schedule, but more people can see where the hard trade-offs are actually happening.',
-        feedbackText: 'This protects governance and legitimacy, though it costs more coordination energy.',
+        feedbackStory:
+          'More people can now see where the difficult trade-offs are happening. However, meetings become heavier and decisions take longer.',
+        feedbackText:
+          'This supports social fairness because more perspectives can shape the project. But it weakens financial viability because coordination requires more time and resources.',
         impact: { social: 6, financial: -6, performance: 1 },
-        next: 'team_07b',
+        next: 'team_11',
         branchFlagsSet: ['team_rotating'],
       },
       {
-        text: 'Split the work into paired leads so technical and institutional questions are carried together instead of separately.',
+        text: 'Create paired leads so technical and fairness-related questions are handled together.',
         feedbackTitle: 'You chose a balancing structure.',
-        feedbackStory: 'The structure is not simple, but it may stop the project from becoming either too inward-looking or too meeting-heavy.',
-        feedbackText: 'This option tries to preserve operational clarity without isolating the project from its wider responsibilities.',
+        feedbackStory:
+          'Each major workstream now has both a technical lead and a fairness or implementation-facing lead. The structure is more complex, but problems are less likely to stay isolated.',
+        feedbackText:
+          'This improves project performance by connecting technical progress with real-world constraints. It also supports social fairness, while keeping coordination costs lower than a fully distributed structure.',
         impact: { social: 4, financial: -3, performance: 2 },
-        next: 'team_07b',
+        next: 'team_11',
         branchFlagsSet: ['team_paired_leads'],
       },
     ],
   }),
-  team_07b: makeInfoNode({
-    id: 'team_07b',
+
+  team_11: makeInfoNode({
+    id: 'team_11',
     chapter: 'team',
-    title: 'Representation In Practice',
+    title: 'Representation in Practice',
     x: 40,
     y: 1770,
-    introText: 'This information node focuses on a practical staffing method rather than a slogan.',
+    introText: 'This information node explains how inclusion becomes useful in practice.',
     text:
-      'A team becomes more responsible when important constraints have an assigned route into live decisions. That route might be a role, a standing review moment, or a paired-lead structure. What matters is not symbolic inclusion alone, but whether the concern can reliably interrupt the project before plans harden around it.',
+      'A team becomes more responsible when important concerns have a clear path into real decisions.\n\n' +
+      'That path can be a role, a review meeting, or a paired-lead structure.\n\n' +
+      'What matters is not simply having different people in the room. What matters is whether their concerns can influence the project before plans become too expensive or too advanced to change.',
     extraHtml:
-      '<h3>Reusable method</h3><p>Take one planned decision and ask who can meaningfully alter it before it is announced, budgeted, or framed as too expensive to revisit. If the answer is “almost nobody,” the structure is probably thinner than it looks.</p>',
-    continueTo: 'team_08',
+      '<h3>Reusable method</h3><p>Take one planned decision and ask: who can still meaningfully change it before it is announced, budgeted, or treated as final? If the answer is “almost nobody,” the team structure is weaker than it looks.</p>',
+    continueTo: 'team_12',
     continueLabel: 'Continue to the team lesson',
   }),
-  team_08: makeInfoNode({
-    id: 'team_08',
+
+  team_12: makeInfoNode({
+    id: 'team_12',
     chapter: 'team',
     title: 'What Team Design Really Does',
     x: 280,
     y: 1850,
-    introText: 'This information node names the deeper point behind the chapter.',
+    introText: 'This information node names the deeper lesson behind the chapter.',
     text:
-      'A team is not only a list of competencies. It is a structure that decides which constraints become visible early, which ones stay outside the room, and how expensive it becomes to correct the project later. Many failures of “communication” are actually failures of team design: the right concern existed, but had no protected path into the decision.',
+      'A team is not only a list of skills. It is a structure that decides which problems become visible early and which ones are discovered too late.\n\n' +
+      'Many “communication problems” are actually team design problems. The right concern may exist, but no one has a clear role or safe moment to raise it.\n\n' +
+      'In this project, team design affects all three variables: social fairness, financial viability, and project performance.',
     extraHtml:
-      '<h3>Useful method</h3><p>Before a project accelerates, write down which roles are responsible for technical quality, workflow fit, ethics or governance, and stakeholder impact. If one person is carrying several of these silently, the project is more fragile than it looks.</p><h3>What to watch for</h3><p>A warning sign is when important concerns only appear after a plan is already framed as too expensive to revisit.</p>',
-    continueTo: 'team_09',
+      '<h3>Useful method</h3><p>Before a project accelerates, write down who is responsible for technical quality, workflow fit, fairness, governance, and stakeholder impact. If one person is carrying several of these silently, the project is more fragile than it looks.</p><h3>What to watch for</h3><p>A warning sign is when important concerns only appear after a plan is already framed as too expensive to revisit.</p>',
+    continueTo: 'team_13',
     continueLabel: 'Continue to the final team check',
   }),
-  team_08b: makeInfoNode({
-    id: 'team_08b',
+
+  team_12b: makeInfoNode({
+    id: 'team_12b',
     chapter: 'team',
     title: 'Missing Voices Check',
     x: 820,
     y: 1920,
     introText: 'This optional node offers a quick reflection tool for team composition.',
     text:
-      'Ask four questions: who understands the technical system, who understands the workflow, who understands governance, and who can speak for the people affected by mistakes. If one of these perspectives only appears informally, the team may be depending on luck.',
+      'Ask four questions: who understands the technical system, who understands the clinical workflow, who understands governance, and who can speak for the people affected by mistakes?\n\n' +
+      'If one of these perspectives only appears informally, the team may be depending on luck.',
     extraHtml:
       '<h3>Practical use</h3><p>This check is especially useful before hiring, before pilot design, and whenever a team says it will “add broader perspectives later.” Later often means after the expensive choices are already made.</p>',
   }),
-  team_09: makeQuizNode({
-    id: 'team_09',
+
+  team_13: makeQuizNode({
+    id: 'team_13',
     chapter: 'team',
     title: 'Final Team Check',
     x: 540,
@@ -1223,48 +1247,57 @@ const nodes = {
         text: 'The team is moving quickly and disagreements are becoming rarer over time.',
         retry: true,
         feedbackTitle: 'That can be misleading.',
-        feedbackStory: 'Lower visible disagreement may simply mean that the people carrying discomfort are no longer close enough to the process to interrupt it.',
-        feedbackText: 'Healthy teams do not eliminate friction; they surface the right friction early enough to shape decisions.',
+        feedbackStory:
+          'Fewer visible disagreements may mean that people no longer feel able to interrupt the process.',
+        feedbackText:
+          'Healthy teams do not eliminate friction. They surface the right friction early enough to shape decisions.',
       },
       {
         text: 'Important concerns only appear after major decisions are already framed as too expensive to revisit.',
         feedbackTitle: 'You identified the clearest warning sign.',
-        feedbackStory: 'That pattern usually means the team is learning about its real constraints too late for adjustment to feel easy or legitimate.',
-        feedbackText: 'This is the strongest answer because responsible team design is largely about when a project becomes able to hear unwelcome information.',
-        next: 'team_09b',
+        feedbackStory:
+          'This usually means the team is discovering its real constraints too late.',
+        feedbackText:
+          'This is the strongest answer because responsible team design is about making sure important concerns can enter before decisions harden.',
+        next: 'team_14',
       },
       {
         text: 'Meetings are longer than they were during the project’s earliest phase.',
         retry: true,
-        feedbackTitle: 'Longer meetings are not the core issue.',
-        feedbackStory: 'Longer meetings may reflect complexity, not failure. The real question is whether the added time is helping the project hear what it needs to hear.',
-        feedbackText: 'A more accountable team can be slower without being weaker if the extra process is doing real governance work.',
+        feedbackTitle: 'Longer meetings are not automatically the problem.',
+        feedbackStory:
+          'Longer meetings may simply reflect that the project has become more complex.',
+        feedbackText:
+          'The real question is whether the added discussion helps the project make better decisions.',
       },
     ],
   }),
-  team_09b: makeStoryNode({
-    id: 'team_09b',
+
+  team_14: makeStoryNode({
+    id: 'team_14',
     chapter: 'team',
     title: 'Escalation Path',
     x: 1060,
     y: 1770,
-    introText: 'The chapter closes by asking whether the team knows how concerns would actually travel upward once the pilot gets busy.',
+    introText: 'The chapter closes by asking how concerns would actually travel upward once the pilot gets busy.',
     text:
-      'A practical escalation path is finally written down: who hears concerns first, who can pause work, and what counts as a reason to reopen a decision instead of silently working around it. It is a small administrative artifact, but it often decides whether a team can remain reflective under pressure or whether people will simply adapt around problems until those problems feel normal.',
-    continueTo: 'team_10',
+      'The team finally writes down a practical escalation path: who hears concerns first, who can pause work, and what counts as a reason to reopen a decision.\n\n' +
+      'It looks like a small administrative document. But under pressure, it can decide whether the team stays reflective or simply learns to work around problems until they feel normal.',
+    continueTo: 'team_15',
     continueLabel: 'Continue to the milestone',
   }),
-  team_10: makeStoryNode({
-    id: 'team_10',
+
+  team_15: makeStoryNode({
+    id: 'team_15',
     chapter: 'team',
     title: 'Team Milestone',
     x: 860,
     y: 1690,
     introText: 'The team chapter closes with a structure that is workable, but not tension-free.',
     text: (currentState) =>
-      currentState.branchFlags.has('team_narrow')
-        ? 'The project leaves the chapter with a sharper, more compact structure. It may stay fast, but some legitimacy work has clearly been deferred rather than solved.'
-        : 'The project leaves the chapter with a broader and more demanding structure. It carries more friction, but it also hears more of the project’s real constraints before they become emergencies.',
+      currentState.branchFlags.has('team_speed')
+        ? 'The project leaves the chapter with a faster and more compact structure. Performance has improved in the short term, but some fairness and governance work has clearly been deferred rather than solved.'
+        : 'The project leaves the chapter with a broader and more demanding structure. It carries more friction and higher costs, but it also catches more of the project’s real constraints before they become emergencies.',
     continueTo: null,
     continueLabel: 'Return to the board',
     completeChapter: 'team',

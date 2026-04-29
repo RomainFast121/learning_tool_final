@@ -455,23 +455,11 @@ const nodes = {
     id: 'funding_01',
     chapter: 'funding',
     title: 'Sponsor Rumor',
-    x: 150,
-    y: 150,
-    introText: 'A rumor starts circulating that a diagnostics company wants to support the project.',
+    x: 200,
+    y: 80,
+    introText: 'A rumor about a diagnostics sponsor circulates inside the hospital, and the team starts mapping what this money could change before it even arrives.',
     text:
-      'Before any formal contact has happened, people inside the hospital are already speculating. Some hear opportunity. Others hear dependency. The principal investigator asks you to help frame how the team should enter the first conversation.',
-    continueTo: 'funding_01b',
-    continueLabel: 'Continue to the internal scan',
-  }),
-  funding_01b: makeStoryNode({
-    id: 'funding_01b',
-    chapter: 'funding',
-    title: 'Internal Scan',
-    x: 60,
-    y: 280,
-    introText: 'Before the meeting, the team quietly maps what this money could change.',
-    text:
-      'A finance officer, a clinician, and the principal investigator each describe the sponsor differently: operating cushion, political risk, and possible loss of independence. The scene is useful because it reveals something students often miss at first. Funding pressure does not arrive only when the contract does. It starts earlier, when different parts of the institution begin imagining the project through different kinds of hope.',
+      'Before any formal contact has happened, people inside the hospital are already speculating. Some hear opportunity, others hear dependency. The team quietly maps what this money could change: the finance officer describes an operating cushion, the clinician hears political risk, the principal investigator worries about losing independence. The scene reveals something students often miss at first. Funding pressure does not arrive when the contract does. It starts earlier, when different parts of the institution begin imagining the project through different kinds of hope.',
     continueTo: 'funding_02',
     continueLabel: 'Continue to the funding meeting',
   }),
@@ -480,8 +468,8 @@ const nodes = {
     chapter: 'funding',
     title: 'How To Enter The Meeting',
     badge: 'Major decision',
-    x: 390,
-    y: 130,
+    x: 460,
+    y: 80,
     introText: 'The first internal funding discussion is about posture, not yet about contract terms.',
     text:
       'Two instincts emerge in the room. One group wants to treat the meeting as a showcase moment and convert energy into public momentum. Another wants to keep the conversation quiet, disciplined, and review-oriented until the project has stronger internal footing.',
@@ -520,8 +508,8 @@ const nodes = {
     id: 'funding_03_hype',
     chapter: 'funding',
     title: 'Sponsor Pitch',
-    x: 650,
-    y: 90,
+    x: 260,
+    y: 240,
     introText: 'The meeting is moved to a polished presentation room with communications staff present.',
     text:
       'The sponsor talks in the language of scale, visibility, and rapid proof of value. Several people in the room look energized. A clinician beside you stays unusually quiet, taking notes every time the timeline gets shorter. When the meeting breaks, the room carries a slightly unsettling mix of enthusiasm and vagueness: everyone can describe the opportunity, but not yet the conditions under which it should remain acceptable.',
@@ -532,8 +520,8 @@ const nodes = {
     id: 'funding_04_hype',
     chapter: 'funding',
     title: 'First Safeguard',
-    x: 900,
-    y: 130,
+    x: 260,
+    y: 400,
     introText: 'The room is excited, but one basic question still matters.',
     text:
       'Under this more public funding posture, which safeguard is still the most important to protect before the project makes strong external promises?',
@@ -566,8 +554,8 @@ const nodes = {
     chapter: 'funding',
     title: 'Message Discipline',
     badge: 'Decision node',
-    x: 650,
-    y: 300,
+    x: 260,
+    y: 560,
     introText: 'A draft press line begins circulating before the meeting notes are even finished.',
     text:
       'Communications staff propose language about “rapid clinical readiness.” The sponsor likes it. The hospital board office wants something steadier. You are asked to decide how hard the team should lean into the momentum it just created. The disagreement is not loud, but it is important: the sentence chosen here will influence whether later caution sounds like responsible review or like an embarrassing retreat.',
@@ -586,30 +574,47 @@ const nodes = {
         feedbackTitle: 'You kept some momentum without overcommitting.',
         feedbackStory: 'The sponsor loses a little rhetorical energy, but the team preserves room to admit uncertainty later on.',
         feedbackText: 'This keeps the high-visibility route from collapsing entirely into hype.',
-        impact: { social: 2, financial: 1, performance: 1 },
+        impact: { social: 5, financial: -3, performance: 3 },
         next: 'funding_06_hype',
         branchFlagsSet: ['funding_message_tempered'],
       },
     ],
   }),
-  funding_06_hype: makeStoryNode({
+  funding_06_hype: makeDecisionNode({
     id: 'funding_06_hype',
     chapter: 'funding',
     title: 'Momentum Briefing',
-    x: 940,
-    y: 310,
+    badge: 'Decision node',
+    x: 260,
+    y: 720,
     introText: 'Before contract drafting begins, the hospital wants a clean internal line on what this sponsor momentum actually means.',
     text:
-      'A deputy director asks whether teams should begin acting as if a bigger winter push is now likely. Even people who are skeptical can feel the institution leaning toward the new confidence the sponsor meeting created. Without anyone explicitly saying so, the hospital is beginning to coordinate around a future that still depends on assumptions the project has not fully tested.',
-    continueTo: 'funding_06',
-    continueLabel: 'Continue to expectation pressure',
+      'A deputy director asks whether teams should begin acting as if a bigger winter push is now likely. Without anyone explicitly saying so, the hospital is beginning to coordinate around a future that still depends on assumptions the project has not fully tested. You are asked how to brief the deputy director.',
+    choices: [
+      {
+        text: 'Confirm the optimistic projection so other teams can plan staffing and resources around it now.',
+        feedbackTitle: 'You let the institution lock in around the sponsor scenario.',
+        feedbackStory: 'Other teams now plan as if the funding is settled. The project gains operational room but loses the option to revise quietly if early evidence shifts.',
+        feedbackText: 'When optimism gets baked into staffing and resourcing decisions, retreating later becomes a political event rather than a routine adjustment.',
+        impact: { social: -8, financial: 8, performance: -4 },
+        next: 'funding_06',
+      },
+      {
+        text: 'Ask the deputy to wait for the next governance review before formalizing the projection institution-wide.',
+        feedbackTitle: 'You held the institution back from premature commitment.',
+        feedbackStory: 'The deputy director sounds slightly impatient, but other teams keep their flexibility. The project preserves room to slow down without it looking like retreat.',
+        feedbackText: 'Delaying institutional alignment costs short-term momentum but keeps the project from inheriting expectations it has not earned yet.',
+        impact: { social: 6, financial: -4, performance: 3 },
+        next: 'funding_06',
+      },
+    ],
   }),
   funding_03_guarded: makeDecisionNode({
     id: 'funding_03_guarded',
     chapter: 'funding',
     title: 'Closed-Door Diligence',
-    x: 460,
-    y: 420,
+    x: 660,
+    y: 240,
     introText: 'The meeting is deliberately small, and the sponsor notices the difference immediately.',
     text:
       'Instead of a public showcase, the conversation turns into a practical exchange about review gates, publication freedom, and how much influence the sponsor expects over timeline decisions. The room feels cooler, but more honest. Instead of leaving with excitement, the team leaves with something less glamorous and more useful: a sharper sense of where later pressure would come from if the relationship deepened.',
@@ -620,8 +625,8 @@ const nodes = {
     id: 'funding_04_guarded',
     chapter: 'funding',
     title: 'Due Diligence Priority',
-    x: 620,
-    y: 540,
+    x: 660,
+    y: 400,
     introText: 'The sponsor looks serious, but not hostile. The next move matters.',
     text:
       'In this quieter funding route, which question is the most important to clarify before the project starts treating the offer as stable?',
@@ -654,8 +659,8 @@ const nodes = {
     chapter: 'funding',
     title: 'Internal Briefing',
     badge: 'Decision node',
-    x: 380,
-    y: 660,
+    x: 660,
+    y: 560,
     introText: 'The hospital staff now want to know how to describe the sponsor conversation internally.',
     text:
       'If you sound too cautious, some teams will fear the project is stalling. If you sound too positive, people will start acting as if support is already secure. The next internal message will shape how the organization interprets the negotiation. These early internal summaries matter because they often become the story people remember later, even when the actual agreement was much more conditional.',
@@ -665,7 +670,7 @@ const nodes = {
         feedbackTitle: 'You kept expectations measured and intelligible.',
         feedbackStory: 'The project does not surge, but staff are less likely to mistake a possible partnership for a finished deal.',
         feedbackText: 'This preserves organizational trust without pretending that uncertainty has already been solved.',
-        impact: { social: 5, financial: 0, performance: 1 },
+        impact: { social: 7, financial: -4, performance: 3 },
         next: 'funding_06_guarded',
         branchFlagsSet: ['funding_message_guarded'],
       },
@@ -680,44 +685,49 @@ const nodes = {
       },
     ],
   }),
-  funding_06_guarded: makeStoryNode({
+  funding_06_guarded: makeDecisionNode({
     id: 'funding_06_guarded',
     chapter: 'funding',
     title: 'Procurement Questions',
-    x: 640,
-    y: 960,
-    introText: 'The quieter route buys the team time, but that time fills quickly with institutional questions.',
+    badge: 'Decision node',
+    x: 660,
+    y: 720,
+    introText: 'Procurement and governance staff want concrete language about sponsor boundaries, review milestones, and what the hospital is promising internally.',
     text:
-      'Procurement and governance staff now want concrete language about sponsor boundaries, review milestones, and what the hospital is promising internally. The route is calmer, but not easier. Careful governance creates work of its own, and the team is now learning that discipline must be maintained long before it becomes visible to anyone outside the project.',
-    continueTo: 'funding_06',
-    continueLabel: 'Continue to expectation pressure',
+      'The route is calmer than the public path, but not easier. Careful governance creates work of its own, and you must decide how much team time to invest in formalizing this language before the contract draft arrives.',
+    choices: [
+      {
+        text: 'Spend significant team time formalizing the procurement language now to lock the conditions.',
+        feedbackTitle: 'You front-loaded the governance work.',
+        feedbackStory: 'The team spends weeks on language, milestones, and red lines. Other workstreams slow down, but the conditions are now legible to procurement and to the board.',
+        feedbackText: 'This work is unglamorous and expensive in time, but it pays off later because vague conditions are the ones that get bent under pressure.',
+        impact: { social: 7, financial: -6, performance: 3 },
+        next: 'funding_06',
+      },
+      {
+        text: 'Move forward with informal alignment and document things later when the contract pressure is concrete.',
+        feedbackTitle: 'You traded clarity for pace.',
+        feedbackStory: 'The team keeps technical momentum, but procurement staff later realize key terms were never written down. Some boundaries become harder to defend once a draft is in hand.',
+        feedbackText: 'Informal alignment usually survives only as long as nothing is contested. Under contract pressure, the strongest actor sets the terms.',
+        impact: { social: -5, financial: 5, performance: -3 },
+        next: 'funding_06',
+      },
+    ],
   }),
   funding_06: makeStoryNode({
     id: 'funding_06',
     chapter: 'funding',
     title: 'Expectation Pressure',
-    x: 260,
-    y: 360,
+    x: 460,
+    y: 880,
     introText: (currentState) =>
       currentState.branchFlags.has('funding_hype')
-        ? 'Because the route is already visible, donor expectations start arriving early.'
-        : 'Even without a public spectacle, donor expectations begin to shape the conversation.',
+        ? 'Because the route is already visible, donor expectations start arriving early, and the project is suddenly being asked to speak about itself in a single shared sentence.'
+        : 'Even without a public spectacle, donor expectations begin to shape the conversation, and the project is suddenly being asked to speak about itself in a single shared sentence.',
     text: (currentState) =>
       currentState.branchFlags.has('funding_hype')
-        ? 'A city official now wants reassurance that the project will produce a visible result before winter. Several people quietly admit that the team may already be speaking as if the timeline were firmer than it really is.'
-        : 'A city official now wants reassurance that the project will eventually be visible enough to justify early patience. The team feels the subtle pressure to prove that caution still has momentum.',
-    continueTo: 'funding_06b',
-    continueLabel: 'Continue to the narrative meeting',
-  }),
-  funding_06b: makeStoryNode({
-    id: 'funding_06b',
-    chapter: 'funding',
-    title: 'Public Narrative Meeting',
-    x: 350,
-    y: 540,
-    introText: 'The sponsor conversation now turns into an internal language problem.',
-    text:
-      'A communications lead asks for a sentence that can travel safely between the hospital board, the sponsor, and clinical teams without becoming misleading in at least one of those rooms. It sounds like a small writing task, but it is really a governance test. In many projects, the first damaging oversimplification appears not in the contract, but in the sentence people repeat when they no longer have time to explain the full situation.',
+        ? 'A city official wants reassurance that the project will produce a visible result before winter, and several people quietly admit the team may already be speaking as if the timeline were firmer than it really is. At the same moment, a communications lead asks for one sentence that can travel safely between the hospital board, the sponsor, and clinical teams without becoming misleading in any of those rooms. It sounds like a small writing task, but it is really a governance test. In many projects, the first damaging oversimplification does not appear in the contract. It appears in the sentence people repeat when they no longer have time to explain the full situation.'
+        : 'A city official wants reassurance that the project will eventually be visible enough to justify early patience, and the team feels the subtle pressure to prove that caution still has momentum. At the same moment, a communications lead asks for one sentence that can travel safely between the hospital board, the sponsor, and clinical teams without becoming misleading in any of those rooms. It sounds like a small writing task, but it is really a governance test. In many projects, the first damaging oversimplification does not appear in the contract. It appears in the sentence people repeat when they no longer have time to explain the full situation.',
     continueTo: 'funding_07',
     continueLabel: 'Move to contract terms',
   }),
@@ -726,8 +736,8 @@ const nodes = {
     chapter: 'funding',
     title: 'Contract Red Lines',
     badge: 'Decision node',
-    x: 120,
-    y: 530,
+    x: 460,
+    y: 1040,
     introText: 'The draft agreement arrives with one decisive question left unresolved.',
     text:
       'The sponsor is willing to support the project, but not without shaping some part of its future behavior. The team must now choose which red lines it is willing to defend and which risks it is willing to absorb.',
@@ -755,7 +765,7 @@ const nodes = {
         feedbackTitle: 'You chose a narrower commitment.',
         feedbackStory: 'The project gains less support, but it keeps a realistic escape path if the relationship becomes constraining.',
         feedbackText: 'This option trades scale for resilience and makes it easier to protect future correction.',
-        impact: { social: 4, financial: -3, performance: 2 },
+        impact: { social: 6, financial: -8, performance: 5 },
         next: 'funding_07b',
         branchFlagsSet: ['funding_contract_pilot'],
       },
@@ -765,8 +775,8 @@ const nodes = {
     id: 'funding_07b',
     chapter: 'funding',
     title: 'Influence Checklist',
-    x: 120,
-    y: 720,
+    x: 260,
+    y: 1040,
     introText: 'This information node turns the contract into a reusable student method.',
     text:
       'When reviewing a funding offer, ask four concrete questions: who can shape milestones, who can shape public messaging, who can shape publication or disclosure, and who can make delay feel politically unacceptable. Students often focus on budget size and miss these influence channels even though they usually decide how much independence remains once pressure rises.',
@@ -779,8 +789,8 @@ const nodes = {
     id: 'funding_08',
     chapter: 'funding',
     title: 'What Funding Really Changes',
-    x: 300,
-    y: 840,
+    x: 80,
+    y: 1040,
     introText: 'This information node names the structural lesson behind the chapter.',
     text:
       'Funding is never just background infrastructure. It affects how quickly promises form, who can apply pressure, and how much room the project keeps for delay, review, and revision. In real projects, the funding structure often decides whether a team can still slow down once external momentum has already started to build.',
@@ -793,8 +803,8 @@ const nodes = {
     id: 'funding_08b',
     chapter: 'funding',
     title: 'Stakeholder Map',
-    x: 820,
-    y: 980,
+    x: 660,
+    y: 80,
     introText: 'This optional node gives a simple method a student could reuse later in a real project.',
     text:
       'Make a quick stakeholder map before taking support: who wants acceleration, who bears reputational risk, who carries hidden implementation work, and who can still say no later. This turns a vague partner discussion into a concrete governance picture.',
@@ -805,8 +815,8 @@ const nodes = {
     id: 'funding_09',
     chapter: 'funding',
     title: 'Board Review',
-    x: 540,
-    y: 840,
+    x: 80,
+    y: 1200,
     introText: 'The hospital board asks one last question before signing off on the chapter.',
     text:
       'Which statement best captures the most responsible way to explain the funding arrangement to the board?',
@@ -823,7 +833,7 @@ const nodes = {
         feedbackTitle: 'You identified the chapter’s core lesson.',
         feedbackStory: 'The board now sees funding as part of the project’s ethical architecture rather than as a neutral background condition.',
         feedbackText: 'This answer fits the chapter because it treats support, governance, and pressure as linked rather than separate issues.',
-        next: 'funding_09b',
+        next: 'funding_10',
       },
       {
         text: 'If the budget is credible enough, later governance problems can be improvised when they appear.',
@@ -834,31 +844,20 @@ const nodes = {
       },
     ],
   }),
-  funding_09b: makeStoryNode({
-    id: 'funding_09b',
-    chapter: 'funding',
-    title: 'Funding Handover',
-    x: 760,
-    y: 840,
-    introText: 'The chapter closes not when the deal is signed, but when the team translates it into everyday work.',
-    text:
-      'A short handover note circulates to staff who were not in the negotiations. It has to explain what the sponsor relationship does and does not mean for deadlines, visibility, and who can push for acceleration later. This is more important than it sounds. In real projects, misunderstandings about funding often survive because the people living with the consequences never heard the cautious version, only the enthusiastic one.',
-    continueTo: 'funding_10',
-    continueLabel: 'Continue to the milestone',
-  }),
   funding_10: makeStoryNode({
     id: 'funding_10',
     chapter: 'funding',
     title: 'Funding Milestone',
-    x: 790,
-    y: 690,
-    introText: 'The funding chapter closes with a more stable, but not necessarily comfortable, arrangement.',
+    x: 260,
+    y: 1200,
+    introText: 'The chapter closes not when the deal is signed, but when the team translates it into everyday work for staff who were not in the negotiations.',
     text: (currentState) =>
-      currentState.branchFlags.has('funding_contract_strict')
-        ? 'The sponsor relationship remains usable, but clearly bounded. People in the hospital trust the project a little more because they can see where the lines were actually drawn.'
+      (currentState.branchFlags.has('funding_contract_strict')
+        ? 'The sponsor relationship remains usable, but clearly bounded. People in the hospital trust the project a little more because they can see where the lines were actually drawn. '
         : currentState.branchFlags.has('funding_contract_loose')
-          ? 'The project now has visible momentum and stronger operational room, but everyone also knows that later tension with the sponsor may be harder to absorb.'
-          : 'The project leaves the chapter with a narrower agreement that preserves room to adjust later. It does not feel triumphant, but it does feel governable.',
+          ? 'The project now has visible momentum and stronger operational room, but everyone also knows that later tension with the sponsor may be harder to absorb. '
+          : 'The project leaves the chapter with a narrower agreement that preserves room to adjust later. It does not feel triumphant, but it does feel governable. ') +
+      'A short handover note now has to explain to staff who were not in the negotiations what the sponsor relationship does and does not mean for deadlines, visibility, and who can push for acceleration later. This matters more than it sounds, because in real projects misunderstandings about funding often survive when the people living with the consequences only ever heard the enthusiastic version of the story.',
     continueTo: null,
     continueLabel: 'Return to the board',
     completeChapter: 'funding',
@@ -886,7 +885,7 @@ const nodes = {
     text:
       "You look more closely at how the team works.\n\nEveryone is putting in effort. But roles are unclear, priorities shift, and decisions are informal.\n\nSome people are overloaded. Others are waiting.\n\nThe problem isn’t motivation. It’s structure.",
     continueTo: "team_02",
-    continueLabel: 'Continue to hiring priorities',
+    continueLabel: 'Continue',
   }),
   team_02: makeDecisionNode({
     id: 'team_02',

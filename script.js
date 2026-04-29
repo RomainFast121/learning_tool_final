@@ -909,7 +909,7 @@ const nodes = {
         feedbackText:
           'This improves project performance by reducing bottlenecks. It also supports social fairness because workload becomes more visible and easier to distribute.',
         impact: { social: 6, financial: 0, performance: 10 },
-        next: 'team_04',
+        next: 'team_03',
       },
       {
         text: 'Push for faster delivery so the project shows visible progress quickly.',
@@ -919,7 +919,7 @@ const nodes = {
         feedbackText:
           'This can support financial viability in the short term because funders and partners see movement. However, it risks increasing pressure on already overloaded people.',
         impact: { social: -5, financial: 6, performance: 4 },
-        next: 'team_04',
+        next: 'team_03',
       },
       {
         text: 'Wait and observe before changing the way the team works.',
@@ -929,7 +929,7 @@ const nodes = {
         feedbackText:
           'This avoids immediate conflict, but it weakens project performance because the organizational problems are left unresolved.',
         impact: { social: 0, financial: 0, performance: -8 },
-        next: 'team_04',
+        next: 'team_03',
       },
     ],
   }),
@@ -1188,6 +1188,7 @@ const nodes = {
   team_11: makeInfoNode({
     id: 'team_11',
     chapter: 'team',
+    unlocks: ['team_12b'],
     title: 'Representation in Practice',
     x: 40,
     y: 1770,

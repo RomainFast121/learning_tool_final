@@ -3642,7 +3642,7 @@ function renderActionStage(nodeId, options = {}) {
     createButton({
       label: 'Back',
       className: 'ghost-btn',
-      onClick: () => renderIntro(nodeId),
+      onClick: closePanel,
     }),
   );
   actions.appendChild(
@@ -3789,14 +3789,14 @@ function handleBoardNodeClick(nodeId) {
     return;
   }
   if (nodeId === 'center') {
-    renderIntro(nodeId);
+    renderActionStage(nodeId);
     return;
   }
   if (state.completedNodes.has(nodeId)) {
     openCompletedReview(nodeId);
     return;
   }
-  renderIntro(nodeId);
+  renderActionStage(nodeId);
 }
 
 function renderOnboardingPage(index) {

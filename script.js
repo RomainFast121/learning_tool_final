@@ -180,25 +180,25 @@ const evaluationScenarios = [
         id: 'lock-date-now',
         short: 'Lock the date now',
         score: 35,
-        text: 'Accept the public date immediately so the project looks credible, then build the safeguards in parallel as fast as possible.',
+        text: 'Accept the public date now and build the safeguards in parallel so the project keeps visible momentum.',
       },
       {
         id: 'conditional-date',
         short: 'Tie the date to checkpoints',
         score: 100,
-        text: 'Offer only a conditional public timeline tied to review checkpoints, monitoring ownership, and explicit rollback conditions.',
+        text: 'Offer a conditional public timeline tied to review checkpoints, monitoring ownership, and rollback conditions.',
       },
       {
         id: 'delay-without-frame',
         short: 'Delay without structure',
         score: 55,
-        text: 'Refuse to discuss timing for now, but without defining what would later make a commitment responsible.',
+        text: 'Refuse to discuss timing for now and leave the project without a clear structure for later commitment.',
       },
       {
         id: 'delegate-communications',
         short: 'Leave it to communications',
         score: 25,
-        text: 'Let communications staff shape the public commitment while the project team concentrates on delivery.',
+        text: 'Let communications staff shape the public commitment while the project team stays focused on delivery work.',
       },
     ],
     reflection:
@@ -234,25 +234,25 @@ const evaluationScenarios = [
         id: 'pure-ml',
         short: 'Pure technical speed',
         score: 35,
-        text: 'Take the ML engineer first because technical progress creates the most options later and the other concerns can be consulted when needed.',
+        text: 'Take the ML engineer first so technical progress moves quickly and the other concerns can be consulted later.',
       },
       {
         id: 'bridge-role',
         short: 'Bridge technical and institutional needs',
         score: 95,
-        text: 'Use the first hire on a profile that can bridge technical work with workflow or governance realities, even if the role looks less efficient on paper.',
+        text: 'Use the first hire on a bridge profile connecting technical work with workflow or governance realities.',
       },
       {
         id: 'tech-plus-review',
         short: 'Technical hire with formal review loops',
         score: 75,
-        text: 'Take the technical hire, but immediately create structured clinician and governance review loops with real influence on key decisions.',
+        text: 'Take the technical hire, but add structured clinician and governance review loops with real influence on key decisions.',
       },
       {
         id: 'short-term-patchwork',
         short: 'Temporary patchwork',
         score: 55,
-        text: 'Distribute the missing perspectives informally across existing staff until the project becomes large enough to justify a broader team.',
+        text: 'Distribute the missing perspectives across existing staff until the project is large enough for a broader team.',
       },
     ],
     reflection:
@@ -288,25 +288,25 @@ const evaluationScenarios = [
         id: 'ingest-now',
         short: 'Ingest now, document later',
         score: 30,
-        text: 'Start ingesting and experimenting immediately so the team learns by doing, then document the important uncertainties once they become visible.',
+        text: 'Start ingesting and experimenting immediately, then document the important uncertainties once they become visible.',
       },
       {
         id: 'staged-use',
         short: 'Staged use with uncertainty log',
         score: 100,
-        text: 'Allow staged use, but first record the archive scope, known uncertainties, reuse basis, and documentation gaps before treating it as stable evidence.',
+        text: 'Allow staged use, but first record scope, uncertainties, reuse basis, and documentation gaps before treating it as stable evidence.',
       },
       {
         id: 'exclude-ambiguous-sites',
         short: 'Exclude ambiguous sites first',
         score: 72,
-        text: 'Exclude the ambiguous sites first so the team can move faster on cleaner ground, then reconsider coverage later if needed.',
+        text: 'Exclude the ambiguous sites first so the team moves faster on cleaner ground, then revisit coverage if needed.',
       },
       {
         id: 'seek-more-volume',
         short: 'Seek more volume to offset risk',
         score: 20,
-        text: 'Push for more volume early because larger scale will reduce the practical importance of the archive\'s unevenness.',
+        text: 'Push for more volume early because larger scale may reduce the practical importance of the archive\'s unevenness.',
       },
     ],
     reflection:
@@ -3083,8 +3083,12 @@ function renderEvaluationStage(mode, scenarioIndex = null, task = null) {
       card.className = 'assessment-card';
       const head = document.createElement('div');
       head.className = 'assessment-card-head';
-      head.innerHTML = `<strong>${escapeHtml(resourceMeta[key].label)}</strong><span>${selected ? `${selected}/10` : 'Not rated yet'}</span>`;
+      head.innerHTML = `<strong>${escapeHtml(resourceMeta[key].label)}</strong><span>${selected ? `${selected}/10` : 'Choose a rating'}</span>`;
       card.appendChild(head);
+      const scaleLegend = document.createElement('div');
+      scaleLegend.className = 'rating-scale-legend';
+      scaleLegend.innerHTML = '<span>1 · Least impacted</span><span>10 · Most impacted</span>';
+      card.appendChild(scaleLegend);
       const scale = document.createElement('div');
       scale.className = 'rating-scale';
       for (let value = 1; value <= 10; value += 1) {

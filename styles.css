@@ -2098,6 +2098,15 @@ button:disabled {
   color: var(--muted);
 }
 
+.rating-scale-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 10px;
+  color: var(--muted);
+  font-size: 0.84rem;
+}
+
 .rating-scale {
   display: grid;
   grid-template-columns: repeat(10, minmax(0, 1fr));

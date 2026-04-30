@@ -1726,32 +1726,20 @@ const nodes = {
     id: 'launch_01',
     chapter: 'launch',
     title: 'Winter Pressure',
-    x: 1290,
-    y: 1160,
+    x: 1320,
+    y: 1140,
     introText: 'The launch chapter opens once the earlier foundations have become concrete enough to carry real consequences.',
     text:
-      'Emergency admissions begin to rise. People inside the hospital stop talking about the project as a concept and start asking when it will actually appear in practice. Every earlier compromise now returns in the form of timing, trust, and operational risk.',
-    continueTo: 'launch_01b',
-    continueLabel: 'Continue to the launch room',
-  }),
-  launch_01b: makeStoryNode({
-    id: 'launch_01b',
-    chapter: 'launch',
-    title: 'Launch Room',
-    x: 1200,
-    y: 1320,
-    introText: 'The hospital finally gathers the people who would have to live with the first week of deployment.',
-    text:
-      'The room is more grounded than earlier meetings: ward staff, project leads, and operational managers are all trying to imagine the same future week from different angles. It becomes clear very quickly that “launch” is not one event. It is a chain of small handovers, ambiguities, and expectations that will either stay governable or become friction points as soon as the winter rush turns abstract confidence into practical strain.',
+      'Emergency admissions begin to rise. People inside the hospital stop talking about the project as a concept and start asking when it will actually appear in practice. In the launch room, ward staff, project leads, and operational managers all try to picture the same first week from different angles. Every earlier compromise now returns in the form of timing, trust, and operational risk, and “launch” stops sounding like one event and starts looking like a chain of handovers the hospital will either keep governable or regret very quickly.',
     continueTo: 'launch_02',
-    continueLabel: 'Continue to readiness posture',
+    continueLabel: 'Continue to launch posture',
   }),
   launch_02: makeDecisionNode({
     id: 'launch_02',
     chapter: 'launch',
     title: 'Launch Posture',
     badge: 'Major decision',
-    x: 1510,
+    x: 1580,
     y: 1140,
     introText: 'The first launch decision is about scope, visibility, and what kind of risk the hospital is willing to carry.',
     text:
@@ -1764,8 +1752,7 @@ const nodes = {
         feedbackText: 'This route can amplify momentum, yet it makes every unresolved weakness more public and less forgiving.',
         impact: { social: -8, financial: 6, performance: -4 },
         next: 'launch_03_ambitious',
-        unlocks: ['launch_08b'],
-        locks: ['launch_03_measured', 'launch_04_measured', 'launch_05_measured', 'launch_06_measured'],
+        locks: ['launch_03_measured'],
         lockReason:
           'This broader launch posture closed the quieter pilot route. The chapter now follows a more exposed deployment path.',
         branchFlagsSet: ['launch_ambitious'],
@@ -1777,8 +1764,7 @@ const nodes = {
         feedbackText: 'This route protects correction capacity and reduces the political cost of admitting uncertainty.',
         impact: { social: 7, financial: -3, performance: 3 },
         next: 'launch_03_measured',
-        unlocks: ['launch_08b'],
-        locks: ['launch_03_ambitious', 'launch_04_ambitious', 'launch_05_ambitious', 'launch_06_ambitious'],
+        locks: ['launch_03_ambitious'],
         lockReason:
           'This narrower launch posture closed the broader showcase route. The chapter now follows a more measured deployment path.',
         branchFlagsSet: ['launch_measured'],
@@ -1788,213 +1774,73 @@ const nodes = {
   launch_03_ambitious: makeDecisionNode({
     id: 'launch_03_ambitious',
     chapter: 'launch',
-    title: 'Coordination Call',
-    x: 1740,
-    y: 1100,
-    introText: 'The broader route creates immediate coordination strain.',
+    title: 'How Exposed Should This Pilot Be?',
+    x: 1840,
+    y: 1360,
+    introText: 'The broader route creates immediate coordination strain and forces the team to decide how public that strain should become.',
     text:
-      'Three hospital sites now want to know what will change for them, who owns the monitoring burden, and how quickly the system can be adjusted if reality turns out messier than the optimism in the room. The broader route now starts producing the kind of practical questions that enthusiasm alone cannot absorb.',
-    continueTo: 'launch_04_ambitious',
-    continueLabel: 'Continue',
-  }),
-  launch_04_ambitious: makeQuizNode({
-    id: 'launch_04_ambitious',
-    chapter: 'launch',
-    title: 'Launch Condition',
-    x: 1920,
-    y: 1180,
-    introText: 'The team needs a clear condition for proceeding responsibly.',
-    text:
-      'Under a broader launch route, which condition matters most before the hospital should treat the pilot as genuinely ready?',
+      'Three hospital sites now want to know what will change for them, who owns the monitoring burden, and how quickly the system can be adjusted if reality turns out messier than the optimism in the room. The sponsor still wants visibility, but staff push back against making a fragile first week look more certain than it is.',
     choices: [
       {
-        text: 'A compelling external narrative that reassures executives the launch will look decisive.',
-        retry: true,
-        feedbackTitle: 'That protects optics, not readiness.',
-        feedbackStory: 'The project might feel easier to defend publicly, but it would still be weak if rollback and monitoring conditions remain vague.',
-        feedbackText: 'Readiness under a broad rollout depends less on rhetoric than on whether the project can absorb error without institutional panic.',
-      },
-      {
-        text: 'Clear monitoring ownership, rollback triggers, and a realistic understanding of where uncertainty still remains.',
-        feedbackTitle: 'You identified the most important condition.',
-        feedbackStory: 'The route may still be ambitious, but it now has a more defensible structure for containing the consequences of error.',
-        feedbackText: 'This is the strongest answer because broad pilots need stronger correction systems, not just stronger confidence.',
-        next: 'launch_05_ambitious',
-      },
-      {
-        text: 'Enough technical excitement that the team feels motivated to handle operational problems later if they appear.',
-        retry: true,
-        feedbackTitle: 'Motivation is not the same as launch discipline.',
-        feedbackStory: 'Excitement can help teams push through discomfort, but it cannot substitute for a monitoring and rollback structure once patients and staff are affected.',
-        feedbackText: 'A responsible launch is defined by how it handles uncertainty, not only by how strongly people believe in it.',
-      },
-    ],
-  }),
-  launch_05_ambitious: makeDecisionNode({
-    id: 'launch_05_ambitious',
-    chapter: 'launch',
-    title: 'How Visible Should Launch Be?',
-    badge: 'Decision node',
-    x: 1730,
-    y: 1310,
-    introText: 'A broader route now has to decide how much publicity it will carry with it.',
-    text:
-      'The sponsor wants a visible announcement. Some hospital staff want a quieter clinical-first rollout until the system behaves well under stress. The decision will shape how forgiving the environment becomes once the first problems appear.',
-    choices: [
-      {
-        text: 'Pair the pilot with a visible sponsor-backed announcement to secure future momentum early.',
+        text: 'Pair the broad pilot with a visible sponsor-backed announcement to secure momentum while expectations are high.',
         requires: ['social'],
         blockedReason:
           'This option depends on a level of public trust and institutional confidence that the project no longer has strongly enough to support such a visible launch.',
-        feedbackTitle: 'You turned the ambitious route into a public event.',
-        feedbackStory: 'The project gains attention and possible leverage, but it also becomes much harder to treat early corrections as normal learning.',
+        feedbackTitle: 'You turned the broad route into a public event.',
+        feedbackStory: 'The project gains attention and leverage, but it becomes much harder to treat early correction as normal learning once the pilot is publicly staged.',
         feedbackText: 'Publicity can help momentum, yet it also raises the political cost of uncertainty exactly when the project most needs room to acknowledge it.',
         impact: { social: -10, financial: 6, performance: -3 },
-        next: 'launch_06_ambitious',
+        next: 'launch_07',
         branchFlagsSet: ['launch_public'],
       },
       {
-        text: 'Keep the rollout operationally broad but communication-light until the team sees the first live signals.',
-        feedbackTitle: 'You protected the route from some of its own visibility.',
-        feedbackStory: 'The pilot remains large, but it gains a little more space to absorb its first surprises without immediate public staging.',
-        feedbackText: 'This does not remove the risks of breadth, but it does reduce the cost of learning in public.',
+        text: 'Keep the pilot operationally broad but communication-light until the first live signals are clearer across sites.',
+        feedbackTitle: 'You protected the broad route from some of its own visibility.',
+        feedbackStory: 'The rollout remains ambitious, but it gains more room to absorb weak signals and uneven site readiness without immediate public framing.',
+        feedbackText: 'This does not remove the risks of breadth, but it does reduce the cost of learning in public before staff confidence is real.',
         impact: { social: 2, financial: 1, performance: 1 },
-        next: 'launch_06_ambitious',
+        next: 'launch_07',
         branchFlagsSet: ['launch_broad_quiet'],
       },
     ],
   }),
-  launch_06_ambitious: makeStoryNode({
-    id: 'launch_06_ambitious',
-    chapter: 'launch',
-    title: 'Site Readiness Gap',
-    x: 1910,
-    y: 1390,
-    introText: 'The broader route exposes a problem that only appears once several sites compare notes side by side.',
-    text:
-      'One site is confident, another is under-trained, and a third is quietly depending on one local champion to absorb most of the operational uncertainty. The launch is no longer one thing; it is several uneven realities at once. Multi-site ambition looks clean from far away and much less uniform the closer people get to actual implementation work.',
-    continueTo: 'launch_06',
-    continueLabel: 'Continue to clinician trust',
-  }),
   launch_03_measured: makeDecisionNode({
     id: 'launch_03_measured',
     chapter: 'launch',
-    title: 'Ward Walkthrough',
-    x: 1480,
-    y: 1340,
-    introText: 'The narrower route feels more modest, but much more concrete.',
+    title: 'How Explicit Should The Caution Be?',
+    x: 1320,
+    y: 1360,
+    introText: 'The narrower route feels more modest, but much more concrete once ward-level concerns are named clearly.',
     text:
-      'A nurse manager walks through the pilot ward and points out several practical problems that no one had fully seen from the boardroom: alarm fatigue, handover timing, and how easily “decision support” can still feel like pressure in a busy clinical setting. The quieter route suddenly feels less like caution in the abstract and more like respect for details that will decide whether staff can actually live with the tool.',
-    continueTo: 'launch_04_measured',
-    continueLabel: 'Continue',
-  }),
-  launch_04_measured: makeQuizNode({
-    id: 'launch_04_measured',
-    chapter: 'launch',
-    title: 'Launch Condition',
-    x: 1680,
-    y: 1460,
-    introText: 'The quieter route still needs a real test of readiness.',
-    text:
-      'Under a narrower pilot route, which condition matters most before the ward should treat the system as responsibly deployable?',
+      'A nurse manager walks through the pilot ward and points out several practical problems that no one had fully seen from the boardroom: alarm fatigue, handover timing, and how easily “decision support” can still feel like pressure in a busy clinical setting. The team now has to decide whether to speak openly about those limits or quietly present the pilot as if broader rollout is already mostly a matter of time.',
     choices: [
       {
-        text: 'A well-designed message that reassures staff the pilot is low risk.',
-        retry: true,
-        feedbackTitle: 'Messaging alone is not enough.',
-        feedbackStory: 'The system may sound reassuring, but the ward still needs concrete monitoring, handoff clarity, and a credible plan for correction.',
-        feedbackText: 'Even a measured rollout must be operationally ready, not simply rhetorically calm.',
-      },
-      {
-        text: 'Clear ownership for monitoring, practical workflow fit, and a visible path for pausing or stepping back if needed.',
-        feedbackTitle: 'You identified the strongest launch condition.',
-        feedbackStory: 'The route remains modest, but it now has a real structure for learning without pretending that uncertainty is a failure.',
-        feedbackText: 'This is the best answer because a measured pilot is only meaningful if it truly keeps room for correction.',
-        next: 'launch_05_measured',
-      },
-      {
-        text: 'Enough technical confidence that the team will probably not need to use its rollback plan anyway.',
-        retry: true,
-        feedbackTitle: 'That confuses confidence with preparedness.',
-        feedbackStory: 'A responsible rollback structure exists precisely because the team cannot assume confidence is enough once the system is live.',
-        feedbackText: 'Readiness is measured by how a project can handle being wrong, not by how strongly it hopes not to be.',
-      },
-    ],
-  }),
-  launch_05_measured: makeDecisionNode({
-    id: 'launch_05_measured',
-    chapter: 'launch',
-    title: 'How Quiet Should The Pilot Be?',
-    badge: 'Decision node',
-    x: 1450,
-    y: 1620,
-    introText: 'A quieter route still has to decide how much of itself to reveal.',
-    text:
-      'Some people want the pilot framed as a learning exercise with careful expectations. Others worry that too much modesty will make the project look fragile and politically easier to defund if early results are mixed.',
-    choices: [
-      {
-        text: 'Frame the pilot explicitly as a learning phase with transparent limits and visible checkpoints.',
-        feedbackTitle: 'You made the route openly provisional.',
-        feedbackStory: 'The project may look less triumphant, but it gains a stronger public language for correction, adjustment, and trust-building.',
+        text: 'Frame the pilot explicitly as a learning phase with transparent limits, visible checkpoints, and room for pause.',
+        feedbackTitle: 'You made the quieter route openly provisional.',
+        feedbackStory: 'The project may look less triumphant, but it gains a stronger language for correction, adjustment, and trust-building before people are asked to rely on it.',
         feedbackText: 'This protects legitimacy by refusing to confuse modesty with weakness.',
         impact: { social: 8, financial: -3, performance: 3 },
-        next: 'launch_06_measured',
+        next: 'launch_07',
         branchFlagsSet: ['launch_learning_frame'],
       },
       {
-        text: 'Keep the pilot narrow operationally, but communicate it as a quiet sign that full rollout is mostly a matter of time.',
+        text: 'Keep the pilot narrow operationally, but communicate it as a quiet sign that broader rollout is mostly inevitable.',
         feedbackTitle: 'You softened the caution without fully abandoning it.',
-        feedbackStory: 'The route may keep institutional support stronger, but it also begins recreating some of the expectation pressure it was meant to avoid.',
+        feedbackStory: 'Institutional support may stay stronger, but the route begins recreating some of the expectation pressure it was meant to avoid.',
         feedbackText: 'This is more ambitious rhetorically than it first appears, even if the rollout itself remains narrow.',
         impact: { social: -4, financial: 4, performance: -2 },
-        next: 'launch_06_measured',
+        next: 'launch_07',
         branchFlagsSet: ['launch_quiet_confidence'],
       },
     ],
-  }),
-  launch_06_measured: makeStoryNode({
-    id: 'launch_06_measured',
-    chapter: 'launch',
-    title: 'Local Confidence Check',
-    x: 1560,
-    y: 2010,
-    introText: 'The quieter route still needs more than caution. It needs people on the ward to believe the caution is real.',
-    text:
-      'A ward lead says the pilot sounds careful on paper, but asks whether staff will actually feel permitted to pause or question the tool once the winter rush makes hesitation expensive. The question matters because many pilots are technically reversible and socially difficult to challenge once they are attached to hope or urgency.',
-    continueTo: 'launch_06',
-    continueLabel: 'Continue to clinician trust',
-  }),
-  launch_06: makeStoryNode({
-    id: 'launch_06',
-    chapter: 'launch',
-    title: 'Clinician Trust',
-    x: 1320,
-    y: 1490,
-    introText: 'No launch route avoids the same basic institutional test.',
-    text:
-      'A consultant physician asks a simple question in a tense tone: “When this system is wrong, who will be expected to carry that wrongness first?” The room falls quiet because everyone knows the answer cannot be technical alone.',
-    continueTo: 'launch_06b',
-    continueLabel: 'Continue to the ward simulation',
-  }),
-  launch_06b: makeStoryNode({
-    id: 'launch_06b',
-    chapter: 'launch',
-    title: 'Ward Simulation',
-    x: 1140,
-    y: 1790,
-    introText: 'The team runs a brief simulation of what the first week could actually feel like.',
-    text:
-      'The exercise is not technically sophisticated, but it is revealing. It shows who gets called first when the tool behaves oddly, where uncertainty is likely to be explained badly, and how quickly a “pilot” can start feeling mandatory once pressure is high. Students often imagine that launch problems begin with system errors alone. Here the room sees that many of them begin with roles, expectations, and communication paths that were never made explicit enough.',
-    continueTo: 'launch_07',
-    continueLabel: 'Continue to monitoring design',
   }),
   launch_07: makeDecisionNode({
     id: 'launch_07',
     chapter: 'launch',
     title: 'Monitoring And Rollback',
     badge: 'Decision node',
-    x: 1270,
-    y: 1650,
+    x: 1580,
+    y: 1600,
     introText: 'The final live decision is about how the project will behave once reality starts pressing back.',
     text:
       'One design uses strict monitoring ownership and clear rollback triggers. Another prioritizes rapid iteration and softer guardrails to preserve momentum. A third turns launch into a dashboard-heavy performance environment that risks treating visibility as reassurance.',
@@ -2005,7 +1851,7 @@ const nodes = {
         feedbackStory: 'The system may feel more cautious, but clinicians can now see how the project intends to behave when uncertainty becomes real rather than theoretical.',
         feedbackText: 'This protects legitimacy and learning, even though it may look less bold in the short term.',
         impact: { social: 8, financial: -4, performance: 4 },
-        next: 'launch_07b',
+        next: 'launch_09',
         branchFlagsSet: ['launch_strict_monitoring'],
       },
       {
@@ -2014,7 +1860,7 @@ const nodes = {
         feedbackStory: 'The project stays agile, but some staff now feel that the system’s correction logic may depend too much on trust in the core team’s judgment.',
         feedbackText: 'This can work operationally, yet it makes legitimacy and clarity harder to secure under stress.',
         impact: { social: -6, financial: 4, performance: -3 },
-        next: 'launch_07b',
+        next: 'launch_09',
         branchFlagsSet: ['launch_soft_monitoring'],
       },
       {
@@ -2026,57 +1872,17 @@ const nodes = {
         feedbackStory: 'The dashboards may reassure some executives, but they also risk turning correction into something politically harder to admit in real time.',
         feedbackText: 'Performance visibility is not the same thing as accountability. In some cases, it can make accountability harder to practice honestly.',
         impact: { social: -8, financial: 6, performance: -4 },
-        next: 'launch_07b',
+        next: 'launch_09',
         branchFlagsSet: ['launch_dashboard'],
       },
     ],
-  }),
-  launch_07b: makeInfoNode({
-    id: 'launch_07b',
-    chapter: 'launch',
-    title: 'Incident Framing',
-    x: 1220,
-    y: 2060,
-    introText: 'This information node focuses on a launch habit students can reuse later.',
-    text:
-      'Before deployment, decide how the team will talk about incidents, near-misses, and staff discomfort. If the only available language is success language, people will hide uncertainty for longer than they should. Incident framing is therefore part of governance, not just communication polish.',
-    extraHtml:
-      '<h3>Reusable method</h3><p>Write down one trigger for pause, one trigger for closer monitoring, and one trigger that should be logged even if it does not yet justify intervention. These categories help keep weak signals visible instead of collapsing them into “everything is fine until it is not.”</p>',
-    continueTo: 'launch_08',
-    continueLabel: 'Continue to the launch lesson',
-  }),
-  launch_08: makeInfoNode({
-    id: 'launch_08',
-    chapter: 'launch',
-    title: 'Deployment Is A Legitimacy Event',
-    x: 1430,
-    y: 1880,
-    introText: 'This information node names the final structural lesson.',
-    text:
-      'Deployment is not merely the moment a system begins running. It is also the moment an institution reveals what it believes counts as acceptable uncertainty, who it expects to absorb risk, and how honestly it can describe the limits of its own confidence. A launch says as much about governance as it does about technology.',
-    extraHtml:
-      '<h3>Useful method</h3><p>Before launch, define success criteria, monitoring ownership, rollback triggers, who can pause the system, and how incidents will be recorded and discussed.</p><h3>What students should remember</h3><p>A pilot is more responsible when people closest to the work know how to question it safely, not only when leadership knows how to present it confidently.</p>',
-    continueTo: 'launch_09',
-    continueLabel: 'Continue to the final question',
-  }),
-  launch_08b: makeInfoNode({
-    id: 'launch_08b',
-    chapter: 'launch',
-    title: 'Pilot Readiness Checklist',
-    x: 1940,
-    y: 1950,
-    introText: 'This optional node offers a reusable launch checklist.',
-    text:
-      'A basic readiness check should cover five things: who monitors, who can pause, what counts as a reportable incident, what evidence would justify broadening the pilot, and how staff concerns will be fed back into decisions.',
-    extraHtml:
-      '<h3>Why this helps</h3><p>It keeps launch from becoming only a confidence ritual. The point is not to remove uncertainty, but to decide in advance how the project will behave when uncertainty becomes real.</p>',
   }),
   launch_09: makeQuizNode({
     id: 'launch_09',
     chapter: 'launch',
     title: 'Final Launch Check',
-    x: 1720,
-    y: 1880,
+    x: 1580,
+    y: 1840,
     introText: 'The final quiz checks whether the whole game’s logic has stayed intact.',
     text:
       'Which statement best captures what a responsible launch posture requires after all four chapters of the game?',
@@ -2093,7 +1899,7 @@ const nodes = {
         feedbackTitle: 'You identified the game’s central launch lesson.',
         feedbackStory: 'The project is now being judged in the right frame: not by whether it seems bold, but by whether it is genuinely governable under real conditions.',
         feedbackText: 'This is the strongest answer because the whole game has been about keeping ambition aligned with institutional reality.',
-        next: 'launch_09b',
+        next: 'launch_10',
       },
       {
         text: 'Once a project reaches deployment, most earlier funding, team, and data tensions matter much less than technical performance.',
@@ -2104,25 +1910,13 @@ const nodes = {
       },
     ],
   }),
-  launch_09b: makeStoryNode({
-    id: 'launch_09b',
-    chapter: 'launch',
-    title: 'First Week Outlook',
-    x: 1910,
-    y: 2060,
-    introText: 'The chapter pauses one step before the ending to imagine the project’s first week in practice.',
-    text:
-      'The team writes a short note describing what it expects to learn in the first week, what would count as a reassuring signal, and what would count as a sign that the pilot has been framed too optimistically. That note matters because responsible launch is not only about starting. It is also about deciding what kind of evidence will justify staying the course once the system is real enough to disappoint people.',
-    continueTo: 'launch_10',
-    continueLabel: 'Continue to the ending',
-  }),
   launch_10: makeStoryNode({
     id: 'launch_10',
     chapter: 'launch',
     title: (currentState) => getEnding(currentState).title,
     badge: 'Ending',
-    x: 1910,
-    y: 1760,
+    x: 1580,
+    y: 2080,
     introText: 'The game ends with the kind of launch the project has made possible for itself.',
     text: (currentState) => getEnding(currentState).text,
     extraHtml: (currentState) => `<h3>Outcome</h3><p>${escapeHtml(getEnding(currentState).lesson)}</p>`,
@@ -2200,7 +1994,9 @@ function getBaseNodeFrame(node) {
 }
 
 function getChapterNodeBounds(chapterId) {
-  const chapterNodes = Object.values(nodes).filter((node) => node.chapter === chapterId);
+  const chapterNodes = Object.values(nodes).filter(
+    (node) => node.chapter === chapterId && !node.boardHidden,
+  );
   const frames = chapterNodes.map((node) => ({ node, frame: getBaseNodeFrame(node) }));
   return {
     chapterId,
@@ -2329,7 +2125,7 @@ function getResolvedNodeFrame(node, offsets = getLayoutOffsets()) {
 function getComputedChapterClusters(offsets = getLayoutOffsets()) {
   return chapterClusters.map((cluster) => {
     const frames = Object.values(nodes)
-      .filter((node) => node.chapter === cluster.id)
+      .filter((node) => node.chapter === cluster.id && !node.boardHidden)
       .map((node) => getResolvedNodeFrame(node, offsets));
 
     const minX = Math.min(...frames.map((frame) => frame.x));
@@ -2354,7 +2150,9 @@ function getComputedChapterClusters(offsets = getLayoutOffsets()) {
 }
 
 function getBoardBounds(offsets = getLayoutOffsets(), clusters = getComputedChapterClusters(offsets)) {
-  const nodeFrames = Object.values(nodes).map((node) => getResolvedNodeFrame(node, offsets));
+  const nodeFrames = Object.values(nodes)
+    .filter((node) => !node.boardHidden)
+    .map((node) => getResolvedNodeFrame(node, offsets));
   const maxX = Math.max(
     ...nodeFrames.map((frame) => frame.right),
     ...clusters.map((cluster) => cluster.x + cluster.w),
@@ -3247,7 +3045,14 @@ function createButton({ label, className, onClick, disabled = false, id = '' }) 
 function getNodeStatusLabel(nodeId) {
   if (nodeId === 'center') return 'Start node';
   const node = nodes[nodeId];
-  const typeLabel = node.type === 'info' ? 'Info' : node.type === 'quiz' ? 'Quiz' : 'Story';
+  const typeLabel =
+    node.type === 'info'
+      ? 'Info'
+      : node.type === 'quiz'
+        ? 'Quiz'
+        : node.type === 'decision'
+          ? 'Decision'
+          : 'Story';
   if (state.closedNodes.has(nodeId)) return `Closed route · ${typeLabel}`;
   if (state.completedNodes.has(nodeId)) return `Completed · ${typeLabel}`;
   if (state.availableNodes.has(nodeId)) return `Available · ${typeLabel}`;
@@ -3270,11 +3075,12 @@ function renderClusters(computedClusters) {
 
 function renderBoardNodes(offsets) {
   refs.boardNodes.innerHTML = Object.values(nodes)
+    .filter((node) => !node.boardHidden)
     .map((node) => {
       const frame = getResolvedNodeFrame(node, offsets);
       const classes = [
         'node',
-        node.id === 'center' ? 'node-center node-circle' : `node-${node.type}-shape`,
+        node.id === 'center' ? 'node-center node-circle' : 'node-panel',
       ];
       if (state.closedNodes.has(node.id)) {
         classes.push('closed-route', 'node-clickable');
@@ -3338,17 +3144,19 @@ function renderPlayerMarker() {
 
 function renderBoardLines(offsets) {
   const lines = [];
-  Object.values(nodes).forEach((node) => {
-    const from = getNodeCenterPoint(node, offsets);
-    getOutgoingLinks(node).forEach((targetId) => {
-      const target = nodes[targetId];
-      if (!target) return;
-      const to = getNodeCenterPoint(target, offsets);
-      lines.push(
-        `<line x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" class="chapter-line line-${escapeHtml(node.chapter)}"></line>`,
-      );
+  Object.values(nodes)
+    .filter((node) => !node.boardHidden)
+    .forEach((node) => {
+      const from = getNodeCenterPoint(node, offsets);
+      getOutgoingLinks(node).forEach((targetId) => {
+        const target = nodes[targetId];
+        if (!target || target.boardHidden) return;
+        const to = getNodeCenterPoint(target, offsets);
+        lines.push(
+          `<line x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" class="chapter-line line-${escapeHtml(node.chapter)}"></line>`,
+        );
+      });
     });
-  });
   refs.boardLines.innerHTML = lines.join('');
 }
 

@@ -949,48 +949,8 @@ h1 { margin: 0; font-size: 2rem; }
   border-radius: 999px;
 }
 
-.node-story-shape {
-  border-radius: 10px;
-}
-
-.node-info-shape {
+.node-panel {
   border-radius: 18px;
-}
-
-.node-quiz-shape {
-  border-radius: 18px;
-}
-
-.node-story-shape::before,
-.node-info-shape::before,
-.node-quiz-shape::before {
-  content: "";
-  position: absolute;
-  top: -12px;
-  left: 14px;
-  opacity: .92;
-}
-
-.node-story-shape::before {
-  width: 20px;
-  height: 14px;
-  border-radius: 4px;
-  background: var(--node-shape-fill);
-}
-
-.node-info-shape::before {
-  width: 0;
-  height: 0;
-  border-left: 12px solid transparent;
-  border-right: 12px solid transparent;
-  border-bottom: 20px solid var(--node-shape-fill);
-}
-
-.node-quiz-shape::before {
-  width: 24px;
-  height: 24px;
-  background: var(--node-shape-fill);
-  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 92%, 50% 71%, 21% 92%, 32% 57%, 2% 35%, 39% 35%);
 }
 
 #node-team { left: 240px; top: 120px; }
@@ -1047,27 +1007,6 @@ h1 { margin: 0; font-size: 2rem; }
 .dot.blocked { background: var(--blocked-dot); }
 .dot.available { background: var(--status-available); }
 .dot.completed { background: var(--status-completed); }
-
-.shape-demo {
-  display: inline-block;
-  width: 14px;
-  height: 14px;
-  margin-right: 6px;
-  border: 1px solid rgba(140, 140, 140, .55);
-  background: rgba(170, 170, 170, .28);
-}
-
-.shape-story {
-  border-radius: 3px;
-}
-
-.shape-info {
-  clip-path: polygon(50% 0, 100% 100%, 0 100%);
-}
-
-.shape-quiz {
-  clip-path: polygon(50% 0, 61% 35%, 98% 35%, 68% 57%, 79% 92%, 50% 71%, 21% 92%, 32% 57%, 2% 35%, 39% 35%);
-}
 
 .story-panel-top {
   display: flex;

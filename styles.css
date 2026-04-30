@@ -1243,8 +1243,17 @@ button:disabled {
 .delta-list { display: grid; gap: 10px; }
 .delta-item {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
   color: var(--muted);
+}
+.delta-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.delta-value {
+  font-weight: 700;
 }
 .delta-positive { color: var(--accent-2); }
 .delta-negative { color: var(--danger); }

@@ -3675,7 +3675,7 @@ function renderFeedbackModal(nodeId, feedback, options = {}) {
       if (!value) return;
       const item = document.createElement('div');
       item.className = 'delta-item';
-      item.innerHTML = `<span>${escapeHtml(resourceMeta[key].label)}</span><strong class="${getDeltaClass(value)}">${formatSignedValue(value)}</strong>`;
+      item.innerHTML = `<span class="delta-label">${escapeHtml(resourceMeta[key].label)} <strong class="delta-value ${getDeltaClass(value)}">${formatSignedValue(value)}</strong></span>`;
       deltaList.appendChild(item);
     });
   }

@@ -1,6 +1,10 @@
 const LOWER_LIMIT = 30;
 const UPPER_LIMIT = 70;
 
+// FOR TESTING ONLY 
+const SKIP_PRE_EVALUATION = true;
+const TESTING_START_NODES = ['funding_01', 'team_01', 'data_01'];
+
 const initialResources = {
   social: 50,
   financial: 50,
@@ -864,440 +868,306 @@ const nodes = {
   }),
 
   team_01: makeStoryNode({
-    id: 'team_01',
-    chapter: 'team',
-    title: 'Capacity Warning',
-    x: 150,
-    y: 1160,
-    introText: 'The project progression starts to slow down, it can no longer run on goodwill.',
-    text:
-      "At first, everything seems on track. But after a few days, small issues appear.\n\nMessages sit unanswered. Tasks are discussed but not clearly assigned. Some parts move fast, others are blocked.\n\nDuring a meeting, the principal investigator says:\n\"We’re starting to lose track of who is doing what.\"\n\nNo one disagrees.",
-    continueTo: 'team_01b',
-    continueLabel: 'Continue to look closer',
+  id: 'team_01',
+  chapter: 'team',
+  title: 'Capacity Warning',
+  x: 150,
+  y: 1160,
+  introText: 'The project is still moving, but the team is starting to lose control of the work.',
+  text:
+    'A few days ago, everything felt on track. Now, small delays are becoming a pattern.\n\n' +
+    'Messages stay unanswered. Tasks are discussed, but not clearly owned. Some people move fast while others wait.\n\n' +
+    'In a meeting, the principal investigator says:\n' +
+    '"We are losing track of who is doing what."\n\n' +
+    'No one disagrees.',
+  continueTo: 'team_02',
+  continueLabel: 'Decide what to fix first',
   }),
-  team_01b: makeStoryNode({
-    id: 'team_01b',
-    chapter: 'team',
-    title: 'Looking closer',
-    x: 130,
-    y: 1310,
-    introText: 'The issue is not motivation, it\'s organization.',
-    text:
-      "You look more closely at how the team works.\n\nEveryone is putting in effort. But roles are unclear, priorities shift, and decisions are informal.\n\nSome people are overloaded. Others are waiting.\n\nThe problem isn’t motivation. It’s structure.",
-    continueTo: "team_02",
-    continueLabel: 'Continue',
-  }),
+
   team_02: makeDecisionNode({
     id: 'team_02',
     chapter: 'team',
-    title: 'What to fix first',
+    title: 'What to Fix First',
     badge: 'Decision node',
     x: 390,
     y: 1140,
-    introText: 'Where do you focus first?',
+    introText: 'The issue is not motivation. It is organization.',
     text:
-      'One option is to clarify roles and responsibilities before adding more pressure. This could make the team more stable and improve coordination.\n\n' +
-      'Another option is to push for faster delivery, hoping that visible progress will keep funders and partners confident.\n\n' +
-      'A third option is to wait and observe, avoiding a heavy structural change too early.',
+      'Everyone is working hard, but roles are unclear, priorities keep shifting, and decisions are too informal.\n\n' +
+      'Where should the team focus first?',
     choices: [
       {
-        text: 'Clarify roles and responsibilities before pushing the team further.',
-        feedbackTitle: 'You chose to stabilize the team first.',
+        text: 'Clarify roles before asking the team to move faster.',
+        feedbackTitle: 'You stabilized the team first.',
         feedbackStory:
-          'The team slows down briefly to define who is responsible for what. Some confusion is reduced, and overloaded members become easier to identify.',
+          'The team pauses briefly to define responsibilities. Bottlenecks become easier to see, and overloaded members are easier to support.',
         feedbackText:
-          'This improves project performance by reducing bottlenecks. It also supports social fairness because workload becomes more visible and easier to distribute.',
+          'This improves performance and social fairness because workload becomes more visible and easier to distribute.',
         impact: { social: 6, financial: 0, performance: 10 },
         next: 'team_03',
       },
       {
-        text: 'Push for faster delivery so the project shows visible progress quickly.',
-        feedbackTitle: 'You chose speed first.',
+        text: 'Push delivery before changing how the team works.',
+        feedbackTitle: 'You prioritized visible speed.',
         feedbackStory:
-          'The team focuses on short-term output. Progress becomes more visible, but unclear responsibilities remain underneath the surface.',
+          'The team produces faster short-term results, but unclear responsibilities remain under the surface.',
         feedbackText:
-          'This can support financial viability in the short term because funders and partners see movement. However, it risks increasing pressure on already overloaded people.',
+          'This can reassure funders briefly, but it risks increasing pressure on people who are already overloaded.',
         impact: { social: -5, financial: 6, performance: 4 },
         next: 'team_03',
       },
       {
-        text: 'Wait and observe before changing the way the team works.',
-        feedbackTitle: 'You chose to delay the structural decision.',
+        text: 'Wait longer before changing the team structure.',
+        feedbackTitle: 'You delayed the decision.',
         feedbackStory:
-          'For now, the team keeps working in the same way. No one is disrupted, but the same delays and unclear responsibilities continue.',
+          'The team avoids immediate disruption, but the same delays and unclear responsibilities continue.',
         feedbackText:
-          'This avoids immediate conflict, but it weakens project performance because the organizational problems are left unresolved.',
+          'This avoids conflict in the short term, but it weakens performance because the structural problem remains unresolved.',
         impact: { social: 0, financial: 0, performance: -8 },
         next: 'team_03',
       },
     ],
   }),
+
   team_03: makeInfoNode({
     id: 'team_03',
     chapter: 'team',
     title: 'Structure vs Effort',
     x: 650,
     y: 1100,
-    introText: 'In growing teams, performance issues are often caused by lack of structure, not lack of effort.',
+    introText: 'In growing teams, poor performance often comes from weak structure, not weak effort.',
     text:
-      "Without clear roles:\n\nWork is delayed or duplicated\nBottlenecks appear\nDecisions slow down\n\nImproving organization often has a bigger impact than working more.",
+      'Without clear roles, work gets delayed, duplicated, or silently dropped.\n\n' +
+      'Improving structure can matter more than asking people to work harder.',
     continueTo: 'team_04',
-    continueLabel: 'Continue'
+    continueLabel: 'Discuss hiring',
   }),
-  team_04: makeStoryNode({
+
+  team_04: makeDecisionNode({
     id: 'team_04',
     chapter: 'team',
-    title: 'Hiring discussion',
-    x: 870,
-    y: 1210,
-    introText: 'The team considers expanding.',
-    text:
-      "The discussion shifts toward hiring.\n\nSome want developers to move faster.\n\nOthers insist on including people focused on ethics and fairness.\n\nHiring now means choosing what the project prioritizes.",
-    continueTo: 'team_05',
-    continueLabel: 'Continue'
-  }),
-  team_05: makeDecisionNode({
-    id: 'team_05',
-    chapter: 'team',
-    title: 'Hiring strategy',
+    title: 'Hiring Strategy',
     badge: 'Decision node',
     x: 650,
     y: 1310,
-    introText: 'Who should the team bring in first?',
-  text:
-    'The team agrees that hiring is needed, but not everyone agrees on what kind of hiring should come first.\n\n' +
-    'The project is still under pressure to improve the AI tool quickly. Technical experts could help build, test, and optimize the system faster.\n\n' +
-    'At the same time, the tool is connected to health decisions. If fairness, clinical use, and governance are treated as secondary concerns, the project may become harder to justify later.\n\n' +
-    'This is not only a staffing choice. It is a decision about what kind of project the team wants to become.',
-  choices: [
+    introText: 'Hiring now means choosing what the project protects first.',
+    text:
+      'The team agrees that more capacity is needed.\n\n' +
+      'Technical hires could improve the model faster. Fairness and governance roles could help the project stay credible once it enters health-related use.\n\n' +
+      'Who should the team bring in first?',
+    choices: [
       {
-        text: 'Prioritize technical experts so the team can improve the model and deliver faster.',
+        text: 'Prioritize technical hires to improve the tool faster.',
         feedbackTitle: 'You chose a speed-focused team.',
         feedbackStory:
-          'The new hires strengthen the technical core. Development becomes faster, and progress is easier to show in meetings.',
+          'Development accelerates. Features are delivered faster, and progress is easier to show in meetings.',
         feedbackText:
-          'This improves project performance in the short term, but it leaves fairness and governance questions less represented inside the team. Costs also increase because specialized technical hires are expensive.',
+          'This improves short-term performance, but fairness and governance questions may be pushed too far downstream.',
         impact: { social: -7, financial: -5, performance: 10 },
-        next: 'team_06_speed',
-        unlocks: ['team_06_speed', 'team_07_speed'],
-        locks: ['team_06_balanced', 'team_07_balanced'],
+        next: 'team_05_speed',
+        unlocks: ['team_05_speed'],
+        locks: ['team_05_balanced'],
         lockReason:
-          'By prioritizing technical hiring, the team follows a speed-focused path. The broader balanced-team path is now closed.',
+          'By prioritizing technical hiring, the team follows a speed-focused path.',
         branchFlagsSet: ['team_speed'],
       },
       {
-        text: 'Build a balanced team with both technical and fairness-focused expertise.',
+        text: 'Build a mixed team with technical and fairness roles.',
         feedbackTitle: 'You chose a broader team.',
         feedbackStory:
-          'The team now includes people who can work on the model, but also people who question how it will affect patients, clinicians, and trust in the system.',
+          'The team can improve the model while also questioning clinical fit, patient impact, and trust.',
         feedbackText:
-          'This improves social fairness and makes the project more robust. However, it costs more and makes coordination slower because more perspectives need to be included.',
+          'This strengthens social fairness and long-term robustness, but it costs more and makes coordination slower.',
         impact: { social: 10, financial: -7, performance: 5 },
-        next: 'team_06_balanced',
-        unlocks: ['team_06_balanced', 'team_07_balanced'],
-        locks: ['team_06_speed', 'team_07_speed'],
+        next: 'team_05_balanced',
+        unlocks: ['team_05_balanced'],
+        locks: ['team_05_speed'],
         lockReason:
-          'By choosing a balanced hiring strategy, the team follows a broader governance-aware path. The narrow speed-focused path is now closed.',
+          'By choosing a mixed hiring strategy, the team follows a governance-aware path.',
         branchFlagsSet: ['team_balanced'],
       },
     ],
   }),
-  team_06_speed: makeStoryNode({
-    id: 'team_06_speed',
-    chapter: 'team',
-    title: 'Fast execution',
-    x: 910,
-    y: 1410,
-    introText: 'Development accelerates.',
-    text:
-      'With more technical hires, progress becomes visible quickly.\n\nFeatures are delivered faster. Deadlines are met.\n\nBut some questions start to be postponed — especially around fairness and long-term impact.\n\n“These can be handled later.”\n\nFor now, speed is winning.',
-    continueTo: 'team_07_speed',
-    continueLabel: 'Continue to speed check',
-  }),
-  team_07_speed: makeQuizNode({
-    id: 'team_07_speed',
+
+  team_05_speed: makeQuizNode({
+    id: 'team_05_speed',
     chapter: 'team',
     title: 'Speed Check',
     x: 400,
     y: 1300,
     introText: 'The team is moving faster, but some concerns are being postponed.',
     text:
-      'In a speed-focused hiring route, what is the main risk the team needs to manage?',
+      'What is the main risk in this speed-focused path?',
     choices: [
       {
-        text: 'There is no real risk if the technical progress is fast enough.',
-        retry: true,
-        feedbackTitle: 'Speed can hide problems instead of solving them.',
+        text: 'Fast progress can hide unresolved fairness issues.',
+        feedbackTitle: 'You identified the strongest risk.',
         feedbackStory:
-          'Fast progress may make the project look healthy, while fairness and coordination issues continue to grow underneath.',
+          'The project looks healthier from the outside, while delayed concerns become harder to fix later.',
         feedbackText:
-          'Technical progress is important, but it does not automatically make the project socially fair or sustainable.',
+          'Technical progress matters, but it does not automatically make the tool fair, credible, or sustainable.',
+        next: 'team_06',
       },
       {
-        text: 'Fairness and governance questions may be delayed until they are harder to fix.',
-        feedbackTitle: 'You identified the strongest risk here.',
+        text: 'Technical hiring removes coordination problems.',
+        retry: true,
+        feedbackTitle: 'More expertise still needs structure.',
         feedbackStory:
-          'The team keeps delivering, but postponed concerns can later become more expensive and more difficult to correct.',
+          'A stronger technical team can still slow down if responsibilities and review points are unclear.',
         feedbackText:
-          'This is the best answer because early technical choices can shape who benefits from the tool and who may be excluded.',
-        next: 'team_08',
+          'As teams grow, coordination usually becomes more important, not less.',
       },
       {
-        text: 'Hiring technical experts removes the need for coordination.',
+        text: 'Fairness concerns disappear after launch.',
         retry: true,
-        feedbackTitle: 'More expertise still needs coordination.',
+        feedbackTitle: 'Delayed concerns usually return.',
         feedbackStory:
-          'Even a technically strong team can slow down if responsibilities, priorities, and review points are unclear.',
+          'Questions about fairness and governance do not disappear. They often become more expensive once the system is built.',
         feedbackText:
-          'A larger team usually needs more structure, not less.',
+          'Early technical choices can shape who benefits, who is excluded, and what later becomes difficult to change.',
       },
     ],
   }),
-  team_06_balanced: makeStoryNode({
-    id: 'team_06_balanced',
-    chapter: 'team',
-    title: 'Slower but broader discussions',
-    x: 610,
-    y: 1500,
-    introText: 'Progress becomes more cautious.',
-    text:
-      'With a more diverse team, discussions become deeper.\n\nQuestions about fairness and impact are raised early.\n\nBut decisions take longer. Some technical members feel slowed down.\n\nProgress is steady — but less visible.',
-    continueTo: 'team_07_balanced',
-    continueLabel: 'Continue to trade-off awareness'
-  }),
-  team_07_balanced: makeQuizNode({
-    id: 'team_07_balanced',
+
+  team_05_balanced: makeQuizNode({
+    id: 'team_05_balanced',
     chapter: 'team',
     title: 'Trade-off Awareness',
     x: 390,
     y: 1610,
     introText: 'The team now includes more perspectives, but coordination is harder.',
     text:
-      'How do you make that diversity actually useful instead of just slowing things down?',
+      'How can the team make this diversity useful?',
     choices: [
       {
-        text: 'Include fairness-focused roles, but keep them separate from technical decisions.',
+        text: 'Link each role to clear decision moments.',
+        feedbackTitle: 'You chose structured inclusion.',
+        feedbackStory:
+          'Different perspectives now shape the project before decisions become too advanced to change.',
+        feedbackText:
+          'A broader team only helps if its expertise enters real decisions at the right moment.',
+        next: 'team_06',
+      },
+      {
+        text: 'Keep fairness roles outside technical choices.',
         retry: true,
         feedbackTitle: 'That creates weak inclusion.',
         feedbackStory:
-          'If fairness-focused people are present but disconnected from real decisions, their role becomes symbolic.',
+          'Fairness-focused people are present, but their concerns do not shape the technical work.',
         feedbackText:
-          'A balanced team only helps if different forms of expertise influence the project at the right moments.',
+          'Inclusion becomes useful only when it can influence the project before key choices are locked in.',
       },
       {
-        text: 'Connect different roles to clear decision points, responsibilities, and review moments.',
-        feedbackTitle: 'You identified the strongest principle here.',
-        feedbackStory:
-          'The team is broader, but the added perspectives now shape the process instead of only adding discussion.',
-        feedbackText:
-          'This is the best answer because social fairness, financial viability, and project performance all depend on how responsibilities are organized.',
-        next: 'team_08',
-      },
-      {
-        text: 'Let every decision be discussed by everyone until there is full agreement.',
+        text: 'Discuss every decision until everyone agrees.',
         retry: true,
-        feedbackTitle: 'Full agreement can become a bottleneck.',
+        feedbackTitle: 'Consensus can become a bottleneck.',
         feedbackStory:
-          'Including more voices does not mean every person must decide everything. That can slow the project without adding useful accountability.',
+          'Including more voices does not mean every person must decide everything.',
         feedbackText:
-          'The goal is structured participation, not endless consensus.',
+          'The goal is structured participation, not endless discussion.',
       },
     ],
   }),
-  team_08: makeStoryNode({
-    id: 'team_08',
-    chapter: 'team',
-    title: 'Workload Reality',
-    x: 280,
-    y: 1470,
-    introText: 'No matter which hiring route the team took, capacity strain now becomes visible.',
-    text: (currentState) =>
-      currentState.branchFlags.has('team_balanced')
-        ? 'The balanced team catches more fairness and governance issues early, but coordination now takes more time. Several members are stretched between technical work, review meetings, and clinical expectations.'
-        : 'The speed-focused team delivers faster, but the same people are now carrying technical, operational, and fairness-related questions at once. Some concerns are handled only when they become urgent.',
-    continueTo: 'team_09',
-    continueLabel: 'Continue to the burnout signal',
-  }),
 
-  team_09: makeStoryNode({
-    id: 'team_09',
-    chapter: 'team',
-    title: 'Burnout Signal',
-    x: 580,
-    y: 1630,
-    introText: 'The strain becomes real when people stop talking about workload in abstract terms.',
-    text:
-      'A junior researcher quietly says they no longer know which concerns are “important enough” to raise, because everything already feels urgent.\n\n' +
-      'That moment changes the discussion. Burnout is not only a wellbeing issue here. It also affects the project itself: exhausted teams are worse at noticing small problems before they become expensive failures.',
-    continueTo: 'team_10',
-    continueLabel: 'Continue to reorganization',
-  }),
-
-  team_10: makeDecisionNode({
-    id: 'team_10',
+  team_06: makeDecisionNode({
+    id: 'team_06',
     chapter: 'team',
     title: 'Reorganize the Team',
     badge: 'Decision node',
     x: 120,
     y: 1610,
-    introText: 'The question is no longer only who is in the team, but how the team is run.',
+    introText: 'Capacity strain is now visible, no matter which hiring path the team chose.',
     text:
-      'The project manager warns that the current structure will not hold if the workload keeps increasing.\n\n' +
-      'The team now has to decide how decisions should be organized.\n\n' +
-      'One option is to keep decision-making centralized in a small core. This is simpler and cheaper, but it may leave some voices outside important decisions.\n\n' +
-      'Another option is to share responsibility more widely through rotating steering meetings. This gives more people influence, but it also takes more time and coordination.\n\n' +
-      'A third option is to create paired leads, so technical and fairness-related questions are handled together instead of separately.',
+      'A junior researcher quietly says they no longer know which concerns are important enough to raise, because everything already feels urgent.\n\n' +
+      'The team needs a clearer way to handle decisions under pressure.',
     choices: [
       {
-        text: 'Keep decision-making centralized in a small core and consult others only at defined checkpoints.',
+        text: 'Keep decisions central and consult at checkpoints.',
         feedbackTitle: 'You protected a tighter structure.',
         feedbackStory:
-          'Coordination becomes simpler. Decisions are faster, and the project is easier to manage day to day.',
+          'Coordination becomes simpler, and decisions are faster. But some concerns may enter only after key choices are already made.',
         feedbackText:
-          'This supports financial viability because it limits coordination costs. However, it can reduce social fairness because some concerns may only enter after key decisions are already made.',
+          'This helps financial viability by limiting coordination costs, but it can reduce social fairness.',
         impact: { social: -6, financial: 6, performance: -1 },
-        next: 'team_11',
+        next: 'team_07',
         branchFlagsSet: ['team_centralized'],
       },
       {
-        text: 'Create a rotating steering rhythm that shares decision-making across the team.',
-        feedbackTitle: 'You distributed responsibility more widely.',
+        text: 'Rotate steering roles across the wider team.',
+        feedbackTitle: 'You shared responsibility more widely.',
         feedbackStory:
-          'More people can now see where the difficult trade-offs are happening. However, meetings become heavier and decisions take longer.',
+          'More people can see where difficult trade-offs happen. Meetings become heavier, and decisions take longer.',
         feedbackText:
-          'This supports social fairness because more perspectives can shape the project. But it weakens financial viability because coordination requires more time and resources.',
+          'This supports social fairness, but it costs more time and coordination.',
         impact: { social: 6, financial: -6, performance: 1 },
-        next: 'team_11',
+        next: 'team_07',
         branchFlagsSet: ['team_rotating'],
       },
       {
-        text: 'Create paired leads so technical and fairness-related questions are handled together.',
+        text: 'Pair technical leads with fairness-facing leads.',
         feedbackTitle: 'You chose a balancing structure.',
         feedbackStory:
-          'Each major workstream now has both a technical lead and a fairness or implementation-facing lead. The structure is more complex, but problems are less likely to stay isolated.',
+          'Each major workstream now connects technical progress with fairness, workflow, and implementation concerns.',
         feedbackText:
-          'This improves project performance by connecting technical progress with real-world constraints. It also supports social fairness, while keeping coordination costs lower than a fully distributed structure.',
+          'This improves performance and social fairness while keeping coordination lighter than full distribution.',
         impact: { social: 4, financial: -3, performance: 2 },
-        next: 'team_11',
+        next: 'team_07',
         branchFlagsSet: ['team_paired_leads'],
       },
     ],
   }),
 
-  team_11: makeInfoNode({
-    id: 'team_11',
-    chapter: 'team',
-    unlocks: ['team_12b'],
-    title: 'Representation in Practice',
-    x: 40,
-    y: 1770,
-    introText: 'This information node explains how inclusion becomes useful in practice.',
-    text:
-      'A team becomes more responsible when important concerns have a clear path into real decisions.\n\n' +
-      'That path can be a role, a review meeting, or a paired-lead structure.\n\n' +
-      'What matters is not simply having different people in the room. What matters is whether their concerns can influence the project before plans become too expensive or too advanced to change.',
-    extraHtml:
-      '<h3>Reusable method</h3><p>Take one planned decision and ask: who can still meaningfully change it before it is announced, budgeted, or treated as final? If the answer is “almost nobody,” the team structure is weaker than it looks.</p>',
-    continueTo: 'team_12',
-    continueLabel: 'Continue to the team lesson',
-  }),
-
-  team_12: makeInfoNode({
-    id: 'team_12',
-    chapter: 'team',
-    title: 'What Team Design Really Does',
-    x: 280,
-    y: 1850,
-    introText: 'This information node names the deeper lesson behind the chapter.',
-    text:
-      'A team is not only a list of skills. It is a structure that decides which problems become visible early and which ones are discovered too late.\n\n' +
-      'Many “communication problems” are actually team design problems. The right concern may exist, but no one has a clear role or safe moment to raise it.\n\n' +
-      'In this project, team design affects all three variables: social fairness, financial viability, and project performance.',
-    extraHtml:
-      '<h3>Useful method</h3><p>Before a project accelerates, write down who is responsible for technical quality, workflow fit, fairness, governance, and stakeholder impact. If one person is carrying several of these silently, the project is more fragile than it looks.</p><h3>What to watch for</h3><p>A warning sign is when important concerns only appear after a plan is already framed as too expensive to revisit.</p>',
-    continueTo: 'team_13',
-    continueLabel: 'Continue to the final team check',
-  }),
-
-  team_12b: makeInfoNode({
-    id: 'team_12b',
-    chapter: 'team',
-    title: 'Missing Voices Check',
-    x: 820,
-    y: 1920,
-    introText: 'This optional node offers a quick reflection tool for team composition.',
-    text:
-      'Ask four questions: who understands the technical system, who understands the clinical workflow, who understands governance, and who can speak for the people affected by mistakes?\n\n' +
-      'If one of these perspectives only appears informally, the team may be depending on luck.',
-    extraHtml:
-      '<h3>Practical use</h3><p>This check is especially useful before hiring, before pilot design, and whenever a team says it will “add broader perspectives later.” Later often means after the expensive choices are already made.</p>',
-  }),
-
-  team_13: makeQuizNode({
-    id: 'team_13',
+  team_07: makeQuizNode({
+    id: 'team_07',
     chapter: 'team',
     title: 'Final Team Check',
     x: 540,
     y: 1850,
-    introText: 'The chapter ends with one practical test of judgment.',
+    introText: 'Responsible team design is about making important problems visible early.',
     text:
-      'Which sign best suggests that a team structure may be becoming unhealthy, even if the project still appears productive?',
+      'Which sign best shows that a team structure is becoming unhealthy?',
     choices: [
       {
-        text: 'The team is moving quickly and disagreements are becoming rarer over time.',
+        text: 'Concerns appear only after decisions feel final.',
+        feedbackTitle: 'You identified the clearest warning sign.',
+        feedbackStory:
+          'This means the team is discovering real constraints too late.',
+        feedbackText:
+          'A responsible structure gives important concerns a path into decisions before plans harden.',
+        next: 'team_08',
+      },
+      {
+        text: 'Meetings become longer as the project grows.',
+        retry: true,
+        feedbackTitle: 'That is not always unhealthy.',
+        feedbackStory:
+          'Longer meetings may simply mean the project has become more complex.',
+        feedbackText:
+          'The real question is whether added discussion improves decisions or only consumes time.',
+      },
+      {
+        text: 'Disagreements become less visible over time.',
         retry: true,
         feedbackTitle: 'That can be misleading.',
         feedbackStory:
-          'Fewer visible disagreements may mean that people no longer feel able to interrupt the process.',
+          'Fewer visible disagreements may mean people no longer feel safe interrupting the process.',
         feedbackText:
-          'Healthy teams do not eliminate friction. They surface the right friction early enough to shape decisions.',
-      },
-      {
-        text: 'Important concerns only appear after major decisions are already framed as too expensive to revisit.',
-        feedbackTitle: 'You identified the clearest warning sign.',
-        feedbackStory:
-          'This usually means the team is discovering its real constraints too late.',
-        feedbackText:
-          'This is the strongest answer because responsible team design is about making sure important concerns can enter before decisions harden.',
-        next: 'team_14',
-      },
-      {
-        text: 'Meetings are longer than they were during the project’s earliest phase.',
-        retry: true,
-        feedbackTitle: 'Longer meetings are not automatically the problem.',
-        feedbackStory:
-          'Longer meetings may simply reflect that the project has become more complex.',
-        feedbackText:
-          'The real question is whether the added discussion helps the project make better decisions.',
+          'Healthy teams do not remove all friction. They surface useful friction early.',
       },
     ],
   }),
 
-  team_14: makeStoryNode({
-    id: 'team_14',
-    chapter: 'team',
-    title: 'Escalation Path',
-    x: 1060,
-    y: 1770,
-    introText: 'The chapter closes by asking how concerns would actually travel upward once the pilot gets busy.',
-    text:
-      'The team finally writes down a practical escalation path: who hears concerns first, who can pause work, and what counts as a reason to reopen a decision.\n\n' +
-      'It looks like a small administrative document. But under pressure, it can decide whether the team stays reflective or simply learns to work around problems until they feel normal.',
-    continueTo: 'team_15',
-    continueLabel: 'Continue to the milestone',
-  }),
-
-  team_15: makeStoryNode({
-    id: 'team_15',
+  team_08: makeStoryNode({
+    id: 'team_08',
     chapter: 'team',
     title: 'Team Milestone',
     x: 860,
     y: 1690,
-    introText: 'The team chapter closes with a structure that is workable, but not tension-free.',
+    introText: 'The chapter closes with a structure that is workable, but not tension-free.',
     text: (currentState) =>
       currentState.branchFlags.has('team_speed')
-        ? 'The project leaves the chapter with a faster and more compact structure. Performance has improved in the short term, but some fairness and governance work has clearly been deferred rather than solved.'
-        : 'The project leaves the chapter with a broader and more demanding structure. It carries more friction and higher costs, but it also catches more of the project’s real constraints before they become emergencies.',
+        ? 'The project leaves this chapter faster and more compact. Performance has improved in the short term, but some fairness and governance work has clearly been deferred rather than solved.'
+        : 'The project leaves this chapter broader and more demanding. It carries more friction and higher costs, but it catches more real constraints before they become emergencies.',
     continueTo: null,
     continueLabel: 'Return to the board',
     completeChapter: 'team',
@@ -2721,7 +2591,28 @@ function finishPreEvaluation() {
       feedbackText: 'You can reopen the center node later to review these answers. The quantitative comparison is revealed at the end of the game.',
     },
   };
-  unlockNodes(['funding_01', 'team_01', 'data_01']);
+  unlockNodes(TESTING_START_NODES);
+  refreshGlobalUnlocks();
+  renderBoard();
+  closePanel();
+}
+
+function skipPreEvaluationForTesting() {
+  state.startAssessmentScore = null;
+
+  markNodeCompleted('center');
+
+  state.feedbackByNode.center = {
+    feedback: {
+      feedbackTitle: 'Opening assessment skipped',
+      feedbackStory:
+        'The opening assessment was skipped for testing so the first playable workstreams could open immediately.',
+      feedbackText:
+        'This shortcut is only for development. Re-enable the assessment before the final version.',
+    },
+  };
+
+  unlockNodes(TESTING_START_NODES);
   refreshGlobalUnlocks();
   renderBoard();
   closePanel();
@@ -3171,7 +3062,7 @@ function renderBoard() {
 
 function refreshGlobalUnlocks() {
   if (isEvaluationComplete('pre')) {
-    unlockNodes(['funding_01', 'team_01', 'data_01']);
+    unlockNodes(TESTING_START_NODES);
   }
   if (
     state.chapterMilestones.has('funding') &&
@@ -3187,6 +3078,24 @@ function unlockNodes(nodeIds = []) {
     if (!nodeId || state.closedNodes.has(nodeId) || state.completedNodes.has(nodeId)) return;
     state.availableNodes.add(nodeId);
   });
+}
+
+function getDirectUnlockTargets(node) {
+  const targets = new Set([...(node.unlocks || []), node.continueTo].filter(Boolean));
+  return [...targets].filter((nodeId) => (
+    nodes[nodeId] &&
+    !state.closedNodes.has(nodeId) &&
+    !state.completedNodes.has(nodeId)
+  ));
+}
+
+function getChoiceUnlockTargets(choice) {
+  const targets = new Set([...(choice.unlocks || []), choice.next].filter(Boolean));
+  return [...targets].filter((nodeId) => (
+    nodes[nodeId] &&
+    !state.closedNodes.has(nodeId) &&
+    !state.completedNodes.has(nodeId)
+  ));
 }
 
 function closeNodes(nodeIds = [], reason = '') {
@@ -3385,6 +3294,7 @@ function renderActionStage(nodeId, options = {}) {
 
   const choicesContainer = document.getElementById('choices');
   const actions = document.getElementById('secondaryAction');
+  const isPassiveFinalNode = !node.choices && !node.continueTo && !(node.unlocks || []).length;
 
   if (node.choices) {
     let selectedChoice = null;
@@ -3447,20 +3357,15 @@ function renderActionStage(nodeId, options = {}) {
     );
   }
 
-  actions.appendChild(
-    createButton({
-      label: 'Back',
-      className: 'ghost-btn',
-      onClick: closePanel,
-    }),
-  );
-  actions.appendChild(
-    createButton({
-      label: 'Back to board',
-      className: 'ghost-btn',
-      onClick: closePanel,
-    }),
-  );
+  if (!isPassiveFinalNode) {
+    actions.appendChild(
+      createButton({
+        label: 'Back to board',
+        className: 'ghost-btn',
+        onClick: closePanel,
+      }),
+    );
+  }
 }
 
 function renderFeedbackModal(nodeId, feedback, options = {}) {
@@ -3486,13 +3391,48 @@ function renderFeedbackModal(nodeId, feedback, options = {}) {
   }
 
   const feedbackActions = document.getElementById('feedbackActions');
-  feedbackActions.appendChild(
-    createButton({
-      label: 'Back to board',
-      className: 'primary-btn',
-      onClick: closePanel,
-    }),
-  );
+  if (options.retry) {
+    feedbackActions.appendChild(
+      createButton({
+        label: 'Retry',
+        className: 'primary-btn',
+        onClick: () => renderActionStage(nodeId),
+      }),
+    );
+    feedbackActions.appendChild(
+      createButton({
+        label: 'Back to board',
+        className: 'ghost-btn',
+        onClick: closePanel,
+      }),
+    );
+    return;
+  }
+
+  if (options.continueTo) {
+    feedbackActions.appendChild(
+      createButton({
+        label: 'Continue',
+        className: 'primary-btn',
+        onClick: () => renderActionStage(options.continueTo),
+      }),
+    );
+    feedbackActions.appendChild(
+      createButton({
+        label: 'Back to board',
+        className: 'ghost-btn',
+        onClick: closePanel,
+      }),
+    );
+  } else {
+    feedbackActions.appendChild(
+      createButton({
+        label: 'Back to board',
+        className: 'primary-btn',
+        onClick: closePanel,
+      }),
+    );
+  }
   feedbackActions.appendChild(
     createButton({
       label: 'Review node',
@@ -3510,7 +3450,7 @@ function handleRetry(nodeId, choice) {
     feedbackTitle: choice.feedbackTitle,
     feedbackStory: choice.feedbackStory,
     feedbackText: `${choice.feedbackText} Try again to continue the project.`,
-  });
+  }, { retry: true });
 }
 
 function handleChoice(nodeId, choice) {
@@ -3527,6 +3467,8 @@ function handleChoice(nodeId, choice) {
     return;
   }
 
+  const directTargets = getChoiceUnlockTargets(choice);
+  const directTarget = directTargets.length === 1 ? directTargets[0] : null;
   const thresholdEvents = applyImpact(choice.impact || {});
   markNodeCompleted(nodeId);
   applyBranchFlags(choice.branchFlagsSet || []);
@@ -3545,7 +3487,10 @@ function handleChoice(nodeId, choice) {
   const options = choice.impact ? { showImpact: choice.impact } : {};
   state.feedbackByNode[nodeId] = { feedback, options, selectedChoiceIndex };
   renderBoard();
-  renderFeedbackModal(nodeId, feedback, options);
+  renderFeedbackModal(nodeId, feedback, {
+    ...options,
+    continueTo: directTarget,
+  });
 
   if (thresholdEvents.length) {
     openThresholdOverlay(thresholdEvents);
@@ -3554,6 +3499,8 @@ function handleChoice(nodeId, choice) {
 
 function completePassiveNode(nodeId) {
   const node = nodes[nodeId];
+  const directTargets = getDirectUnlockTargets(node);
+  const directTarget = directTargets.length === 1 ? directTargets[0] : null;
   markNodeCompleted(nodeId);
   applyBranchFlags(node.branchFlagsSet || []);
   if (node.unlocks) unlockNodes(node.unlocks);
@@ -3562,6 +3509,10 @@ function completePassiveNode(nodeId) {
   renderBoard();
   if (nodeId === 'launch_10') {
     renderEvaluationStage('post');
+    return;
+  }
+  if (directTarget) {
+    renderActionStage(directTarget);
     return;
   }
   closePanel();
@@ -3655,6 +3606,13 @@ function renderOnboardingPage(index) {
 function completeSetup() {
   refs.setupOverlay.classList.add('hidden');
   renderBoard();
+
+  if (SKIP_PRE_EVALUATION) {
+    state.onboardingComplete = true;
+    skipPreEvaluationForTesting();
+    return;
+  }
+
   renderOnboardingPage(0);
 }
 

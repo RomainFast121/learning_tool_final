@@ -459,11 +459,11 @@ const nodes = {
     id: 'funding_01',
     chapter: 'funding',
     title: 'Sponsor Rumor',
-    x: 200,
+    x: 460,
     y: 80,
     introText: 'A rumor about a diagnostics sponsor circulates inside the hospital, and the team starts mapping what this money could change before it even arrives.',
     text:
-      'Before any formal contact has happened, people inside the hospital are already speculating. Some hear opportunity, others hear dependency. The team quietly maps what this money could change: the finance officer describes an operating cushion, the clinician hears political risk, the principal investigator worries about losing independence. The scene reveals something students often miss at first. Funding pressure does not arrive when the contract does. It starts earlier, when different parts of the institution begin imagining the project through different kinds of hope.',
+      'Before any formal contact, people inside the hospital are already speculating. Some hear opportunity, others hear dependency. Funding pressure does not arrive with the contract — it starts when different parts of the institution begin imagining the project through different kinds of hope.',
     continueTo: 'funding_02',
     continueLabel: 'Continue to the funding meeting',
   }),
@@ -473,265 +473,74 @@ const nodes = {
     title: 'How To Enter The Meeting',
     badge: 'Major decision',
     x: 460,
-    y: 80,
+    y: 240,
     introText: 'The first internal funding discussion is about posture, not yet about contract terms.',
     text:
-      'Two instincts emerge in the room. One group wants to treat the meeting as a showcase moment and convert energy into public momentum. Another wants to keep the conversation quiet, disciplined, and review-oriented until the project has stronger internal footing.',
-    extraHtml:
-      '<h3>What is really being decided?</h3><p>This is a large directional decision. It does not only affect tone. It shapes which later paths remain realistic, which routes close, and how much public pressure the team will have to absorb.</p>',
+      'Two instincts emerge in the room. One group wants to treat the meeting as a showcase and convert energy into public momentum. Another wants to keep the conversation quiet and review-oriented until the project has stronger internal footing.',
     choices: [
       {
         text: 'Enter as if this is a showcase opportunity and try to turn the sponsor meeting into visible momentum early.',
         feedbackTitle: 'You chose a high-visibility entry.',
-        feedbackStory: 'The project gains speed and attention, but expectations begin to form before the team has fully stabilized its internal review process.',
-        feedbackText: 'This route may improve financing quickly, but it makes later caution harder to communicate and can weaken the project if promises outrun reality.',
+        feedbackStory: 'The project gains speed and attention, but expectations form before the team has stabilized its internal review.',
+        feedbackText: 'This route improves financing quickly, but makes later caution harder to communicate.',
         impact: { social: -10, financial: 13, performance: -4 },
         next: 'funding_03_hype',
         unlocks: ['funding_08b'],
-        locks: ['funding_03_guarded', 'funding_04_guarded', 'funding_05_guarded', 'funding_06_guarded'],
+        locks: ['funding_03_guarded'],
         lockReason:
-          'This more public-facing posture closed the quieter diligence route. The team is now operating inside a higher-visibility funding path.',
+          'This public-facing posture closed the quieter diligence route.',
         branchFlagsSet: ['funding_hype'],
       },
       {
         text: 'Enter carefully, keep the meeting closed-door, and focus first on governance, milestones, and conditions of independence.',
         feedbackTitle: 'You chose a guarded opening.',
-        feedbackStory: 'The room loses some early momentum, but it keeps more space for due diligence and internal alignment.',
+        feedbackStory: 'The room loses some early momentum, but keeps more space for due diligence and internal alignment.',
         feedbackText: 'This route protects legitimacy and review, even if it softens the first funding wave.',
         impact: { social: 6, financial: -5, performance: 3 },
         next: 'funding_03_guarded',
         unlocks: ['funding_08b'],
-        locks: ['funding_03_hype', 'funding_04_hype', 'funding_05_hype', 'funding_06_hype'],
+        locks: ['funding_03_hype'],
         lockReason:
-          'This review-first posture closed the showcase route. The team is now moving through a more controlled funding path.',
+          'This review-first posture closed the showcase route.',
         branchFlagsSet: ['funding_guarded'],
       },
     ],
   }),
-  funding_03_hype: makeDecisionNode({
+  funding_03_hype: makeStoryNode({
     id: 'funding_03_hype',
     chapter: 'funding',
     title: 'Sponsor Pitch',
     x: 260,
-    y: 240,
+    y: 400,
     introText: 'The meeting is moved to a polished presentation room with communications staff present.',
     text:
-      'The sponsor talks in the language of scale, visibility, and rapid proof of value. Several people in the room look energized. A clinician beside you stays unusually quiet, taking notes every time the timeline gets shorter. When the meeting breaks, the room carries a slightly unsettling mix of enthusiasm and vagueness: everyone can describe the opportunity, but not yet the conditions under which it should remain acceptable.',
-    continueTo: 'funding_04_hype',
+      'The sponsor talks scale and speed. Most people look energized; a clinician beside you takes quiet notes every time the timeline shortens. The room leaves with enthusiasm but without a clear sense of what conditions would make the offer unacceptable.',
+    continueTo: 'funding_06',
     continueLabel: 'Continue',
   }),
-  funding_04_hype: makeQuizNode({
-    id: 'funding_04_hype',
-    chapter: 'funding',
-    title: 'First Safeguard',
-    x: 260,
-    y: 400,
-    introText: 'The room is excited, but one basic question still matters.',
-    text:
-      'Under this more public funding posture, which safeguard is still the most important to protect before the project makes strong external promises?',
-    choices: [
-      {
-        text: 'A visible timeline that reassures journalists and executives right away.',
-        retry: true,
-        feedbackTitle: 'That responds to optics, not the underlying risk.',
-        feedbackStory: 'The project would look organized, but it would still be vulnerable if its governance conditions remain vague.',
-        feedbackText: 'In a high-visibility route, the first safeguard is not messaging polish. It is preserving the ability to review and slow down if needed.',
-      },
-      {
-        text: 'Clear review checkpoints and room to revise milestones if evidence or governance concerns change.',
-        feedbackTitle: 'You identified the strongest safeguard.',
-        feedbackStory: 'The team does not undo the public posture, but it protects a mechanism that can still absorb uncertainty later on.',
-        feedbackText: 'This is the most defensible answer because it keeps public momentum from turning into irreversible pressure.',
-        next: 'funding_05_hype',
-      },
-      {
-        text: 'A larger compute commitment so the project can keep demonstrating visible progress.',
-        retry: true,
-        feedbackTitle: 'That would reinforce the same pressure.',
-        feedbackStory: 'More compute could make the route look active, but it would not solve the governance risk created by early visibility.',
-        feedbackText: 'When a project is already under public pressure, doubling down on speed rarely creates the missing accountability structure.',
-      },
-    ],
-  }),
-  funding_05_hype: makeDecisionNode({
-    id: 'funding_05_hype',
-    chapter: 'funding',
-    title: 'Message Discipline',
-    badge: 'Decision node',
-    x: 260,
-    y: 560,
-    introText: 'A draft press line begins circulating before the meeting notes are even finished.',
-    text:
-      'Communications staff propose language about “rapid clinical readiness.” The sponsor likes it. The hospital board office wants something steadier. You are asked to decide how hard the team should lean into the momentum it just created. The disagreement is not loud, but it is important: the sentence chosen here will influence whether later caution sounds like responsible review or like an embarrassing retreat.',
-    choices: [
-      {
-        text: 'Keep the bold language and let the room feel the urgency of a fast-moving project.',
-        feedbackTitle: 'You reinforced the public momentum.',
-        feedbackStory: 'The route becomes easier to finance and harder to slow down. From now on, caution will sound more expensive in the room.',
-        feedbackText: 'This creates a stronger top-line story, but it also narrows the space for later correction.',
-        impact: { social: -8, financial: 7, performance: -3 },
-        next: 'funding_06_hype',
-        branchFlagsSet: ['funding_message_bold'],
-      },
-      {
-        text: 'Keep the project visible, but remove anything that implies a fixed clinical-readiness promise.',
-        feedbackTitle: 'You kept some momentum without overcommitting.',
-        feedbackStory: 'The sponsor loses a little rhetorical energy, but the team preserves room to admit uncertainty later on.',
-        feedbackText: 'This keeps the high-visibility route from collapsing entirely into hype.',
-        impact: { social: 5, financial: -3, performance: 3 },
-        next: 'funding_06_hype',
-        branchFlagsSet: ['funding_message_tempered'],
-      },
-    ],
-  }),
-  funding_06_hype: makeDecisionNode({
-    id: 'funding_06_hype',
-    chapter: 'funding',
-    title: 'Momentum Briefing',
-    badge: 'Decision node',
-    x: 260,
-    y: 720,
-    introText: 'Before contract drafting begins, the hospital wants a clean internal line on what this sponsor momentum actually means.',
-    text:
-      'A deputy director asks whether teams should begin acting as if a bigger winter push is now likely. Without anyone explicitly saying so, the hospital is beginning to coordinate around a future that still depends on assumptions the project has not fully tested. You are asked how to brief the deputy director.',
-    choices: [
-      {
-        text: 'Confirm the optimistic projection so other teams can plan staffing and resources around it now.',
-        feedbackTitle: 'You let the institution lock in around the sponsor scenario.',
-        feedbackStory: 'Other teams now plan as if the funding is settled. The project gains operational room but loses the option to revise quietly if early evidence shifts.',
-        feedbackText: 'When optimism gets baked into staffing and resourcing decisions, retreating later becomes a political event rather than a routine adjustment.',
-        impact: { social: -8, financial: 8, performance: -4 },
-        next: 'funding_06',
-      },
-      {
-        text: 'Ask the deputy to wait for the next governance review before formalizing the projection institution-wide.',
-        feedbackTitle: 'You held the institution back from premature commitment.',
-        feedbackStory: 'The deputy director sounds slightly impatient, but other teams keep their flexibility. The project preserves room to slow down without it looking like retreat.',
-        feedbackText: 'Delaying institutional alignment costs short-term momentum but keeps the project from inheriting expectations it has not earned yet.',
-        impact: { social: 6, financial: -4, performance: 3 },
-        next: 'funding_06',
-      },
-    ],
-  }),
-  funding_03_guarded: makeDecisionNode({
+  funding_03_guarded: makeStoryNode({
     id: 'funding_03_guarded',
     chapter: 'funding',
     title: 'Closed-Door Diligence',
     x: 660,
-    y: 240,
+    y: 400,
     introText: 'The meeting is deliberately small, and the sponsor notices the difference immediately.',
     text:
-      'Instead of a public showcase, the conversation turns into a practical exchange about review gates, publication freedom, and how much influence the sponsor expects over timeline decisions. The room feels cooler, but more honest. Instead of leaving with excitement, the team leaves with something less glamorous and more useful: a sharper sense of where later pressure would come from if the relationship deepened.',
-    continueTo: 'funding_04_guarded',
+      'The conversation turns practical: review gates, publication freedom, sponsor influence over timelines. The room feels cooler but more honest. The team leaves not with excitement, but with a clearer sense of where pressure would come from if the relationship deepened.',
+    continueTo: 'funding_06',
     continueLabel: 'Continue',
-  }),
-  funding_04_guarded: makeQuizNode({
-    id: 'funding_04_guarded',
-    chapter: 'funding',
-    title: 'Due Diligence Priority',
-    x: 660,
-    y: 400,
-    introText: 'The sponsor looks serious, but not hostile. The next move matters.',
-    text:
-      'In this quieter funding route, which question is the most important to clarify before the project starts treating the offer as stable?',
-    choices: [
-      {
-        text: 'Whether the sponsor can help arrange a stronger public communications campaign.',
-        retry: true,
-        feedbackTitle: 'That is not the most important priority yet.',
-        feedbackStory: 'Public communication may matter later, but it does not answer whether the project will remain governable under the offer.',
-        feedbackText: 'The key issue at this stage is protecting the project’s independence and review structure, not amplifying its visibility.',
-      },
-      {
-        text: 'Whether the contract keeps audit checkpoints, publication room, and flexibility over rollout milestones.',
-        feedbackTitle: 'You focused on the right due diligence question.',
-        feedbackStory: 'The room stays careful, but it now has a concrete way to define what responsible support would actually mean.',
-        feedbackText: 'This is the strongest answer because it checks whether the project can stay accountable after taking the money.',
-        next: 'funding_05_guarded',
-      },
-      {
-        text: 'Whether the team can negotiate the largest possible compute package first and sort the rest later.',
-        retry: true,
-        feedbackTitle: 'That would front-load the wrong issue.',
-        feedbackStory: 'More infrastructure could look attractive, but it would not tell the team whether the relationship itself is safe and governable.',
-        feedbackText: 'Infrastructure matters, but governance comes first because it determines how every later disagreement will be handled.',
-      },
-    ],
-  }),
-  funding_05_guarded: makeDecisionNode({
-    id: 'funding_05_guarded',
-    chapter: 'funding',
-    title: 'Internal Briefing',
-    badge: 'Decision node',
-    x: 660,
-    y: 560,
-    introText: 'The hospital staff now want to know how to describe the sponsor conversation internally.',
-    text:
-      'If you sound too cautious, some teams will fear the project is stalling. If you sound too positive, people will start acting as if support is already secure. The next internal message will shape how the organization interprets the negotiation. These early internal summaries matter because they often become the story people remember later, even when the actual agreement was much more conditional.',
-    choices: [
-      {
-        text: 'Describe the sponsor as promising, but make it clear that the project is still protecting review milestones and independence.',
-        feedbackTitle: 'You kept expectations measured and intelligible.',
-        feedbackStory: 'The project does not surge, but staff are less likely to mistake a possible partnership for a finished deal.',
-        feedbackText: 'This preserves organizational trust without pretending that uncertainty has already been solved.',
-        impact: { social: 7, financial: -4, performance: 3 },
-        next: 'funding_06_guarded',
-        branchFlagsSet: ['funding_message_guarded'],
-      },
-      {
-        text: 'Signal strong optimism so teams start behaving as if a larger funding phase is already coming.',
-        feedbackTitle: 'You imported momentum into the hospital before the deal existed.',
-        feedbackStory: 'This may help internal energy, but it also risks making later caution look like retreat.',
-        feedbackText: 'Even a guarded funding route can recreate hype if the institution begins acting on promises too early.',
-        impact: { social: -6, financial: 5, performance: -2 },
-        next: 'funding_06_guarded',
-        branchFlagsSet: ['funding_message_optimistic'],
-      },
-    ],
-  }),
-  funding_06_guarded: makeDecisionNode({
-    id: 'funding_06_guarded',
-    chapter: 'funding',
-    title: 'Procurement Questions',
-    badge: 'Decision node',
-    x: 660,
-    y: 720,
-    introText: 'Procurement and governance staff want concrete language about sponsor boundaries, review milestones, and what the hospital is promising internally.',
-    text:
-      'The route is calmer than the public path, but not easier. Careful governance creates work of its own, and you must decide how much team time to invest in formalizing this language before the contract draft arrives.',
-    choices: [
-      {
-        text: 'Spend significant team time formalizing the procurement language now to lock the conditions.',
-        feedbackTitle: 'You front-loaded the governance work.',
-        feedbackStory: 'The team spends weeks on language, milestones, and red lines. Other workstreams slow down, but the conditions are now legible to procurement and to the board.',
-        feedbackText: 'This work is unglamorous and expensive in time, but it pays off later because vague conditions are the ones that get bent under pressure.',
-        impact: { social: 7, financial: -6, performance: 3 },
-        next: 'funding_06',
-      },
-      {
-        text: 'Move forward with informal alignment and document things later when the contract pressure is concrete.',
-        feedbackTitle: 'You traded clarity for pace.',
-        feedbackStory: 'The team keeps technical momentum, but procurement staff later realize key terms were never written down. Some boundaries become harder to defend once a draft is in hand.',
-        feedbackText: 'Informal alignment usually survives only as long as nothing is contested. Under contract pressure, the strongest actor sets the terms.',
-        impact: { social: -5, financial: 5, performance: -3 },
-        next: 'funding_06',
-      },
-    ],
   }),
   funding_06: makeStoryNode({
     id: 'funding_06',
     chapter: 'funding',
     title: 'Expectation Pressure',
     x: 460,
-    y: 880,
-    introText: (currentState) =>
-      currentState.branchFlags.has('funding_hype')
-        ? 'Because the route is already visible, donor expectations start arriving early, and the project is suddenly being asked to speak about itself in a single shared sentence.'
-        : 'Even without a public spectacle, donor expectations begin to shape the conversation, and the project is suddenly being asked to speak about itself in a single shared sentence.',
+    y: 560,
+    introText: 'Donor expectations are arriving, and the team is being asked to speak about itself in a single shared sentence.',
     text: (currentState) =>
       currentState.branchFlags.has('funding_hype')
-        ? 'A city official wants reassurance that the project will produce a visible result before winter, and several people quietly admit the team may already be speaking as if the timeline were firmer than it really is. At the same moment, a communications lead asks for one sentence that can travel safely between the hospital board, the sponsor, and clinical teams without becoming misleading in any of those rooms. It sounds like a small writing task, but it is really a governance test. In many projects, the first damaging oversimplification does not appear in the contract. It appears in the sentence people repeat when they no longer have time to explain the full situation.'
-        : 'A city official wants reassurance that the project will eventually be visible enough to justify early patience, and the team feels the subtle pressure to prove that caution still has momentum. At the same moment, a communications lead asks for one sentence that can travel safely between the hospital board, the sponsor, and clinical teams without becoming misleading in any of those rooms. It sounds like a small writing task, but it is really a governance test. In many projects, the first damaging oversimplification does not appear in the contract. It appears in the sentence people repeat when they no longer have time to explain the full situation.',
+        ? 'A city official wants a visible result by winter. A communications lead asks for one sentence that works across the board, the sponsor, and clinical teams. It sounds like a writing task, but it is a governance test. The first damaging oversimplification rarely appears in the contract — it appears in the sentence people repeat when they no longer have time to explain.'
+        : 'A city official wants proof that caution still has momentum. A communications lead asks for one sentence that works across the board, the sponsor, and clinical teams. It sounds like a writing task, but it is a governance test. The first damaging oversimplification rarely appears in the contract — it appears in the sentence people repeat under time pressure.',
     continueTo: 'funding_07',
     continueLabel: 'Move to contract terms',
   }),
@@ -741,7 +550,7 @@ const nodes = {
     title: 'Contract Red Lines',
     badge: 'Decision node',
     x: 460,
-    y: 1040,
+    y: 720,
     introText: 'The draft agreement arrives with one decisive question left unresolved.',
     text:
       'The sponsor is willing to support the project, but not without shaping some part of its future behavior. The team must now choose which red lines it is willing to defend and which risks it is willing to absorb.',
@@ -749,66 +558,38 @@ const nodes = {
       {
         text: 'Accept a stronger sponsor footprint in exchange for a larger operational cushion and faster resourcing.',
         feedbackTitle: 'You protected feasibility by conceding influence.',
-        feedbackStory: 'The project becomes easier to finance, but harder to defend if the sponsor later pushes for speed or visibility over review.',
-        feedbackText: 'This route increases flexibility in the short term while making governance more fragile later on.',
+        feedbackStory: 'The project becomes easier to finance, but harder to defend if the sponsor later pushes for speed over review.',
+        feedbackText: 'This increases short-term flexibility while making governance more fragile later.',
         impact: { social: -7, financial: 9, performance: -5 },
-        next: 'funding_07b',
+        next: 'funding_09',
         branchFlagsSet: ['funding_contract_loose'],
       },
       {
         text: 'Insist on audit checkpoints, publication room, and explicit limits on sponsor control over rollout timing.',
         feedbackTitle: 'You defended a stricter contract.',
-        feedbackStory: 'The final package is leaner, but the project keeps more space to remain accountable when pressures sharpen later.',
-        feedbackText: 'This is less comfortable financially, but it protects the team from becoming politically dependent on one actor.',
+        feedbackStory: 'The final package is leaner, but the project keeps more space to remain accountable when pressures sharpen.',
+        feedbackText: 'Less comfortable financially, but it protects the team from political dependence on one actor.',
         impact: { social: 8, financial: -5, performance: 4 },
-        next: 'funding_07b',
+        next: 'funding_09',
         branchFlagsSet: ['funding_contract_strict'],
       },
       {
         text: 'Take a smaller pilot-focused agreement that can be exited if governance tensions grow too strong.',
         feedbackTitle: 'You chose a narrower commitment.',
-        feedbackStory: 'The project gains less support, but it keeps a realistic escape path if the relationship becomes constraining.',
-        feedbackText: 'This option trades scale for resilience and makes it easier to protect future correction.',
+        feedbackStory: 'The project gains less support, but keeps a realistic escape path if the relationship becomes constraining.',
+        feedbackText: 'This trades scale for resilience and makes it easier to protect future correction.',
         impact: { social: 6, financial: -8, performance: 5 },
-        next: 'funding_07b',
+        next: 'funding_09',
         branchFlagsSet: ['funding_contract_pilot'],
       },
     ],
-  }),
-  funding_07b: makeInfoNode({
-    id: 'funding_07b',
-    chapter: 'funding',
-    title: 'Influence Checklist',
-    x: 260,
-    y: 1040,
-    introText: 'This information node turns the contract into a reusable student method.',
-    text:
-      'When reviewing a funding offer, ask four concrete questions: who can shape milestones, who can shape public messaging, who can shape publication or disclosure, and who can make delay feel politically unacceptable. Students often focus on budget size and miss these influence channels even though they usually decide how much independence remains once pressure rises.',
-    extraHtml:
-      '<h3>Reusable method</h3><p>Before signing, make a one-page “pressure map” with the actors who gain from speed, the actors who absorb reputational damage if things go wrong, and the specific moments when the team could still slow down. If that map is vague, the agreement is probably more constraining than it looks.</p>',
-    continueTo: 'funding_08',
-    continueLabel: 'Continue to the funding lesson',
-  }),
-  funding_08: makeInfoNode({
-    id: 'funding_08',
-    chapter: 'funding',
-    title: 'What Funding Really Changes',
-    x: 80,
-    y: 1040,
-    introText: 'This information node names the structural lesson behind the chapter.',
-    text:
-      'Funding is never just background infrastructure. It affects how quickly promises form, who can apply pressure, and how much room the project keeps for delay, review, and revision. In real projects, the funding structure often decides whether a team can still slow down once external momentum has already started to build.',
-    extraHtml:
-      '<h3>Useful method</h3><p>Draft a one-page funding memo before accepting support: who gains from speed, who carries risk if the project goes wrong, which commitments are non-negotiable, and what would justify revisiting the agreement later.</p><h3>Concrete questions</h3><p>Clarify influence over publication, communication, milestones, and rollout timing. If these remain vague, pressure often reappears later when the team is least able to resist it.</p>',
-    continueTo: 'funding_09',
-    continueLabel: 'Continue to board review',
   }),
   funding_08b: makeInfoNode({
     id: 'funding_08b',
     chapter: 'funding',
     title: 'Stakeholder Map',
-    x: 660,
-    y: 80,
+    x: 760,
+    y: 240,
     introText: 'This optional node gives a simple method a student could reuse later in a real project.',
     text:
       'Make a quick stakeholder map before taking support: who wants acceleration, who bears reputational risk, who carries hidden implementation work, and who can still say no later. This turns a vague partner discussion into a concrete governance picture.',
@@ -819,14 +600,14 @@ const nodes = {
     id: 'funding_09',
     chapter: 'funding',
     title: 'Board Review',
-    x: 80,
-    y: 1200,
+    x: 460,
+    y: 880,
     introText: 'The hospital board asks one last question before signing off on the chapter.',
     text:
       'Which statement best captures the most responsible way to explain the funding arrangement to the board?',
     choices: [
       {
-        text: 'The sponsor mostly solves the project’s political risk, so the main task now is keeping the momentum high.',
+        text: 'The sponsor mostly solves the project\'s political risk, so the main task now is keeping the momentum high.',
         retry: true,
         feedbackTitle: 'That misreads what sponsorship can do.',
         feedbackStory: 'Funding may help stabilize the project, but it never removes the need for internal accountability and defensible review.',
@@ -834,8 +615,8 @@ const nodes = {
       },
       {
         text: 'The arrangement should be judged by whether it keeps support, review space, and institutional accountability in workable balance.',
-        feedbackTitle: 'You identified the chapter’s core lesson.',
-        feedbackStory: 'The board now sees funding as part of the project’s ethical architecture rather than as a neutral background condition.',
+        feedbackTitle: 'You identified the chapter\'s core lesson.',
+        feedbackStory: 'The board now sees funding as part of the project\'s ethical architecture rather than as a neutral background condition.',
         feedbackText: 'This answer fits the chapter because it treats support, governance, and pressure as linked rather than separate issues.',
         next: 'funding_10',
       },
@@ -852,36 +633,44 @@ const nodes = {
     id: 'funding_10',
     chapter: 'funding',
     title: 'Funding Milestone',
-    x: 260,
-    y: 1200,
-    introText: 'The chapter closes not when the deal is signed, but when the team translates it into everyday work for staff who were not in the negotiations.',
+    x: 460,
+    y: 1040,
+    introText: 'The chapter closes when the team translates the deal into everyday work for staff who were not in the negotiations.',
     text: (currentState) =>
       (currentState.branchFlags.has('funding_contract_strict')
-        ? 'The sponsor relationship remains usable, but clearly bounded. People in the hospital trust the project a little more because they can see where the lines were actually drawn. '
+        ? 'The sponsor relationship is usable and clearly bounded. Staff trust the project a little more because they can see where the lines were drawn. '
         : currentState.branchFlags.has('funding_contract_loose')
-          ? 'The project now has visible momentum and stronger operational room, but everyone also knows that later tension with the sponsor may be harder to absorb. '
-          : 'The project leaves the chapter with a narrower agreement that preserves room to adjust later. It does not feel triumphant, but it does feel governable. ') +
-      'A short handover note now has to explain to staff who were not in the negotiations what the sponsor relationship does and does not mean for deadlines, visibility, and who can push for acceleration later. This matters more than it sounds, because in real projects misunderstandings about funding often survive when the people living with the consequences only ever heard the enthusiastic version of the story.',
+          ? 'The project has visible momentum and more operational room, but later tension with the sponsor may be harder to absorb. '
+          : 'The project leaves with a narrower agreement that preserves room to adjust later. It does not feel triumphant, but it does feel governable. ') +
+      'A handover note now has to explain what the sponsor relationship means for deadlines, visibility, and who can push for acceleration. In real projects, misunderstandings about funding survive longest in the people who only heard the enthusiastic version.',
     continueTo: null,
     continueLabel: 'Return to the board',
     completeChapter: 'funding',
   }),
 
   team_01: makeStoryNode({
-  id: 'team_01',
-  chapter: 'team',
-  title: 'Capacity Warning',
-  x: 150,
-  y: 1160,
-  introText: 'The project is still moving, but the team is starting to lose control of the work.',
-  text:
-    'A few days ago, everything felt on track. Now, small delays are becoming a pattern.\n\n' +
-    'Messages stay unanswered. Tasks are discussed, but not clearly owned. Some people move fast while others wait.\n\n' +
-    'In a meeting, the principal investigator says:\n' +
-    '"We are losing track of who is doing what."\n\n' +
-    'No one disagrees.',
-  continueTo: 'team_02',
-  continueLabel: 'Decide what to fix first',
+    id: 'team_01',
+    chapter: 'team',
+    title: 'Capacity Warning',
+    x: 150,
+    y: 1160,
+    introText: 'The project progression starts to slow down, it can no longer run on goodwill.',
+    text:
+      "At first, everything seems on track. But after a few days, small issues appear.\n\nMessages sit unanswered. Tasks are discussed but not clearly assigned. Some parts move fast, others are blocked.\n\nDuring a meeting, the principal investigator says:\n\"We’re starting to lose track of who is doing what.\"\n\nNo one disagrees.",
+    continueTo: 'team_01b',
+    continueLabel: 'Continue to look closer',
+  }),
+  team_01b: makeStoryNode({
+    id: 'team_01b',
+    chapter: 'team',
+    title: 'Looking closer',
+    x: 130,
+    y: 1310,
+    introText: 'The issue is not motivation, it\'s organization.',
+    text:
+      "You look more closely at how the team works.\n\nEveryone is putting in effort. But roles are unclear, priorities shift, and decisions are informal.\n\nSome people are overloaded. Others are waiting.\n\nThe problem isn’t motivation. It’s structure.",
+    continueTo: "team_02",
+    continueLabel: 'Continue',
   }),
 
   team_02: makeDecisionNode({
@@ -1146,7 +935,7 @@ const nodes = {
           'The real question is whether added discussion improves decisions or only consumes time.',
       },
       {
-        text: 'Disagreements become less visible over time.',
+        text: 'Meetings are longer than they were during the project’s earliest phase.',
         retry: true,
         feedbackTitle: 'That can be misleading.',
         feedbackStory:
@@ -1166,8 +955,8 @@ const nodes = {
     introText: 'The chapter closes with a structure that is workable, but not tension-free.',
     text: (currentState) =>
       currentState.branchFlags.has('team_speed')
-        ? 'The project leaves this chapter faster and more compact. Performance has improved in the short term, but some fairness and governance work has clearly been deferred rather than solved.'
-        : 'The project leaves this chapter broader and more demanding. It carries more friction and higher costs, but it catches more real constraints before they become emergencies.',
+        ? 'The project leaves the chapter with a faster and more compact structure. Performance has improved in the short term, but some fairness and governance work has clearly been deferred rather than solved.'
+        : 'The project leaves the chapter with a broader and more demanding structure. It carries more friction and higher costs, but it also catches more of the project’s real constraints before they become emergencies.',
     continueTo: null,
     continueLabel: 'Return to the board',
     completeChapter: 'team',
@@ -1394,7 +1183,7 @@ const nodes = {
         text: 'Keep documentation light and targeted so the team does not disappear into paperwork.',
         feedbackTitle: 'You kept the careful route leaner.',
         feedbackStory: 'The archive remains more accountable than in the fast path, but some future questions may still depend on memory.',
-        feedbackText: 'This protects feasibility, though it limits how strong the project’s later traceability claims can be.',
+        feedbackText: 'This protects feasibility, though it limits how strong the project\'s later traceability claims can be.',
         impact: { social: 2, financial: 1, performance: 1 },
         next: 'data_06_careful',
         branchFlagsSet: ['data_docs_light'],
@@ -1440,7 +1229,7 @@ const nodes = {
     title: 'Fairness Review Note',
     x: 1180,
     y: 700,
-    introText: 'The team pauses long enough to write down what would otherwise stay in people’s heads.',
+    introText: 'The team pauses long enough to write down what would otherwise stay in people\'s heads.',
     text:
       'A short internal note lists the representation gaps, consent uncertainties, and infrastructure costs now shaping the data conversation. It is not glamorous work. But once the issues are written in one place, they become harder to dismiss as small side problems.',
     continueTo: 'data_07',
@@ -1511,7 +1300,7 @@ const nodes = {
     title: 'Traceability Is A Governance Tool',
     x: 1420,
     y: 860,
-    introText: 'This information node names the chapter’s main lesson.',
+    introText: 'This information node names the chapter\'s main lesson.',
     text:
       'Data governance is not only about following rules. It is about whether the project can later explain what it used, what it knew, what it ignored, and why those choices were made. Traceability gives the team a way to correct itself without pretending earlier uncertainty never existed.',
     extraHtml:
@@ -1549,8 +1338,8 @@ const nodes = {
         feedbackText: 'Readiness is not just about running experiments more easily. It is about whether the team can justify the conditions under which training happens.',
       },
       {
-        text: 'The team can explain the archive’s limits, known gaps, and reuse conditions without pretending they have disappeared.',
-        feedbackTitle: 'You identified the chapter’s core test.',
+        text: 'The team can explain the archive\'s limits, known gaps, and reuse conditions without pretending they have disappeared.',
+        feedbackTitle: 'You identified the chapter\'s core test.',
         feedbackStory: 'The project may still have uncertainty, but it now has a more honest relationship with its data.',
         feedbackText: 'This is the strongest answer because defensibility depends on clarity about limits, not only on technical activity.',
         next: 'data_09b',
@@ -1750,7 +1539,7 @@ const nodes = {
     title: 'Final Launch Check',
     x: 1580,
     y: 1840,
-    introText: 'The final quiz checks whether the whole game’s logic has stayed intact.',
+    introText: 'The final quiz checks whether the whole game\'s logic has stayed intact.',
     text:
       'Which statement best captures what a responsible launch posture requires after all four chapters of the game?',
     choices: [
@@ -1762,8 +1551,8 @@ const nodes = {
         feedbackText: 'A responsible launch is not one that merely looks certain. It is one that can remain defensible when certainty turns out to be incomplete.',
       },
       {
-        text: 'A launch should match the project’s actual balance of evidence, trust, feasibility, and correction capacity rather than only its ambition.',
-        feedbackTitle: 'You identified the game’s central launch lesson.',
+        text: 'A launch should match the project\'s actual balance of evidence, trust, feasibility, and correction capacity rather than only its ambition.',
+        feedbackTitle: 'You identified the game\'s central launch lesson.',
         feedbackStory: 'The project is now being judged in the right frame: not by whether it seems bold, but by whether it is genuinely governable under real conditions.',
         feedbackText: 'This is the strongest answer because the whole game has been about keeping ambition aligned with institutional reality.',
         next: 'launch_10',

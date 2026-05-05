@@ -460,7 +460,7 @@ const nodes = {
     chapter: 'funding',
     title: 'Sponsor Rumor',
     x: 460,
-    y: 80,
+    y: 200,
     introText: 'A rumor about a diagnostics sponsor circulates inside the hospital, and the team starts mapping what this money could change before it even arrives.',
     text:
       'Before any formal contact, people inside the hospital are already speculating. Some hear opportunity, others hear dependency. Funding pressure does not arrive with the contract — it starts when different parts of the institution begin imagining the project through different kinds of hope.',
@@ -473,7 +473,7 @@ const nodes = {
     title: 'How To Enter The Meeting',
     badge: 'Major decision',
     x: 460,
-    y: 240,
+    y: 330,
     introText: 'The first internal funding discussion is about posture, not yet about contract terms.',
     text:
       'Two instincts emerge in the room. One group wants to treat the meeting as a showcase and convert energy into public momentum. Another wants to keep the conversation quiet and review-oriented until the project has stronger internal footing.',
@@ -510,8 +510,8 @@ const nodes = {
     id: 'funding_03_hype',
     chapter: 'funding',
     title: 'Sponsor Pitch',
-    x: 260,
-    y: 400,
+    x: 140,
+    y: 470,
     introText: 'The meeting is moved to a polished presentation room with communications staff present.',
     text:
       'The sponsor talks scale and speed. Most people look energized; a clinician beside you takes quiet notes every time the timeline shortens. The room leaves with enthusiasm but without a clear sense of what conditions would make the offer unacceptable.',
@@ -522,8 +522,8 @@ const nodes = {
     id: 'funding_03_guarded',
     chapter: 'funding',
     title: 'Closed-Door Diligence',
-    x: 660,
-    y: 400,
+    x: 780,
+    y: 470,
     introText: 'The meeting is deliberately small, and the sponsor notices the difference immediately.',
     text:
       'The conversation turns practical: review gates, publication freedom, sponsor influence over timelines. The room feels cooler but more honest. The team leaves not with excitement, but with a clearer sense of where pressure would come from if the relationship deepened.',
@@ -534,8 +534,8 @@ const nodes = {
     id: 'funding_06',
     chapter: 'funding',
     title: 'Expectation Pressure',
-    x: 460,
-    y: 560,
+    x: 290,
+    y: 610,
     introText: 'Donor expectations are arriving, and the team is being asked to speak about itself in a single shared sentence.',
     text: (currentState) =>
       currentState.branchFlags.has('funding_hype')
@@ -549,8 +549,8 @@ const nodes = {
     chapter: 'funding',
     title: 'Contract Red Lines',
     badge: 'Decision node',
-    x: 460,
-    y: 720,
+    x: 630,
+    y: 750,
     introText: 'The draft agreement arrives with one decisive question left unresolved.',
     text:
       'The sponsor is willing to support the project, but not without shaping some part of its future behavior. The team must now choose which red lines it is willing to defend and which risks it is willing to absorb.',
@@ -588,8 +588,8 @@ const nodes = {
     id: 'funding_08b',
     chapter: 'funding',
     title: 'Stakeholder Map',
-    x: 760,
-    y: 240,
+    x: 820,
+    y: 330,
     introText: 'This optional node gives a simple method a student could reuse later in a real project.',
     text:
       'Make a quick stakeholder map before taking support: who wants acceleration, who bears reputational risk, who carries hidden implementation work, and who can still say no later. This turns a vague partner discussion into a concrete governance picture.',
@@ -600,8 +600,8 @@ const nodes = {
     id: 'funding_09',
     chapter: 'funding',
     title: 'Board Review',
-    x: 460,
-    y: 880,
+    x: 290,
+    y: 890,
     introText: 'The hospital board asks one last question before signing off on the chapter.',
     text:
       'Which statement best captures the most responsible way to explain the funding arrangement to the board?',
@@ -634,7 +634,7 @@ const nodes = {
     chapter: 'funding',
     title: 'Funding Milestone',
     x: 460,
-    y: 1040,
+    y: 1030,
     introText: 'The chapter closes when the team translates the deal into everyday work for staff who were not in the negotiations.',
     text: (currentState) =>
       (currentState.branchFlags.has('funding_contract_strict')

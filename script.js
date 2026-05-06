@@ -2734,6 +2734,46 @@ function recordThresholdEvents(previousResources, nextResources) {
   return events;
 }
 
+function getThresholdCrossingEvents(impact = {}) {
+  const previous = { ...state.resources };
+  const next = {
+    social: clampResource(previous.social + (impact.social || 0)),
+    financial: clampResource(previous.financial + (impact.financial || 0)),
+    performance: clampResource(previous.performance + (impact.performance || 0)),
+  };
+
+  const events = [];
+  Object.keys(previous).forEach((resource) => {
+    const previousValue = previous[resource];
+    const nextValue = next[resource];
+    const meta = resourceMeta[resource];
+
+    if (previousValue > LOWER_LIMIT && nextValue <= LOWER_LIMIT) {
+      events.push({
+        resource,
+        level: 'low',
+        title: meta.lowTitle,
+        lead: meta.lowLead,
+        lesson: meta.lowLesson,
+        label: meta.label,
+      });
+    }
+
+    if (previousValue < UPPER_LIMIT && nextValue >= UPPER_LIMIT) {
+      events.push({
+        resource,
+        level: 'high',
+        title: meta.highTitle,
+        lead: meta.highLead,
+        lesson: meta.highLesson,
+        label: meta.label,
+      });
+    }
+  });
+
+  return events;
+}
+
 function applyImpact(impact = {}) {
   const previous = { ...state.resources };
   const appliedImpact = {
@@ -3035,6 +3075,15 @@ function handleChoice(nodeId, choice) {
 
   if (choice.retry) {
     handleRetry(nodeId, choice);
+    return;
+  }
+
+  const thresholdPreviewEvents = getThresholdCrossingEvents(choice.impact || {});
+  if (thresholdPreviewEvents.length) {
+    openThresholdOverlay(
+      thresholdPreviewEvents,
+      'This choice would push the project past a threshold. Select another option that keeps the balance within the playable range.',
+    );
     return;
   }
 

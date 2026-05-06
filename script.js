@@ -1173,424 +1173,206 @@ const nodes = {
     completeChapter: 'team',
   }),
 
-  data_01: makeStoryNode({
-    id: 'data_01',
-    chapter: 'data',
-    title: 'First Dataset Offer',
-    x: 1290,
-    y: 150,
-    introText: 'Three hospitals offer historical patient data, but the files do not look as clean as the team hoped.',
-    text:
-      'The email arrives during a morning meeting: three hospitals are willing to share old records. For a moment, the room brightens. This could let the team start experiments almost immediately. Then the attachments are opened. Some records are well described, others are vague, and the consent wording changes from site to site. The offer is useful, but it is not simple.',
-    continueTo: 'data_01b',
-    continueLabel: 'Continue to the intake sheet',
-  }),
-  data_01b: makeStoryNode({
-    id: 'data_01b',
-    chapter: 'data',
-    title: 'Archive Intake Sheet',
-    x: 1250,
-    y: 320,
-    introText: 'Before anyone starts training, the team tries to write down what it actually knows about the records.',
-    text:
-      'The first intake sheet fills up quickly, but not in a reassuring way. One hospital has clear label rules. Another used a different coding habit. A third has missing fields that nobody can explain yet. The sheet makes one thing obvious: having data is not the same as understanding data.',
-    continueTo: 'data_02',
-    continueLabel: 'Continue to the intake decision',
-  }),
-  data_02: makeDecisionNode({
-    id: 'data_02',
-    chapter: 'data',
-    title: 'How To Take In The Data',
-    badge: 'Major decision',
-    x: 1510,
-    y: 130,
-    introText: 'The first data decision is not about algorithms yet. It is about how much uncertainty the team is willing to carry.',
-    text:
-      'One group wants to import the records now and clean up the paperwork later. They argue that the project needs momentum. Another group wants staged access, bias notes, and consent review before the archive becomes part of the model pipeline. The disagreement is quiet, but everyone knows it will shape the rest of the project.',
-    choices: [
-      {
-        text: 'Ingest quickly, begin experimentation, and fix the documentation once the team knows which records actually matter.',
-        feedbackTitle: 'You chose a faster intake route.',
-        feedbackStory: 'The project gains momentum, but the team also starts building on records it does not fully understand.',
-        feedbackText: 'This may help early experiments, but it can weaken long-term reliability if data problems become embedded before anyone has named them clearly.',
-        impact: { social: -9, financial: 7, performance: -5 },
-        next: 'data_03_fast',
-        locks: ['data_03_careful', 'data_04_careful', 'data_05_careful', 'data_06_careful'],
-        lockReason:
-          'This fast-ingestion posture closed the staged-audit route. The chapter now follows a quicker but riskier data path.',
-        branchFlagsSet: ['data_fast'],
-      },
-      {
-        text: 'Start with staged access, document bias gaps, and treat consent ambiguity as part of the work rather than cleanup.',
-        feedbackTitle: 'You chose a more disciplined intake route.',
-        feedbackStory: 'The project slows down, but the team gets a clearer picture of what the archive can and cannot support.',
-        feedbackText: 'This route protects traceability and trust, even though it delays early model experimentation.',
-        impact: { social: 7, financial: -6, performance: 4 },
-        next: 'data_03_careful',
-        locks: ['data_03_fast', 'data_04_fast', 'data_05_fast', 'data_06_fast'],
-        lockReason:
-          'This staged-audit posture closed the quick-ingestion route. The chapter now follows a more deliberate data path.',
-        branchFlagsSet: ['data_careful'],
-      },
-    ],
-  }),
-  data_03_fast: makeStoryNode({
-    id: 'data_03_fast',
-    chapter: 'data',
-    title: 'Ingestion Sprint',
-    x: 1740,
-    y: 90,
-    introText: 'The archive enters the project quickly, and the team feels the relief immediately.',
-    text:
-      'Engineers start moving files into the pipeline. For a few hours, the room feels lighter: finally, there is something to train on. Then the small problems start appearing. Some fields are missing. Some labels mean slightly different things across hospitals. A few notes use local shorthand that no one outside that site understands. The team is moving, but it is also guessing more than it wants to admit.',
-    continueTo: 'data_04_fast',
-    continueLabel: 'Continue',
-  }),
-  data_04_fast: makeQuizNode({
-    id: 'data_04_fast',
-    chapter: 'data',
-    title: 'First Traceability Step',
-    x: 1960,
-    y: 150,
-    introText: 'The route is fast, but the team still needs a way to remember what it is unsure about.',
-    text:
-      'If the archive is already being ingested quickly, what is the most responsible first traceability step?',
-    choices: [
-      {
-        text: 'Ignore the inconsistencies until the team knows whether the model can perform at all.',
-        retry: true,
-        feedbackTitle: 'That pushes the problem forward.',
-        feedbackStory: 'The model might start running, but the team will lose track of what it already knew was weak.',
-        feedbackText: 'A fast route becomes much riskier when known problems are not recorded while they are still visible.',
-      },
-      {
-        text: 'Create a living record of known gaps, site-specific uncertainties, and assumptions as the archive is used.',
-        feedbackTitle: 'You chose the strongest stabilizing step.',
-        feedbackStory: 'The team keeps moving, but uncertainty now has somewhere to go instead of disappearing into memory.',
-        feedbackText: 'This is the best answer because it adds little friction while preserving accountability.',
-        next: 'data_05_fast',
-      },
-      {
-        text: 'Push for larger data volume so the inconsistencies matter less statistically.',
-        retry: true,
-        feedbackTitle: 'That treats scale as a shortcut.',
-        feedbackStory: 'More records may make the dataset look stronger, but the team still may not understand what problems it is scaling up.',
-        feedbackText: 'More data does not automatically fix unclear data.',
-      },
-    ],
-  }),
-  data_05_fast: makeDecisionNode({
-    id: 'data_05_fast',
-    chapter: 'data',
-    title: 'Bias Gap Response',
-    badge: 'Decision node',
-    x: 1730,
-    y: 310,
-    introText: 'A fairness gap becomes visible sooner than the team expected.',
-    text:
-      'An early check shows that the archive underrepresents rural patients, younger patients, and patients with multiple chronic conditions. The finding lands awkwardly. The team can keep moving, pause to repair the gap, or try to collect more data quickly from groups that may not yet trust the project.',
-    choices: [
-      {
-        text: 'Keep the route moving and document the representation limits for later correction.',
-        feedbackTitle: 'You protected momentum, but left a serious gap exposed.',
-        feedbackStory: 'The project can continue technically, but it now carries a fairness problem that will be harder to explain later.',
-        feedbackText: 'This is a recognizable real-world move, but it shifts a difficult problem forward rather than resolving it.',
-        impact: { social: -8, financial: 4, performance: -3 },
-        next: 'data_06_fast',
-        branchFlagsSet: ['data_gap_deferred'],
-      },
-      {
-        text: 'Pause and repair the representation gap before acting as if the archive is ready for stronger claims.',
-        feedbackTitle: 'You slowed the route to protect legitimacy.',
-        feedbackStory: 'The data path becomes less efficient, but the project avoids building too much confidence on top of a known blind spot.',
-        feedbackText: 'This protects social trust and long-term model reliability, though it costs time and budget now.',
-        impact: { social: 7, financial: -5, performance: 4 },
-        next: 'data_06_fast',
-        branchFlagsSet: ['data_gap_repaired'],
-      },
-      {
-        text: 'Launch a fast community data collection push to fill the gap quickly.',
-        requires: ['social'],
-        blockedReason:
-          'This route depends on public trust and stakeholder willingness that the project no longer has strongly enough to request on short notice.',
-        feedbackTitle: 'You tried to compensate quickly by asking for more trust.',
-        feedbackStory: 'The move could improve the archive, but it also asks communities to help a project that may not yet have earned their confidence.',
-        feedbackText: 'Rapid expansion can look responsible, but it depends on whether the project still has the legitimacy to ask for more from people.',
-        impact: { social: 3, financial: -3, performance: 1 },
-        next: 'data_06_fast',
-        branchFlagsSet: ['data_gap_expand'],
-      },
-    ],
-  }),
-  data_06_fast: makeStoryNode({
-    id: 'data_06_fast',
-    chapter: 'data',
-    title: 'Shortcut Pressure',
-    x: 1980,
-    y: 440,
-    introText: 'The quick route keeps moving, but the archive is starting to push back.',
-    text:
-      'Two engineers compare notes after the meeting. One says the pipeline is starting to look like a stack of small local fixes: one rule for this hospital, another rule for that missing field, another exception for a strange label. It works for experiments, but no one is sure it will be easy to explain later. The shortcut is saving time now, but it is also creating a messier story.',
-    continueTo: 'data_06',
-    continueLabel: 'Continue to compute and storage',
-  }),
-  data_03_careful: makeStoryNode({
-    id: 'data_03_careful',
-    chapter: 'data',
-    title: 'Archive Inspection',
-    x: 1450,
-    y: 320,
-    introText: 'The careful route begins with reading before training.',
-    text:
-      'The team opens the documentation, site notes, and consent language before treating the records as training material. The process is slower than some people hoped. Still, the archive starts to feel less like a clean technical input and more like a collection of decisions made by different hospitals at different times. Once the team sees that history, it becomes harder to call the data neutral.',
-    continueTo: 'data_04_careful',
-    continueLabel: 'Continue',
-  }),
-  data_04_careful: makeQuizNode({
-    id: 'data_04_careful',
-    chapter: 'data',
-    title: 'Consent Ambiguity',
-    x: 1650,
-    y: 470,
-    introText: 'The route is slower, but it still needs a judgment call.',
-    text:
-      'If consent language varies across sites and some reuse assumptions are unclear, what is the most responsible interpretation?',
-    choices: [
-      {
-        text: 'Treat all ambiguity as effectively resolved unless someone formally challenges it.',
-        retry: true,
-        feedbackTitle: 'That mistakes silence for clarity.',
-        feedbackStory: 'The project may move faster, but it would be turning uncertainty into confidence without earning it.',
-        feedbackText: 'Unclear consent should be recorded and managed, not quietly treated as permission.',
-      },
-      {
-        text: 'Document the ambiguity, scope data use accordingly, and avoid acting as if all sites carry the same level of reuse certainty.',
-        feedbackTitle: 'You chose the strongest interpretation.',
-        feedbackStory: 'The team can still work, but it no longer pretends every hospital record comes with the same level of permission.',
-        feedbackText: 'This answer preserves traceability while allowing responsible progress.',
-        next: 'data_05_careful',
-      },
-      {
-        text: 'Drop the most ambiguous sites entirely before checking whether their removal creates fairness problems.',
-        retry: true,
-        feedbackTitle: 'That solves one problem by risking another.',
-        feedbackStory: 'Removing uncertain records may feel safer, but it can also distort the dataset in ways the team has not checked.',
-        feedbackText: 'Responsible data judgment has to track consent and fairness together.',
-      },
-    ],
-  }),
-  data_05_careful: makeDecisionNode({
-    id: 'data_05_careful',
-    chapter: 'data',
-    title: 'How Much Documentation Is Enough?',
-    badge: 'Decision node',
-    x: 1430,
-    y: 640,
-    introText: 'The careful route now has its own pressure: documentation is starting to feel like delay.',
-    text:
-      'Some engineers are getting impatient. They agree that documentation matters, but they worry the team is writing notes faster than it is building anything. Another group argues that these notes are exactly what will let the project explain itself later. The question is no longer whether to document, but how much discipline the project can afford.',
-    choices: [
-      {
-        text: 'Keep documentation light and targeted so the team does not disappear into paperwork.',
-        feedbackTitle: 'You kept the careful route leaner.',
-        feedbackStory: 'The archive remains more accountable than in the fast path, but some future questions may still depend on memory.',
-        feedbackText: 'This protects feasibility, though it limits how strong the project’s later traceability claims can be.',
-        impact: { social: 2, financial: 1, performance: 1 },
-        next: 'data_06_careful',
-        branchFlagsSet: ['data_docs_light'],
-      },
-      {
-        text: 'Invest in stronger documentation and audit notes now, even if it delays visible model progress.',
-        feedbackTitle: 'You made the careful route more robust.',
-        feedbackStory: 'The team slows down, but it gains a record that can explain how the archive was interpreted and limited over time.',
-        feedbackText: 'This feels costly now, but it becomes valuable if the project later has to justify its choices.',
-        impact: { social: 4, financial: -3, performance: 2 },
-        next: 'data_06_careful',
-        branchFlagsSet: ['data_docs_strong'],
-      },
-    ],
-  }),
-  data_06_careful: makeStoryNode({
-    id: 'data_06_careful',
-    chapter: 'data',
-    title: 'Audit Patience',
-    x: 1660,
-    y: 780,
-    introText: 'The careful route is easier to defend, but harder to sell internally.',
-    text:
-      'By the end of the week, the team can explain the archive much better than before. That is progress, but it does not look like progress on a demo slide. Some members worry that the project is becoming careful without becoming productive. Others point out that weak documentation only looks efficient until something goes wrong.',
-    continueTo: 'data_06',
-    continueLabel: 'Continue to compute and storage',
-  }),
-  data_06: makeStoryNode({
-    id: 'data_06',
-    chapter: 'data',
-    title: 'Compute And Storage',
-    x: 1310,
-    y: 460,
-    introText: 'The archive is now real enough to produce a practical shock.',
-    text:
-      'A spreadsheet appears on the projector: storage costs, preprocessing hours, repeated validation runs, and the infrastructure needed to keep multiple copies of the archive. What looked like a manageable data step now has a financial and performance profile that the team can no longer treat as background noise.',
-    continueTo: 'data_06b',
-    continueLabel: 'Continue to the fairness review note',
-  }),
-  data_06b: makeStoryNode({
-    id: 'data_06b',
-    chapter: 'data',
-    title: 'Fairness Review Note',
-    x: 1180,
-    y: 700,
-    introText: 'The team pauses long enough to write down what would otherwise stay in people’s heads.',
-    text:
-      'A short internal note lists the representation gaps, consent uncertainties, and infrastructure costs now shaping the data conversation. It is not glamorous work. But once the issues are written in one place, they become harder to dismiss as small side problems.',
-    continueTo: 'data_07',
-    continueLabel: 'Continue to the response',
-  }),
-  data_07: makeDecisionNode({
-    id: 'data_07',
-    chapter: 'data',
-    title: 'Responding To The Data Strain',
-    badge: 'Decision node',
-    x: 1180,
-    y: 590,
-    introText: 'The project now has to decide what kind of data discipline it can afford under pressure.',
-    text:
-      'One response is to collect more data and hope scale improves the picture. Another is to understand the current archive more deeply before expanding it. A third is to redesign the technical plan so the team can learn from the data with less compute. None of the options is free.',
-    choices: [
-      {
-        text: 'Expand data collection quickly so the model can learn from a broader pool as soon as possible.',
-        requires: ['social'],
-        blockedReason:
-          'This route depends on enough social legitimacy to ask for more data cooperation. Right now that trust base is too thin to make the move realistic.',
-        feedbackTitle: 'You chose the expansion route.',
-        feedbackStory: 'The project may improve its archive, but it also asks more from institutions and patients before trust is fully settled.',
-        feedbackText: 'Data expansion is not only technical. It depends on whether the project has earned enough legitimacy to ask for more.',
-        impact: { social: -2, financial: -4, performance: 2 },
-        next: 'data_07b',
-        branchFlagsSet: ['data_expand'],
-      },
-      {
-        text: 'Invest in cleaning, documenting, and understanding the existing archive more deeply before broadening it.',
-        feedbackTitle: 'You chose depth over expansion.',
-        feedbackStory: 'The route looks slower, but the team becomes better able to explain what its evidence means and where it remains weak.',
-        feedbackText: 'This protects social and evidentiary quality at a visible cost in time and budget.',
-        impact: { social: 6, financial: -5, performance: 4 },
-        next: 'data_07b',
-        branchFlagsSet: ['data_deepen'],
-      },
-      {
-        text: 'Redesign the technical path to use less compute, even if that means giving up some early experimental ambition.',
-        feedbackTitle: 'You reduced the footprint of the route.',
-        feedbackStory: 'The team chooses a lighter technical path. It will cost engineering time now, but it may prevent larger waste later.',
-        feedbackText:
-          'This protects long-term project performance by reducing unnecessary compute and avoiding fragile validation shortcuts. The redesign is not free, which is why it still creates short-term financial pressure.',
-        impact: { social: 0, financial: -2, performance: 8 },
-        next: 'data_07b',
-        branchFlagsSet: ['data_low_compute'],
-      },
-    ],
-  }),
-  data_07b: makeInfoNode({
-    id: 'data_07b',
-    chapter: 'data',
-    title: 'Documentation Habit',
-    x: 1180,
-    y: 820,
-    introText: 'This information node turns documentation into a practical research habit.',
-    text:
-      'A useful data log is not just paperwork. It helps the team remember why a dataset looked acceptable, what was already known to be weak, and what might justify slowing down later. This matters during handover, review, and moments when people are tempted to say, “We already decided this.”',
-    extraHtml:
-      '<h3>Reusable method</h3><p>After any important data choice, write two sentences: what the team believes it knows, and what would make that belief weaker than it currently appears. That habit alone can make later correction much easier.</p>',
-    unlocks: ['data_08b'],
-    continueTo: 'data_08',
-    continueLabel: 'Continue to the data lesson',
-  }),
-  data_08: makeInfoNode({
-    id: 'data_08',
-    chapter: 'data',
-    title: 'Traceability Is A Governance Tool',
-    x: 1420,
-    y: 860,
-    introText: 'This information node names the chapter’s main lesson.',
-    text:
-      'Data governance is not only about following rules. It is about whether the project can later explain what it used, what it knew, what it ignored, and why those choices were made. Traceability gives the team a way to correct itself without pretending earlier uncertainty never existed.',
-    extraHtml:
-      '<h3>Useful method</h3><p>Keep a lightweight data log: provenance, consent basis, known gaps, exclusions, label definitions, and what would invalidate current use assumptions.</p><h3>What to avoid</h3><p>Do not rely on memory to reconstruct why a dataset seemed acceptable at the time. If the explanation cannot survive turnover or public scrutiny, the governance is too thin.</p>',
-    continueTo: 'data_09',
-    continueLabel: 'Continue to the final data check',
-  }),
-  data_08b: makeInfoNode({
-    id: 'data_08b',
-    chapter: 'data',
-    title: 'Minimum Data Log',
-    x: 1940,
-    y: 930,
-    introText: 'This optional node gives a practical documentation structure students could reuse later.',
-    text:
-      'A minimal data log should answer six questions: where the data came from, what consent or reuse basis applies, what gaps are known, how labels were defined, what was excluded, and what would make the current use case no longer defensible.',
-    extraHtml:
-      '<h3>Why this helps</h3><p>This kind of log supports handover, review, and correction. It also forces the team to admit uncertainty explicitly instead of hiding it inside fast-moving technical progress.</p>',
-  }),
-  data_09: makeQuizNode({
-    id: 'data_09',
-    chapter: 'data',
-    title: 'Final Data Check',
-    x: 1720,
-    y: 980,
-    introText: 'The chapter ends with one judgment test about readiness.',
-    text:
-      'Which condition best shows that the project has a defensible data posture, not just an active training pipeline?',
-    choices: [
-      {
-        text: 'The team can finally train repeatedly without stopping for metadata or consent questions.',
-        retry: true,
-        feedbackTitle: 'That mainly means friction is lower.',
-        feedbackStory: 'Smoother training may feel productive, but it does not prove the archive has become more accountable.',
-        feedbackText: 'Readiness is not just about running experiments more easily. It is about whether the team can justify the conditions under which training happens.',
-      },
-      {
-        text: 'The team can explain the archive’s limits, known gaps, and reuse conditions without pretending they have disappeared.',
-        feedbackTitle: 'You identified the chapter’s core test.',
-        feedbackStory: 'The project may still have uncertainty, but it now has a more honest relationship with its data.',
-        feedbackText: 'This is the strongest answer because defensibility depends on clarity about limits, not only on technical activity.',
-        next: 'data_09b',
-      },
-      {
-        text: 'The project has accumulated enough data volume that bias concerns become less important to raise publicly.',
-        retry: true,
-        feedbackTitle: 'That mistakes scale for resolution.',
-        feedbackStory: 'Volume can hide problems, but it does not prove the project has understood or handled them responsibly.',
-        feedbackText: 'Fairness and accountability do not vanish when the archive gets larger. They often become harder to inspect.',
-      },
-    ],
-  }),
-  data_09b: makeStoryNode({
-    id: 'data_09b',
-    chapter: 'data',
-    title: 'Data Transfer Note',
-    x: 1920,
-    y: 1130,
-    introText: 'The chapter closes with a handover from data work to model development.',
-    text:
-      'A short transfer note is prepared for the team planning the model. It explains what the archive can support, where it remains weak, and which technical claims would go beyond what the data can honestly carry. The note matters because many projects do not fail in the data stage itself. They fail later, when model choices quietly assume more certainty than the data ever earned.',
-    continueTo: 'data_10',
-    continueLabel: 'Continue to the milestone',
-  }),
-  data_10: makeStoryNode({
-    id: 'data_10',
-    chapter: 'data',
-    title: 'Data Milestone',
-    x: 1910,
-    y: 690,
-    introText: 'The data chapter closes with a clearer, though still imperfect, foundation.',
-    text: (currentState) =>
-      currentState.branchFlags.has('data_fast')
-        ? 'The project leaves the chapter with technical momentum, but also with a sharper awareness that archive weaknesses were not truly solved, only managed.'
-        : 'The project leaves the chapter with a slower but sturdier data posture. It still carries uncertainty, but the team now understands the archive more honestly.',
-    continueTo: null,
-    continueLabel: 'Return to the board',
-    completeChapter: 'data',
-  }),
+data_01: makeStoryNode({
+  id: 'data_01',
+  chapter: 'data',
+  title: 'First Dataset Offer',
+  x: 1280,
+  y: 150,
+  introText: 'Three hospitals offer patient records, but the archive is messy.',
+  text:
+    'The team receives useful historical data, but consent wording, labels, and missing fields vary across hospitals. They realize that having data is not the same as understanding it.',
+  continueTo: 'data_02',
+  continueLabel: 'Continue',
+}),
+
+data_02: makeDecisionNode({
+  id: 'data_02',
+  chapter: 'data',
+  title: 'How To Take In The Data',
+  badge: 'Major decision',
+  x: 1510,
+  y: 150,
+  introText: 'The team must choose how much uncertainty to carry forward.',
+  text:
+    'Some want to ingest the records quickly and clean later. Others want staged access, bias notes, and consent review before training begins.',
+  choices: [
+    {
+      text: 'Ingest quickly, begin experimentation, and fix documentation later.',
+      feedbackTitle: 'You chose a faster intake route.',
+      feedbackStory:
+        'The project gains momentum, but starts building on records it does not fully understand.',
+      feedbackText:
+        'Fast intake helps early experiments, but can hide weak assumptions inside the pipeline.',
+      impact: { social: -9, financial: 7, performance: -5 },
+      next: 'data_03_fast',
+      locks: ['data_03_careful'],
+      lockReason:
+        'This choice closed the staged-audit route and opened a faster, riskier path.',
+      branchFlagsSet: ['data_fast'],
+    },
+    {
+      text: 'Use staged access, document gaps, and review consent before training.',
+      feedbackTitle: 'You chose a more disciplined intake route.',
+      feedbackStory:
+        'The project slows down, but the team understands the archive more clearly.',
+      feedbackText:
+        'This protects traceability and trust, though it delays early experiments.',
+      impact: { social: 7, financial: -6, performance: 4 },
+      next: 'data_03_careful',
+      locks: ['data_03_fast'],
+      lockReason:
+        'This choice closed the quick-ingestion route and opened a more careful path.',
+      branchFlagsSet: ['data_careful'],
+    },
+  ],
+}),
+
+data_03_fast: makeQuizNode({
+  id: 'data_03_fast',
+  chapter: 'data',
+  title: 'Fast Ingestion Traceability',
+  x: 1670,
+  y: 260,
+  introText: 'The pipeline is moving, but uncertainty is already appearing.',
+  text:
+    'Some labels differ by hospital, some fields are missing, and some notes are unclear. What should the team do first?',
+  choices: [
+    {
+      text: 'Ignore inconsistencies until the model can run.',
+      retry: true,
+      feedbackTitle: 'That pushes the problem forward.',
+      feedbackStory:
+        'The model may run, but the team loses track of known weaknesses.',
+      feedbackText:
+        'Known data problems should be recorded while they are still visible.',
+    },
+    {
+      text: 'Keep a living record of gaps, assumptions, and site-specific uncertainties.',
+      feedbackTitle: 'You chose the strongest stabilizing step.',
+      feedbackStory:
+        'The team keeps moving, but uncertainty no longer disappears into memory.',
+      feedbackText:
+        'This adds little friction while preserving accountability.',
+      next: 'data_04',
+    },
+    {
+      text: 'Collect more data so inconsistencies matter less.',
+      retry: true,
+      feedbackTitle: 'That treats scale as a shortcut.',
+      feedbackStory:
+        'More records may hide problems instead of solving them.',
+      feedbackText:
+        'More data does not automatically fix unclear data.',
+    },
+  ],
+}),
+
+data_03_careful: makeQuizNode({
+  id: 'data_03_careful',
+  chapter: 'data',
+  title: 'Careful Inspection',
+  x: 1350,
+  y: 260,
+  introText: 'The team reads the archive before treating it as training data.',
+  text:
+    'Consent language varies across sites, and some reuse assumptions are unclear. What is the most responsible interpretation?',
+  choices: [
+    {
+      text: 'Treat ambiguity as resolved unless someone formally challenges it.',
+      retry: true,
+      feedbackTitle: 'That mistakes silence for clarity.',
+      feedbackStory:
+        'The team would turn uncertainty into permission without earning it.',
+      feedbackText:
+        'Unclear consent should be recorded and managed.',
+    },
+    {
+      text: 'Document ambiguity, scope data use, and avoid treating all sites alike.',
+      feedbackTitle: 'You chose the strongest interpretation.',
+      feedbackStory:
+        'The team can still work without pretending every record has equal reuse certainty.',
+      feedbackText:
+        'This preserves traceability while allowing responsible progress.',
+      next: 'data_04',
+    },
+    {
+      text: 'Drop ambiguous sites before checking fairness effects.',
+      retry: true,
+      feedbackTitle: 'That solves one problem by risking another.',
+      feedbackStory:
+        'Removing uncertain records may distort the dataset in new ways.',
+      feedbackText:
+        'Consent and fairness need to be considered together.',
+    },
+  ],
+}),
+
+data_04: makeDecisionNode({
+  id: 'data_04',
+  chapter: 'data',
+  title: 'Responding To The Data Strain',
+  badge: 'Decision node',
+  x: 1510,
+  y: 500,
+  introText: 'The archive now creates cost, fairness, and infrastructure pressure.',
+  text:
+    'Storage, preprocessing, validation, representation gaps, and consent notes are all becoming visible. The team must decide what kind of data discipline it can afford.',
+  choices: [
+    {
+      text: 'Expand data collection quickly to broaden the training pool.',
+      requires: ['social'],
+      blockedReason:
+        'This needs enough public trust to ask for more data cooperation.',
+      feedbackTitle: 'You chose the expansion route.',
+      feedbackStory:
+        'The archive may improve, but the project asks for more trust before earning it.',
+      feedbackText:
+        'Data expansion depends on social legitimacy, not only technical need.',
+      impact: { social: -2, financial: -4, performance: 2 },
+      next: 'data_05',
+      branchFlagsSet: ['data_expand'],
+    },
+    {
+      text: 'Clean, document, and understand the current archive before expanding.',
+      feedbackTitle: 'You chose depth over expansion.',
+      feedbackStory:
+        'The team moves slower, but can better explain what the evidence means.',
+      feedbackText:
+        'This protects trust and evidence quality, but costs time and budget.',
+      impact: { social: 6, financial: -5, performance: 4 },
+      next: 'data_05',
+      branchFlagsSet: ['data_deepen'],
+    },
+    {
+      text: 'Redesign the technical path to use less compute.',
+      feedbackTitle: 'You reduced the footprint of the route.',
+      feedbackStory:
+        'The team lowers waste, though it gives up some early ambition.',
+      feedbackText:
+        'A lighter path can improve long-term reliability, but still takes engineering work.',
+      impact: { social: 0, financial: -2, performance: 8 },
+      next: 'data_05',
+      branchFlagsSet: ['data_low_compute'],
+    },
+  ],
+}),
+
+data_05: makeStoryNode({
+  id: 'data_05',
+  chapter: 'data',
+  title: 'Data Milestone',
+  x: 1510,
+  y: 680,
+  introText: 'The chapter closes with a clearer, still imperfect foundation.',
+  text: (currentState) =>
+    currentState.branchFlags.has('data_fast')
+      ? 'The project keeps technical momentum, but its archive weaknesses are only managed, not solved. A transfer note now states what the data can honestly support.'
+      : 'The project moves slower, but has a sturdier data posture. A transfer note now states what the data can honestly support.',
+  continueTo: null,
+  continueLabel: 'Return to the board',
+  completeChapter: 'data',
+}),
 
   launch_01: makeStoryNode({
     id: 'launch_01',

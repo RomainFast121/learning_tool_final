@@ -2,7 +2,7 @@ const LOWER_LIMIT = 30;
 const UPPER_LIMIT = 70;
 
 // FOR TESTING ONLY 
-const SKIP_PRE_EVALUATION = false;
+const SKIP_PRE_EVALUATION = true;
 const TESTING_START_NODES = ['funding_01', 'team_01', 'data_01'];
 
 const initialResources = {
@@ -347,6 +347,7 @@ let state = {
   progressDelta: null,
   branchFlags: new Set(),
   chapterMilestones: new Set(),
+  expandedChapter: null,
   shownThresholds: new Set(),
   thresholdHistory: [],
 };
@@ -2518,8 +2519,58 @@ function getNodeStatusLabel(nodeId) {
   return `Blocked · ${typeLabel}`;
 }
 
+function renderChapterHubs(offsets) {
+  const hubSize = 170;
+  return chapterClusters.map((cluster) => {
+    const bounds = getResolvedChapterNodeBounds(cluster.id, offsets);
+    const cx = (bounds.minX + bounds.maxX) / 2;
+    const cy = (bounds.minY + bounds.maxY) / 2;
+    const x = Math.round(cx - hubSize / 2);
+    const y = Math.round(cy - hubSize / 2);
+
+    const isCompleted = state.chapterMilestones.has(cluster.id);
+    const chapterNodes = Object.values(nodes).filter((n) => n.chapter === cluster.id);
+    const hasAvailable = chapterNodes.some((n) => state.availableNodes.has(n.id));
+    const hasStarted = chapterNodes.some((n) => state.completedNodes.has(n.id));
+    const isLocked = !hasAvailable && !hasStarted && !isCompleted;
+    const isExpanded = state.expandedChapter === cluster.id;
+    const isOtherExpanded = state.expandedChapter && !isExpanded;
+
+    const classes = [
+      'chapter-hub',
+      `chapter-hub-${cluster.id}`,
+      isExpanded ? 'hub-active' : '',
+      isOtherExpanded ? 'hub-other' : '',
+      isLocked ? 'hub-locked' : '',
+      isCompleted ? 'hub-completed' : '',
+    ].filter(Boolean).join(' ');
+
+    const statusLabel = isCompleted ? 'Completed' : isLocked ? 'Locked' : hasStarted ? 'In progress' : 'Available';
+
+    return `
+      <div
+        class="${classes}"
+        data-chapter="${escapeHtml(cluster.id)}"
+        style="left:${x}px; top:${y}px; width:${hubSize}px; height:${hubSize}px;"
+        tabindex="${isLocked ? -1 : 0}"
+        role="button"
+        aria-label="${escapeHtml(cluster.kicker)}: ${escapeHtml(cluster.title)} — ${statusLabel}"
+      >
+        <span class="hub-kicker">${escapeHtml(cluster.kicker)}</span>
+        <span class="hub-title">${escapeHtml(cluster.title)}</span>
+        <span class="hub-status">${statusLabel}</span>
+      </div>
+    `;
+  }).join('');
+}
+
 function renderClusters(computedClusters) {
+  if (!state.expandedChapter) {
+    refs.boardClusters.innerHTML = '';
+    return;
+  }
   refs.boardClusters.innerHTML = computedClusters
+    .filter((cluster) => cluster.id === state.expandedChapter)
     .map(
       (cluster) => `
         <div class="cluster-zone cluster-${escapeHtml(cluster.id)}" style="left:${cluster.x}px; top:${cluster.y}px; width:${cluster.w}px; height:${cluster.h}px;">
@@ -2533,41 +2584,48 @@ function renderClusters(computedClusters) {
 }
 
 function renderBoardNodes(offsets) {
-  refs.boardNodes.innerHTML = Object.values(nodes)
+  const visibleNodes = Object.values(nodes)
     .filter((node) => !node.boardHidden)
-    .map((node) => {
-      const frame = getResolvedNodeFrame(node, offsets);
-      const classes = [
-        'node',
-        node.id === 'center' ? 'node-center node-circle' : 'node-panel',
-      ];
-      if (state.closedNodes.has(node.id)) {
-        classes.push('closed-route', 'node-clickable');
-      } else if (state.completedNodes.has(node.id)) {
-        classes.push('completed', 'node-clickable');
-      } else if (state.availableNodes.has(node.id) || node.id === 'center') {
-        classes.push('node-available', 'node-clickable');
-        if (!state.completedNodes.has(node.id)) classes.push('pulse');
-      } else {
-        classes.push('node-locked');
-      }
+    .filter((node) => {
+      if (node.id === 'center') return true;
+      if (!state.expandedChapter) return false;
+      return node.chapter === state.expandedChapter;
+    });
 
-      const title = resolveValue(node.title, node);
-      return `
-        <div
-          id="node-${escapeHtml(node.id)}"
-          class="${classes.join(' ')}"
-          data-node="${escapeHtml(node.id)}"
-          style="left:${frame.x}px; top:${frame.y}px; width:${frame.w}px; min-height:${frame.h}px;"
-          tabindex="0"
-          role="button"
-        >
-          <span class="node-title">${escapeHtml(title)}</span>
-          <span class="node-tag">${escapeHtml(getNodeStatusLabel(node.id))}</span>
-        </div>
-      `;
-    })
-    .join('');
+  const nodesHtml = visibleNodes.map((node) => {
+    const frame = getResolvedNodeFrame(node, offsets);
+    const classes = [
+      'node',
+      node.id === 'center' ? 'node-center node-circle' : 'node-panel',
+    ];
+    if (state.closedNodes.has(node.id)) {
+      classes.push('closed-route', 'node-clickable');
+    } else if (state.completedNodes.has(node.id)) {
+      classes.push('completed', 'node-clickable');
+    } else if (state.availableNodes.has(node.id) || node.id === 'center') {
+      classes.push('node-available', 'node-clickable');
+      if (!state.completedNodes.has(node.id)) classes.push('pulse');
+    } else {
+      classes.push('node-locked');
+    }
+
+    const title = resolveValue(node.title, node);
+    return `
+      <div
+        id="node-${escapeHtml(node.id)}"
+        class="${classes.join(' ')}"
+        data-node="${escapeHtml(node.id)}"
+        style="left:${frame.x}px; top:${frame.y}px; width:${frame.w}px; min-height:${frame.h}px;"
+        tabindex="0"
+        role="button"
+      >
+        <span class="node-title">${escapeHtml(title)}</span>
+        <span class="node-tag">${escapeHtml(getNodeStatusLabel(node.id))}</span>
+      </div>
+    `;
+  }).join('');
+
+  refs.boardNodes.innerHTML = nodesHtml + renderChapterHubs(offsets);
 
   refs.boardNodes.querySelectorAll('[data-node]').forEach((element) => {
     const nodeId = element.dataset.node;
@@ -2576,6 +2634,21 @@ function renderBoardNodes(offsets) {
       if (event.key === 'Enter' || event.key === ' ') {
         event.preventDefault();
         handleBoardNodeClick(nodeId);
+      }
+    });
+  });
+
+  refs.boardNodes.querySelectorAll('[data-chapter]').forEach((element) => {
+    const chapterId = element.dataset.chapter;
+    element.addEventListener('click', () => {
+      if (element.classList.contains('hub-locked')) return;
+      state.expandedChapter = state.expandedChapter === chapterId ? null : chapterId;
+      renderBoard();
+    });
+    element.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key === ' ') {
+        event.preventDefault();
+        element.click();
       }
     });
   });
@@ -2603,23 +2676,171 @@ function renderPlayerMarker() {
 
 function renderBoardLines(offsets) {
   const lines = [];
-  Object.values(nodes)
-    .filter((node) => !node.boardHidden)
-    .forEach((node) => {
-      const from = getNodeCenterPoint(node, offsets);
-      getOutgoingLinks(node).forEach((targetId) => {
-        const target = nodes[targetId];
-        if (!target || target.boardHidden) return;
-        const to = getNodeCenterPoint(target, offsets);
-        lines.push(
-          `<line x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" class="chapter-line line-${escapeHtml(node.chapter)}"></line>`,
-        );
-      });
+
+  if (!state.expandedChapter) {
+    const centerFrame = getCenterNodeFrame(offsets);
+    const cx = centerFrame.x + centerFrame.w / 2;
+    const cy = centerFrame.y + centerFrame.h / 2;
+    chapterClusters.forEach((cluster) => {
+      const bounds = getResolvedChapterNodeBounds(cluster.id, offsets);
+      const hx = (bounds.minX + bounds.maxX) / 2;
+      const hy = (bounds.minY + bounds.maxY) / 2;
+      lines.push(`<line x1="${cx}" y1="${cy}" x2="${hx}" y2="${hy}" class="chapter-line line-hub line-hub-${escapeHtml(cluster.id)}"></line>`);
     });
+  } else {
+    const visibleIds = new Set(
+      Object.values(nodes)
+        .filter((n) => !n.boardHidden && (n.id === 'center' || n.chapter === state.expandedChapter))
+        .map((n) => n.id),
+    );
+    Object.values(nodes)
+      .filter((node) => !node.boardHidden && visibleIds.has(node.id))
+      .forEach((node) => {
+        const from = getNodeCenterPoint(node, offsets);
+        getOutgoingLinks(node).forEach((targetId) => {
+          const target = nodes[targetId];
+          if (!target || target.boardHidden || !visibleIds.has(targetId)) return;
+          const to = getNodeCenterPoint(target, offsets);
+          lines.push(`<line x1="${from.x}" y1="${from.y}" x2="${to.x}" y2="${to.y}" class="chapter-line line-${escapeHtml(node.chapter)}"></line>`);
+        });
+      });
+  }
+
   refs.boardLines.innerHTML = lines.join('');
 }
 
+const HUB_VIEW = {
+  hubSize: 160,
+  centerSize: 220,
+};
+
+function renderHubView() {
+  const { hubSize, centerSize } = HUB_VIEW;
+
+  const w = refs.boardViewport.clientWidth || 920;
+  const h = refs.boardViewport.clientHeight || 640;
+
+  refs.board.style.width = `${w}px`;
+  refs.board.style.height = `${h}px`;
+  refs.board.style.transform = '';
+  refs.boardLines.setAttribute('viewBox', `0 0 ${w} ${h}`);
+  refs.boardViewport.style.overflow = 'hidden';
+  refs.boardViewport.scrollLeft = 0;
+  refs.boardViewport.scrollTop = 0;
+  refs.boardClusters.innerHTML = '';
+
+  const cx = w / 2;
+  const cy = h / 2;
+  const centerPos = { x: Math.round(cx - centerSize / 2), y: Math.round(cy - centerSize / 2) };
+
+  const hubPositions = {
+    funding: { x: Math.round(cx - w * 0.26 - hubSize / 2), y: Math.round(cy - h * 0.28 - hubSize / 2) },
+    data:    { x: Math.round(cx + w * 0.26 - hubSize / 2), y: Math.round(cy - h * 0.28 - hubSize / 2) },
+    team:    { x: Math.round(cx - w * 0.26 - hubSize / 2), y: Math.round(cy + h * 0.28 - hubSize / 2) },
+    launch:  { x: Math.round(cx + w * 0.26 - hubSize / 2), y: Math.round(cy + h * 0.28 - hubSize / 2) },
+  };
+
+  const isCompletedCenter = state.completedNodes.has('center');
+  const centerClasses = ['node', 'node-center', 'node-circle', 'node-clickable',
+    isCompletedCenter ? 'completed' : 'node-available pulse',
+  ].join(' ');
+  const centerTitle = resolveValue(nodes.center.title, nodes.center);
+  const centerHtml = `
+    <div
+      id="node-center"
+      class="${centerClasses}"
+      data-node="center"
+      style="left:${centerPos.x}px; top:${centerPos.y}px; width:${centerSize}px; min-height:${centerSize}px;"
+      tabindex="0"
+      role="button"
+    >
+      <span class="node-title">${escapeHtml(centerTitle)}</span>
+      <span class="node-tag">${escapeHtml(getNodeStatusLabel('center'))}</span>
+    </div>
+  `;
+
+  const hubsHtml = chapterClusters.map((cluster) => {
+    const pos = hubPositions[cluster.id];
+    const isCompleted = state.chapterMilestones.has(cluster.id);
+    const chapterNodesList = Object.values(nodes).filter((n) => n.chapter === cluster.id);
+    const hasAvailable = chapterNodesList.some((n) => state.availableNodes.has(n.id));
+    const hasStarted = chapterNodesList.some((n) => state.completedNodes.has(n.id));
+    const isLocked = !hasAvailable && !hasStarted && !isCompleted;
+    const statusLabel = isCompleted ? 'Completed' : isLocked ? 'Locked' : hasStarted ? 'In progress' : 'Available';
+    const classes = ['chapter-hub', `chapter-hub-${cluster.id}`, isLocked ? 'hub-locked' : '', isCompleted ? 'hub-completed' : ''].filter(Boolean).join(' ');
+
+    return `
+      <div
+        class="${classes}"
+        data-chapter="${escapeHtml(cluster.id)}"
+        style="left:${pos.x}px; top:${pos.y}px; width:${hubSize}px; height:${hubSize}px;"
+        tabindex="${isLocked ? -1 : 0}"
+        role="button"
+      >
+        <span class="hub-kicker">${escapeHtml(cluster.kicker)}</span>
+        <span class="hub-title">${escapeHtml(cluster.title)}</span>
+        <span class="hub-status">${statusLabel}</span>
+      </div>
+    `;
+  }).join('');
+
+  refs.boardNodes.innerHTML = centerHtml + hubsHtml;
+
+  const centerEl = refs.boardNodes.querySelector('[data-node="center"]');
+  if (centerEl) {
+    centerEl.addEventListener('click', () => handleBoardNodeClick('center'));
+    centerEl.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleBoardNodeClick('center'); }
+    });
+  }
+
+  refs.boardNodes.querySelectorAll('[data-chapter]').forEach((el) => {
+    const chapterId = el.dataset.chapter;
+    el.addEventListener('click', () => {
+      if (el.classList.contains('hub-locked')) return;
+      state.expandedChapter = chapterId;
+      renderBoard();
+    });
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+    });
+  });
+
+  renderPlayerMarker();
+
+  const lines = chapterClusters.map((cluster) => {
+    const pos = hubPositions[cluster.id];
+    const hx = pos.x + hubSize / 2;
+    const hy = pos.y + hubSize / 2;
+    return `<line x1="${cx}" y1="${cy}" x2="${hx}" y2="${hy}" class="chapter-line line-hub line-hub-${escapeHtml(cluster.id)}"></line>`;
+  }).join('');
+  refs.boardLines.innerHTML = lines;
+}
+
+function fitChapterToViewport(offsets) {
+  const vpW = refs.boardViewport.clientWidth;
+  const vpH = refs.boardViewport.clientHeight;
+  const bounds = getResolvedChapterNodeBounds(state.expandedChapter, offsets);
+  const padding = 80;
+  const contentW = (bounds.maxX - bounds.minX) + padding * 2;
+  const contentH = (bounds.maxY - bounds.minY) + padding * 2;
+  const contentCx = (bounds.minX + bounds.maxX) / 2;
+  const contentCy = (bounds.minY + bounds.maxY) / 2;
+  const scale = Math.min(vpW / contentW, vpH / contentH, 1);
+  const tx = vpW / (2 * scale) - contentCx;
+  const ty = vpH / (2 * scale) - contentCy;
+  refs.board.style.transformOrigin = '0 0';
+  refs.board.style.transform = `scale(${scale}) translate(${tx}px, ${ty}px)`;
+  refs.boardViewport.style.overflow = 'hidden';
+}
+
 function renderBoard() {
+  if (!state.expandedChapter) {
+    renderHubView();
+    return;
+  }
+  refs.boardViewport.style.height = '860px';
+  refs.boardViewport.style.overflow = 'hidden';
   const offsets = getLayoutOffsets();
   const computedClusters = getComputedChapterClusters(offsets);
   const boardBounds = getBoardBounds(offsets, computedClusters);
@@ -2629,6 +2850,7 @@ function renderBoard() {
   renderClusters(computedClusters);
   renderBoardLines(offsets);
   renderBoardNodes(offsets);
+  fitChapterToViewport(offsets);
 }
 
 function refreshGlobalUnlocks() {

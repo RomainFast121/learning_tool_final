@@ -2,7 +2,7 @@ const LOWER_LIMIT = 30;
 const UPPER_LIMIT = 70;
 
 // FOR TESTING ONLY 
-const SKIP_PRE_EVALUATION = true;
+const SKIP_PRE_EVALUATION = false;
 const TESTING_START_NODES = ['funding_01', 'team_01', 'data_01'];
 
 const initialResources = {
@@ -460,8 +460,8 @@ const nodes = {
     id: 'funding_01',
     chapter: 'funding',
     title: 'Sponsor Rumor',
-    x: 460,
-    y: 200,
+    x: 280,
+    y: 40,
     introText: 'A rumor about a diagnostics sponsor circulates inside the hospital, and the team starts mapping what this money could change before it even arrives.',
     text:
       'Before any formal contact, people inside the hospital are already speculating. Some hear opportunity, others hear dependency. Funding pressure does not arrive with the contract — it starts when different parts of the institution begin imagining the project through different kinds of hope.',
@@ -473,8 +473,8 @@ const nodes = {
     chapter: 'funding',
     title: 'How To Enter The Meeting',
     badge: 'Major decision',
-    x: 460,
-    y: 330,
+    x: 280,
+    y: 160,
     introText: 'The first internal funding discussion is about posture, not yet about contract terms.',
     text:
       'Two instincts emerge in the room. One group wants to treat the meeting as a showcase and convert energy into public momentum. Another wants to keep the conversation quiet and review-oriented until the project has stronger internal footing.',
@@ -511,8 +511,8 @@ const nodes = {
     id: 'funding_03_hype',
     chapter: 'funding',
     title: 'Sponsor Pitch',
-    x: 140,
-    y: 470,
+    x: 40,
+    y: 290,
     introText: 'The meeting is moved to a polished presentation room with communications staff present.',
     text:
       'The sponsor talks scale and speed. Most people look energized; a clinician beside you takes quiet notes every time the timeline shortens. The room leaves with enthusiasm but without a clear sense of what conditions would make the offer unacceptable.',
@@ -523,8 +523,8 @@ const nodes = {
     id: 'funding_03_guarded',
     chapter: 'funding',
     title: 'Closed-Door Diligence',
-    x: 780,
-    y: 470,
+    x: 520,
+    y: 290,
     introText: 'The meeting is deliberately small, and the sponsor notices the difference immediately.',
     text:
       'The conversation turns practical: review gates, publication freedom, sponsor influence over timelines. The room feels cooler but more honest. The team leaves not with excitement, but with a clearer sense of where pressure would come from if the relationship deepened.',
@@ -535,8 +535,8 @@ const nodes = {
     id: 'funding_06',
     chapter: 'funding',
     title: 'Expectation Pressure',
-    x: 290,
-    y: 610,
+    x: 160,
+    y: 410,
     introText: 'Donor expectations are arriving, and the team is being asked to speak about itself in a single shared sentence.',
     text: (currentState) =>
       currentState.branchFlags.has('funding_hype')
@@ -550,8 +550,8 @@ const nodes = {
     chapter: 'funding',
     title: 'Contract Red Lines',
     badge: 'Decision node',
-    x: 630,
-    y: 750,
+    x: 460,
+    y: 490,
     introText: 'The draft agreement arrives with one decisive question left unresolved.',
     text:
       'The sponsor is willing to support the project, but not without shaping some part of its future behavior. The team must now choose which red lines it is willing to defend and which risks it is willing to absorb.',
@@ -589,8 +589,8 @@ const nodes = {
     id: 'funding_08b',
     chapter: 'funding',
     title: 'Stakeholder Map',
-    x: 820,
-    y: 330,
+    x: 560,
+    y: 160,
     introText: 'This optional node gives a simple method a student could reuse later in a real project.',
     text:
       'Make a quick stakeholder map before taking support: who wants acceleration, who bears reputational risk, who carries hidden implementation work, and who can still say no later. This turns a vague partner discussion into a concrete governance picture.',
@@ -601,8 +601,8 @@ const nodes = {
     id: 'funding_09',
     chapter: 'funding',
     title: 'Board Review',
-    x: 290,
-    y: 890,
+    x: 160,
+    y: 570,
     introText: 'The hospital board asks one last question before signing off on the chapter.',
     text:
       'Which statement best captures the most responsible way to explain the funding arrangement to the board?',
@@ -634,8 +634,8 @@ const nodes = {
     id: 'funding_10',
     chapter: 'funding',
     title: 'Funding Milestone',
-    x: 460,
-    y: 1030,
+    x: 280,
+    y: 660,
     introText: 'The chapter closes when the team translates the deal into everyday work for staff who were not in the negotiations.',
     text: (currentState) =>
       (currentState.branchFlags.has('funding_contract_strict')
@@ -653,8 +653,8 @@ const nodes = {
     id: 'team_01',
     chapter: 'team',
     title: 'Capacity Warning',
-    x: 150,
-    y: 1160,
+    x: 80,
+    y: 70,
     introText: 'The project progression starts to slow down, it can no longer run on goodwill.',
     text:
       "At first, everything seems on track. But after a few days, small issues appear.\n\nMessages sit unanswered. Tasks are discussed but not clearly assigned. Some parts move fast, others are blocked.\n\nDuring a meeting, the principal investigator says:\n\"We’re starting to lose track of who is doing what.\"\n\nNo one disagrees.",
@@ -665,8 +665,8 @@ const nodes = {
     id: 'team_01b',
     chapter: 'team',
     title: 'Looking closer',
-    x: 130,
-    y: 1310,
+    x: 60,
+    y: 200,
     introText: 'The issue is not motivation, it\'s organization.',
     text:
       "You look more closely at how the team works.\n\nEveryone is putting in effort. But roles are unclear, priorities shift, and decisions are informal.\n\nSome people are overloaded. Others are waiting.\n\nThe problem isn’t motivation. It’s structure.",
@@ -679,8 +679,8 @@ const nodes = {
     chapter: 'team',
     title: 'What to Fix First',
     badge: 'Decision node',
-    x: 390,
-    y: 1140,
+    x: 290,
+    y: 50,
     introText: 'The issue is not motivation. It is organization.',
     text:
       'Everyone is working hard, but roles are unclear, priorities keep shifting, and decisions are too informal.\n\n' +
@@ -723,8 +723,8 @@ const nodes = {
     id: 'team_03',
     chapter: 'team',
     title: 'Structure vs Effort',
-    x: 650,
-    y: 1100,
+    x: 540,
+    y: 50,
     introText: 'In growing teams, poor performance often comes from weak structure, not weak effort.',
     text:
       'Without clear roles, work gets delayed, duplicated, or silently dropped.\n\n' +
@@ -738,8 +738,8 @@ const nodes = {
     chapter: 'team',
     title: 'Hiring Strategy',
     badge: 'Decision node',
-    x: 650,
-    y: 1310,
+    x: 540,
+    y: 200,
     introText: 'Hiring now means choosing what the project protects first.',
     text:
       'The team agrees that more capacity is needed.\n\n' +
@@ -783,8 +783,8 @@ const nodes = {
     id: 'team_05_speed',
     chapter: 'team',
     title: 'Speed Check',
-    x: 400,
-    y: 1300,
+    x: 290,
+    y: 210,
     introText: 'The team is moving faster, but some concerns are being postponed.',
     text:
       'What is the main risk in this speed-focused path?',
@@ -823,8 +823,8 @@ const nodes = {
     id: 'team_05_balanced',
     chapter: 'team',
     title: 'Trade-off Awareness',
-    x: 390,
-    y: 1610,
+    x: 290,
+    y: 450,
     introText: 'The team now includes more perspectives, but coordination is harder.',
     text:
       'How can the team make this diversity useful?',
@@ -864,8 +864,8 @@ const nodes = {
     chapter: 'team',
     title: 'Reorganize the Team',
     badge: 'Decision node',
-    x: 120,
-    y: 1610,
+    x: 50,
+    y: 450,
     introText: 'Capacity strain is now visible, no matter which hiring path the team chose.',
     text:
       'A junior researcher quietly says they no longer know which concerns are important enough to raise, because everything already feels urgent.\n\n' +
@@ -911,8 +911,8 @@ const nodes = {
     id: 'team_07',
     chapter: 'team',
     title: 'Final Team Check',
-    x: 540,
-    y: 1850,
+    x: 390,
+    y: 620,
     introText: 'Responsible team design is about making important problems visible early.',
     text:
       'Which sign best shows that a team structure is becoming unhealthy?',
@@ -951,8 +951,8 @@ const nodes = {
     id: 'team_08',
     chapter: 'team',
     title: 'Team Milestone',
-    x: 860,
-    y: 1690,
+    x: 650,
+    y: 500,
     introText: 'The chapter closes with a structure that is workable, but not tension-free.',
     text: (currentState) =>
       currentState.branchFlags.has('team_speed')
@@ -967,8 +967,8 @@ const nodes = {
     id: 'data_01',
     chapter: 'data',
     title: 'First Dataset Offer',
-    x: 1280,
-    y: 150,
+    x: 40,
+    y: 40,
     introText: 'Three hospitals offer patient records, but the archive is messy.',
     text:
       'The team receives useful historical data, but consent wording, labels, and missing fields vary across hospitals. They realize that having data is not the same as understanding it.',
@@ -981,8 +981,8 @@ const nodes = {
     chapter: 'data',
     title: 'How To Take In The Data',
     badge: 'Major decision',
-    x: 1510,
-    y: 150,
+    x: 340,
+    y: 40,
     introText: 'The team must choose how much uncertainty to carry forward.',
     text:
       'Some want to ingest the records quickly and clean later. Others want staged access, bias notes, and consent review before training begins.',
@@ -1022,8 +1022,8 @@ const nodes = {
     id: 'data_03_fast',
     chapter: 'data',
     title: 'Fast Ingestion Traceability',
-    x: 1670,
-    y: 260,
+    x: 540,
+    y: 160,
     introText: 'The pipeline is moving, but uncertainty is already appearing.',
     text:
       'Some labels differ by hospital, some fields are missing, and some notes are unclear. What should the team do first?',
@@ -1062,8 +1062,8 @@ const nodes = {
     id: 'data_03_careful',
     chapter: 'data',
     title: 'Careful Inspection',
-    x: 1350,
-    y: 260,
+    x: 130,
+    y: 160,
     introText: 'The team reads the archive before treating it as training data.',
     text:
       'Consent language varies across sites, and some reuse assumptions are unclear. What is the most responsible interpretation?',
@@ -1103,8 +1103,8 @@ const nodes = {
     chapter: 'data',
     title: 'Responding To The Data Strain',
     badge: 'Decision node',
-    x: 1510,
-    y: 500,
+    x: 340,
+    y: 390,
     introText: 'The archive now creates cost, fairness, and infrastructure pressure.',
     text:
       'Storage, preprocessing, validation, representation gaps, and consent notes are all becoming visible. The team must decide what kind of data discipline it can afford.',
@@ -1152,8 +1152,8 @@ const nodes = {
     id: 'data_05',
     chapter: 'data',
     title: 'Data Milestone',
-    x: 1510,
-    y: 680,
+    x: 340,
+    y: 540,
     introText: 'The chapter closes with a clearer, still imperfect foundation.',
     text: (currentState) =>
       currentState.branchFlags.has('data_fast')
@@ -1168,8 +1168,8 @@ const nodes = {
     id: 'launch_01',
     chapter: 'launch',
     title: 'Winter Pressure',
-    x: 1320,
-    y: 1140,
+    x: 100,
+    y: 40,
     introText: 'The launch chapter opens once the earlier foundations have become concrete enough to carry real consequences.',
     text:
       'Emergency admissions begin to rise. People inside the hospital stop talking about the project as a concept and start asking when it will actually appear in practice. Earlier compromises now return in the form of timing, trust, and operational risk. The launch conversation stops sounding like a single moment and starts sounding like a first week full of handovers the hospital will either keep governable or regret very quickly.',
@@ -1181,8 +1181,8 @@ const nodes = {
     chapter: 'launch',
     title: 'Launch Posture',
     badge: 'Major decision',
-    x: 1580,
-    y: 1140,
+    x: 400,
+    y: 40,
     introText: 'The first launch decision is about scope, visibility, and what kind of risk the hospital is willing to carry.',
     text:
       'One route pushes toward a broader, more visible multi-site pilot that shows confidence and momentum. Another route argues for a narrower first deployment that learns quietly, protects room for rollback, and resists the urge to turn a first launch into a public proof of inevitability.',
@@ -1217,8 +1217,8 @@ const nodes = {
     id: 'launch_03_ambitious',
     chapter: 'launch',
     title: 'Exposure Friction',
-    x: 1840,
-    y: 1360,
+    x: 600,
+    y: 200,
     introText: 'The broader route immediately turns enthusiasm into coordination strain.',
     text:
       'Three hospital sites now want to know what will change for them, who owns the monitoring burden, and how quickly the system can be adjusted if reality turns out messier than the optimism in the room. The sponsor still wants visibility, but staff push back against making a fragile first week look more certain than it is.',
@@ -1229,8 +1229,8 @@ const nodes = {
     id: 'launch_03_measured',
     chapter: 'launch',
     title: 'Ward-Level Reality Check',
-    x: 1320,
-    y: 1360,
+    x: 100,
+    y: 200,
     introText: 'The narrower route feels more modest, but much more concrete once ward-level concerns are named clearly.',
     text:
       'A nurse manager walks through the pilot ward and points out several practical problems that no one had fully seen from the boardroom: alarm fatigue, handover timing, and how easily “decision support” can still feel like pressure in a busy clinical setting. The quieter route suddenly feels less like caution in the abstract and more like respect for details that will decide whether staff can actually live with the tool.',
@@ -1242,8 +1242,8 @@ const nodes = {
     chapter: 'launch',
     title: 'How Visible Should This Pilot Be?',
     badge: 'Decision node',
-    x: 1840,
-    y: 1520,
+    x: 600,
+    y: 350,
     introText: 'The broad route now has to decide how much publicity it will carry into the first week.',
     text:
       'The sponsor wants a visible announcement. Some hospital staff want a quieter operational start until the system behaves well under stress. The choice will shape how forgiving the environment becomes once the first problems appear.',
@@ -1276,8 +1276,8 @@ const nodes = {
     chapter: 'launch',
     title: 'How Explicit Should The Caution Be?',
     badge: 'Decision node',
-    x: 1320,
-    y: 1520,
+    x: 100,
+    y: 350,
     introText: 'The quieter route still has to decide how openly it will frame its own limits.',
     text:
       'Some people want the pilot framed as a learning phase with transparent limits. Others worry that too much modesty will make the project look fragile and politically easier to defund if early results are mixed.',
@@ -1306,8 +1306,8 @@ const nodes = {
     id: 'launch_05',
     chapter: 'launch',
     title: 'What A Responsible Launch Must Name',
-    x: 1580,
-    y: 1680,
+    x: 400,
+    y: 490,
     introText: 'This information node condenses the main practical lesson before the final check.',
     text:
       'Before deployment, the team should be able to name five things clearly: who monitors, who can pause the pilot, what counts as a reportable incident, how staff concerns reach decision-makers, and what would justify broadening or shrinking the rollout. A launch is weaker when these questions are answered only implicitly.',
@@ -1320,8 +1320,8 @@ const nodes = {
     id: 'launch_06',
     chapter: 'launch',
     title: 'Final Launch Check',
-    x: 1580,
-    y: 1840,
+    x: 400,
+    y: 620,
     introText: 'The final quiz checks whether the whole game\'s logic has stayed intact.',
     text:
       'Which statement best captures what a responsible launch posture requires after all four chapters of the game?',
@@ -1354,8 +1354,8 @@ const nodes = {
     chapter: 'launch',
     title: (currentState) => getEnding(currentState).title,
     badge: 'Milestone',
-    x: 1580,
-    y: 2000,
+    x: 400,
+    y: 730,
     introText: 'The game ends with the kind of launch the project has made possible for itself.',
     text: (currentState) => getEnding(currentState).text,
     extraHtml: (currentState) => `<h3>Outcome</h3><p>${escapeHtml(getEnding(currentState).lesson)}</p>`,
@@ -2600,7 +2600,7 @@ function renderBoardNodes(offsets) {
   const visibleNodes = Object.values(nodes)
     .filter((node) => !node.boardHidden)
     .filter((node) => {
-      if (node.id === 'center') return true;
+      if (node.id === 'center') return !state.expandedChapter;
       if (!state.expandedChapter) return false;
       return node.chapter === state.expandedChapter;
     });
@@ -2830,21 +2830,122 @@ function renderHubView() {
   refs.boardLines.innerHTML = lines;
 }
 
-function fitChapterToViewport(offsets) {
+function renderChapterView() {
   const vpW = refs.boardViewport.clientWidth;
   const vpH = refs.boardViewport.clientHeight;
-  const bounds = getResolvedChapterNodeBounds(state.expandedChapter, offsets);
-  const padding = 80;
-  const contentW = (bounds.maxX - bounds.minX) + padding * 2;
-  const contentH = (bounds.maxY - bounds.minY) + padding * 2;
-  const contentCx = (bounds.minX + bounds.maxX) / 2;
-  const contentCy = (bounds.minY + bounds.maxY) / 2;
-  const scale = Math.min(vpW / contentW, vpH / contentH, 1);
-  const tx = vpW / (2 * scale) - contentCx;
-  const ty = vpH / (2 * scale) - contentCy;
-  refs.board.style.transformOrigin = '0 0';
-  refs.board.style.transform = `scale(${scale}) translate(${tx}px, ${ty}px)`;
+
+  refs.board.style.width = `${vpW}px`;
+  refs.board.style.height = `${vpH}px`;
+  refs.board.style.transform = '';
   refs.boardViewport.style.overflow = 'hidden';
+  refs.boardLines.setAttribute('viewBox', `0 0 ${vpW} ${vpH}`);
+  refs.boardClusters.innerHTML = '';
+
+  const chapterMeta = getChapterMeta(state.expandedChapter);
+  const chapterNodesList = Object.values(nodes)
+    .filter((n) => !n.boardHidden && n.chapter === state.expandedChapter);
+  if (!chapterNodesList.length) return;
+
+  const rawFrames = chapterNodesList.map((n) => {
+    const { w, h } = getNodeSize(n);
+    return { node: n, x: n.x, y: n.y, w, h };
+  });
+
+  const minX = Math.min(...rawFrames.map((f) => f.x));
+  const minY = Math.min(...rawFrames.map((f) => f.y));
+  const maxX = Math.max(...rawFrames.map((f) => f.x + f.w));
+  const maxY = Math.max(...rawFrames.map((f) => f.y + f.h));
+
+  const padTop = 72;
+  const padSide = 48;
+  const availW = vpW - padSide * 2;
+  const availH = vpH - padTop - padSide;
+  const scale = Math.min(availW / (maxX - minX), availH / (maxY - minY));
+  const scaledW = (maxX - minX) * scale;
+  const scaledH = (maxY - minY) * scale;
+  const offsetX = padSide + (availW - scaledW) / 2;
+  const offsetY = padTop + (availH - scaledH) / 2;
+
+  const nodesHtml = rawFrames.map(({ node, x, y, w, h }) => {
+    const nx = Math.round(offsetX + (x - minX) * scale);
+    const ny = Math.round(offsetY + (y - minY) * scale);
+    const nw = Math.round(w * scale);
+    const nh = Math.round(h * scale);
+    const classes = ['node', 'node-panel'];
+    if (state.closedNodes.has(node.id)) {
+      classes.push('closed-route', 'node-clickable');
+    } else if (state.completedNodes.has(node.id)) {
+      classes.push('completed', 'node-clickable');
+    } else if (state.availableNodes.has(node.id)) {
+      classes.push('node-available', 'node-clickable');
+      if (!state.completedNodes.has(node.id)) classes.push('pulse');
+    } else {
+      classes.push('node-locked');
+    }
+    const title = resolveValue(node.title, node);
+    return `
+      <div
+        id="node-${escapeHtml(node.id)}"
+        class="${classes.join(' ')}"
+        data-node="${escapeHtml(node.id)}"
+        style="left:${nx}px; top:${ny}px; width:${nw}px; min-height:${nh}px; font-size:${Math.max(0.7, scale * 0.9)}rem;"
+        tabindex="0" role="button"
+      >
+        <span class="node-title">${escapeHtml(title)}</span>
+        <span class="node-tag">${escapeHtml(getNodeStatusLabel(node.id))}</span>
+      </div>`;
+  }).join('');
+
+  const navPills = chapterClusters.map((c) => {
+    const active = c.id === state.expandedChapter;
+    const isCompleted = state.chapterMilestones.has(c.id);
+    const chapterNodes2 = Object.values(nodes).filter((n) => n.chapter === c.id);
+    const isLocked = !chapterNodes2.some((n) => state.availableNodes.has(n.id) || state.completedNodes.has(n.id)) && !isCompleted;
+    return `<button class="act-pill ${active ? 'act-pill-active' : ''} ${isLocked ? 'act-pill-locked' : ''} act-pill-${c.id}"
+      data-chapter="${escapeHtml(c.id)}">${escapeHtml(c.kicker)} · ${escapeHtml(c.title)}</button>`;
+  }).join('');
+
+  const labelHtml = `
+    <div class="chapter-label">
+      <button class="chapter-back-btn" data-action="back">← Board</button>
+      <div class="act-nav">${navPills}</div>
+    </div>`;
+
+  refs.boardNodes.innerHTML = nodesHtml + labelHtml;
+
+  refs.boardNodes.querySelectorAll('[data-node]').forEach((el) => {
+    const nodeId = el.dataset.node;
+    el.addEventListener('click', () => handleBoardNodeClick(nodeId));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); handleBoardNodeClick(nodeId); }
+    });
+  });
+
+  const backBtn = refs.boardNodes.querySelector('[data-action="back"]');
+  if (backBtn) backBtn.addEventListener('click', () => { state.expandedChapter = null; renderBoard(); });
+
+  refs.boardNodes.querySelectorAll('[data-chapter]').forEach((el) => {
+    el.addEventListener('click', () => {
+      if (el.classList.contains('act-pill-locked')) return;
+      state.expandedChapter = el.dataset.chapter;
+      renderBoard();
+    });
+  });
+
+  renderPlayerMarker();
+
+  const lines = rawFrames.flatMap(({ node, x, y, w, h }) => {
+    const fcx = Math.round(offsetX + (x - minX) * scale + (w * scale) / 2);
+    const fcy = Math.round(offsetY + (y - minY) * scale + (h * scale) / 2);
+    return getOutgoingLinks(node).map((tid) => {
+      const tf = rawFrames.find((f) => f.node.id === tid);
+      if (!tf) return '';
+      const tcx = Math.round(offsetX + (tf.x - minX) * scale + (tf.w * scale) / 2);
+      const tcy = Math.round(offsetY + (tf.y - minY) * scale + (tf.h * scale) / 2);
+      return `<line x1="${fcx}" y1="${fcy}" x2="${tcx}" y2="${tcy}" class="chapter-line line-${escapeHtml(node.chapter)}"></line>`;
+    }).filter(Boolean);
+  }).join('');
+  refs.boardLines.innerHTML = lines;
 }
 
 function renderBoard() {
@@ -2853,17 +2954,7 @@ function renderBoard() {
     return;
   }
   refs.boardViewport.style.height = '860px';
-  refs.boardViewport.style.overflow = 'hidden';
-  const offsets = getLayoutOffsets();
-  const computedClusters = getComputedChapterClusters(offsets);
-  const boardBounds = getBoardBounds(offsets, computedClusters);
-  refs.board.style.width = `${boardBounds.width}px`;
-  refs.board.style.height = `${boardBounds.height}px`;
-  refs.boardLines.setAttribute('viewBox', `0 0 ${boardBounds.width} ${boardBounds.height}`);
-  renderClusters(computedClusters);
-  renderBoardLines(offsets);
-  renderBoardNodes(offsets);
-  fitChapterToViewport(offsets);
+  renderChapterView();
 }
 
 function refreshGlobalUnlocks() {

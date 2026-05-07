@@ -1698,6 +1698,72 @@ button:disabled {
   text-transform: uppercase;
 }
 
+.chapter-label {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.chapter-back-btn {
+  background: var(--accent);
+  border: none;
+  border-radius: 10px;
+  color: var(--button-text);
+  cursor: pointer;
+  font-size: .84rem;
+  font-weight: 700;
+  padding: 8px 16px;
+  box-shadow: 0 4px 12px rgba(0,0,0,.22);
+  transition: opacity .15s, transform .15s;
+}
+
+.chapter-back-btn:hover {
+  opacity: .88;
+  transform: translateY(-1px);
+}
+
+.act-nav {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.act-pill {
+  background: var(--node-bg);
+  border: 1px solid var(--surface-border);
+  border-radius: 10px;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: .78rem;
+  font-weight: 600;
+  padding: 5px 11px;
+  transition: all .15s;
+}
+
+.act-pill:hover:not(.act-pill-locked) {
+  color: var(--text);
+}
+
+.act-pill-active {
+  color: var(--text);
+  border-color: var(--accent);
+}
+
+.act-pill-funding.act-pill-active  { border-color: rgba(255,184,116,.7); color: rgba(255,184,116,1); }
+.act-pill-data.act-pill-active     { border-color: rgba(124,200,255,.7); color: rgba(124,200,255,1); }
+.act-pill-team.act-pill-active     { border-color: rgba(152,245,200,.7); color: rgba(152,245,200,1); }
+.act-pill-launch.act-pill-active   { border-color: rgba(240,139,216,.7); color: rgba(240,139,216,1); }
+
+.act-pill-locked {
+  opacity: .35;
+  cursor: default;
+}
+
 .cluster-funding {
   border-color: rgba(255, 184, 116, .18);
 }

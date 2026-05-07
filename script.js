@@ -1924,11 +1924,13 @@ function getDeltaClass(value) {
 function showNameStep() {
   refs.setupThemeStep.classList.add('hidden');
   refs.setupNameStep.classList.remove('hidden');
+  requestAnimationFrame(() => refs.playerNameInput.focus());
 }
 
 function showThemeStep() {
   refs.setupNameStep.classList.add('hidden');
   refs.setupThemeStep.classList.remove('hidden');
+  requestAnimationFrame(() => refs.confirmThemeBtn.focus());
 }
 
 function applyTheme(theme) {
@@ -1956,6 +1958,13 @@ function showWindowOverlay(html, bindActions = null) {
   refs.windowOverlay.classList.remove('hidden');
   refs.windowOverlay.setAttribute('aria-hidden', 'false');
   if (bindActions) bindActions(refs.windowOverlayCard);
+}
+
+function focusPrimaryAction(scope = refs.contentCard) {
+  requestAnimationFrame(() => {
+    const button = scope?.querySelector?.('.primary-btn:not([disabled])');
+    if (button) button.focus();
+  });
 }
 
 function buildOverlayCard({ badge, title, intro, sections = [], buttons = [] }) {
@@ -2150,6 +2159,10 @@ function renderEvaluationReview(mode) {
       onClick: closePanel,
     }),
   );
+
+  if (isCurrentTaskComplete) {
+    focusPrimaryAction();
+  }
 }
 
 function finishPreEvaluation() {
@@ -3172,6 +3185,7 @@ function renderActionStage(nodeId, options = {}) {
         button.classList.add('is-selected');
         nextButton.disabled = false;
         nextButton.classList.remove('is-disabled');
+        nextButton.focus();
       });
 
       choicesContainer.appendChild(button);
@@ -3198,6 +3212,10 @@ function renderActionStage(nodeId, options = {}) {
         onClick: closePanel,
       }),
     );
+  }
+
+  if (!node.choices) {
+    focusPrimaryAction();
   }
 }
 
@@ -3497,25 +3515,93 @@ function resetPrototype() {
 
 refs.recapBtn.addEventListener('click', openRecapOverlay);
 refs.resetBtn.addEventListener('click', resetPrototype);
-refs.confirmNameBtn.addEventListener('click', () => {
+
+function confirmPlayerName() {
   const name = refs.playerNameInput.value.trim();
   if (!name) {
     refs.playerNameInput.focus();
-    return;
+    return false;
   }
   state.playerName = name;
   showThemeStep();
-});
-refs.backToNameBtn.addEventListener('click', showNameStep);
-refs.confirmThemeBtn.addEventListener('click', () => {
+  return true;
+}
+
+function confirmThemeSelection() {
   const selected = document.querySelector('input[name="themeChoice"]:checked');
   applyTheme(selected ? selected.value : 'midnight');
   completeSetup();
+}
+
+refs.confirmNameBtn.addEventListener('click', confirmPlayerName);
+refs.playerNameInput.addEventListener('keydown', (event) => {
+  if (event.key === 'Enter') {
+    event.preventDefault();
+    confirmPlayerName();
+  }
+});
+refs.backToNameBtn.addEventListener('click', showNameStep);
+refs.confirmThemeBtn.addEventListener('click', confirmThemeSelection);
+document.querySelectorAll('input[name="themeChoice"]').forEach((input) => {
+  input.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      confirmThemeSelection();
+    }
+  });
 });
 
 refs.windowOverlay.addEventListener('click', (event) => {
   if (event.target === refs.windowOverlay) {
     closeWindowOverlay();
+  }
+});
+
+function triggerVisiblePrimaryButton() {
+  if (!refs.setupOverlay.classList.contains('hidden')) {
+    const setupPrimary = refs.setupOverlay.querySelector('.primary-btn:not([disabled])');
+    if (setupPrimary) {
+      setupPrimary.click();
+      return true;
+    }
+  }
+
+  const panelPrimary = refs.contentCard.querySelector('.primary-btn:not([disabled])');
+  if (panelPrimary) {
+    panelPrimary.click();
+    return true;
+  }
+
+  const overlayPrimary = refs.windowOverlayCard.querySelector('.primary-btn:not([disabled])');
+  if (overlayPrimary) {
+    overlayPrimary.click();
+    return true;
+  }
+
+  return false;
+}
+
+refs.contentCard.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter') return;
+  const target = event.target;
+  if (target instanceof HTMLTextAreaElement) return;
+  if (target instanceof HTMLInputElement && target.type === 'text') return;
+  if (target instanceof HTMLButtonElement) return;
+
+  if (triggerVisiblePrimaryButton()) {
+    event.preventDefault();
+  }
+});
+
+document.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter') return;
+  const target = event.target;
+  if (target instanceof HTMLTextAreaElement) return;
+  if (target instanceof HTMLInputElement && target.type === 'text') return;
+  if (target instanceof HTMLButtonElement) return;
+
+  if (triggerVisiblePrimaryButton()) {
+    event.preventDefault();
   }
 });
 

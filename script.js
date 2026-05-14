@@ -693,7 +693,7 @@ const nodes = {
           'The team pauses briefly to define responsibilities. Bottlenecks become easier to see, and overloaded members are easier to support.',
         feedbackText:
           'This improves performance and social fairness because workload becomes more visible and easier to distribute.',
-        impact: { social: 5, financial: -2, performance: 7 },
+        impact: { social: 5, financial: -2, performance: 5 },
         next: 'team_03',
       },
       {
@@ -753,7 +753,7 @@ const nodes = {
           'Development accelerates. Features are delivered faster, and progress is easier to show in meetings.',
         feedbackText:
           'This improves short-term performance, but fairness and governance questions may be pushed too far downstream.',
-        impact: { social: -6, financial: -3, performance: 9 },
+        impact: { social: -6, financial: -3, performance: 7 },
         next: 'team_05_speed',
         unlocks: ['team_05_speed'],
         locks: ['team_05_balanced'],
@@ -1243,7 +1243,7 @@ const nodes = {
     title: 'How Visible Should This Pilot Be?',
     badge: 'Decision node',
     x: 600,
-    y: 350,
+    y: 360,
     introText: 'The broad route now has to decide how much publicity it will carry into the first week.',
     text:
       'The sponsor wants a visible announcement. Some hospital staff want a quieter operational start until the system behaves well under stress. The choice will shape how forgiving the environment becomes once the first problems appear.',
@@ -1277,7 +1277,7 @@ const nodes = {
     title: 'How Explicit Should The Caution Be?',
     badge: 'Decision node',
     x: 100,
-    y: 350,
+    y: 360,
     introText: 'The quieter route still has to decide how openly it will frame its own limits.',
     text:
       'Some people want the pilot framed as a learning phase with transparent limits. Others worry that too much modesty will make the project look fragile and politically easier to defund if early results are mixed.',
@@ -1306,8 +1306,8 @@ const nodes = {
     id: 'launch_05',
     chapter: 'launch',
     title: 'What A Responsible Launch Must Name',
-    x: 400,
-    y: 490,
+    x: 350,
+    y: 520,
     introText: 'This information node condenses the main practical lesson before the final check.',
     text:
       'Before deployment, the team should be able to name five things clearly: who monitors, who can pause the pilot, what counts as a reportable incident, how staff concerns reach decision-makers, and what would justify broadening or shrinking the rollout. A launch is weaker when these questions are answered only implicitly.',
@@ -1320,8 +1320,8 @@ const nodes = {
     id: 'launch_06',
     chapter: 'launch',
     title: 'Final Launch Check',
-    x: 400,
-    y: 620,
+    x: 80,
+    y: 660,
     introText: 'The final quiz checks whether the whole game\'s logic has stayed intact.',
     text:
       'Which statement best captures what a responsible launch posture requires after all four chapters of the game?',
@@ -1354,8 +1354,8 @@ const nodes = {
     chapter: 'launch',
     title: (currentState) => getEnding(currentState).title,
     badge: 'Milestone',
-    x: 400,
-    y: 730,
+    x: 550,
+    y: 800,
     introText: 'The game ends with the kind of launch the project has made possible for itself.',
     text: (currentState) => getEnding(currentState).text,
     extraHtml: (currentState) => `<h3>Outcome</h3><p>${escapeHtml(getEnding(currentState).lesson)}</p>`,
@@ -3415,10 +3415,10 @@ function handleChoice(nodeId, choice) {
     return;
   }
 
-  const thresholdPreviewEvents = getThresholdCrossingEvents(choice.impact || {});
-  if (thresholdPreviewEvents.length) {
+  const thresholdLowEvents = getThresholdCrossingEvents(choice.impact || {}).filter((e) => e.level === 'low');
+  if (thresholdLowEvents.length) {
     openThresholdOverlay(
-      thresholdPreviewEvents,
+      thresholdLowEvents,
       'This choice would push the project past a threshold. Select another option that keeps the balance within the playable range.',
     );
     return;

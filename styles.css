@@ -1820,8 +1820,40 @@ button:disabled {
   filter: grayscale(.6);
 }
 
+.hub-completed {
+  transform: scale(1.05);
+  box-shadow: 0 0 24px rgba(255,255,255,.14);
+  border-width: 3px;
+}
+
 .hub-completed .hub-kicker {
-  opacity: .7;
+  opacity: .85;
+}
+
+.hub-completed .hub-status {
+  opacity: 1;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.hub-completed.chapter-hub-funding {
+  background: linear-gradient(160deg, rgba(255,184,116,.38), rgba(255,184,116,.16));
+  border-color: rgba(255,184,116,.85);
+}
+
+.hub-completed.chapter-hub-data {
+  background: linear-gradient(160deg, rgba(124,200,255,.38), rgba(124,200,255,.16));
+  border-color: rgba(124,200,255,.85);
+}
+
+.hub-completed.chapter-hub-team {
+  background: linear-gradient(160deg, rgba(152,245,200,.38), rgba(152,245,200,.16));
+  border-color: rgba(152,245,200,.85);
+}
+
+.hub-completed.chapter-hub-launch {
+  background: linear-gradient(160deg, rgba(240,139,216,.38), rgba(240,139,216,.16));
+  border-color: rgba(240,139,216,.85);
 }
 
 .hub-kicker {

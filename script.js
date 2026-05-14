@@ -2,7 +2,7 @@ const LOWER_LIMIT = 30;
 const UPPER_LIMIT = 70;
 
 // FOR TESTING ONLY 
-const SKIP_PRE_EVALUATION = false;
+const SKIP_PRE_EVALUATION = true;
 const TESTING_START_NODES = ['funding_01', 'team_01', 'data_01'];
 
 const initialResources = {
@@ -485,8 +485,7 @@ const nodes = {
         feedbackStory: 'The project gains speed and attention, but expectations form before the team has stabilized its internal review.',
         feedbackText: 'This route improves financing quickly, but makes later caution harder to communicate.',
         impact: { social: -10, financial: 13, performance: -4 },
-        next: 'funding_03_hype',
-        unlocks: ['funding_08b'],
+        next: 'funding_08b',
         locks: ['funding_03_guarded'],
         lockReason:
           'This public-facing posture closed the quieter diligence route.',
@@ -498,8 +497,7 @@ const nodes = {
         feedbackStory: 'The room loses some early momentum, but keeps more space for due diligence and internal alignment.',
         feedbackText: 'This route protects legitimacy and review, even if it softens the first funding wave.',
         impact: { social: 6, financial: -5, performance: 3 },
-        next: 'funding_03_guarded',
-        unlocks: ['funding_08b'],
+        next: 'funding_08b',
         locks: ['funding_03_hype'],
         lockReason:
           'This review-first posture closed the showcase route.',
@@ -596,6 +594,8 @@ const nodes = {
       'Make a quick stakeholder map before taking support: who wants acceleration, who bears reputational risk, who carries hidden implementation work, and who can still say no later. This turns a vague partner discussion into a concrete governance picture.',
     extraHtml:
       '<h3>Practical checklist</h3><p>Write down incentives, likely pressure points, and one red line the team would defend even under time pressure. If nobody can name that red line, the project is usually more dependent than it thinks.</p>',
+    continueTo: (state) => state.branchFlags.has('funding_hype') ? 'funding_03_hype' : 'funding_03_guarded',
+    continueLabel: 'Continue to the sponsor meeting',
   }),
   funding_09: makeQuizNode({
     id: 'funding_09',
@@ -1614,10 +1614,13 @@ function getNodeCenterPoint(node, offsets = getLayoutOffsets()) {
 
 function getOutgoingLinks(node) {
   const links = new Set();
-  if (node.continueTo) links.add(node.continueTo);
+  const continueTo = resolveValue(node.continueTo, node);
+  if (continueTo) links.add(continueTo);
+  if (node.unlocks) node.unlocks.forEach((id) => links.add(id));
   if (node.choices) {
     node.choices.forEach((choice) => {
       if (choice.next) links.add(choice.next);
+      if (choice.unlocks) choice.unlocks.forEach((id) => links.add(id));
     });
   }
   return [...links];
@@ -2558,7 +2561,7 @@ function renderChapterHubs(offsets) {
       isCompleted ? 'hub-completed' : '',
     ].filter(Boolean).join(' ');
 
-    const statusLabel = isCompleted ? 'Completed' : isLocked ? 'Locked' : hasStarted ? 'In progress' : 'Available';
+    const statusLabel = isCompleted ? '✓ Completed' : isLocked ? 'Locked' : hasStarted ? 'In progress' : 'Available';
 
     return `
       <div
@@ -2779,7 +2782,7 @@ function renderHubView() {
     const hasAvailable = chapterNodesList.some((n) => state.availableNodes.has(n.id));
     const hasStarted = chapterNodesList.some((n) => state.completedNodes.has(n.id));
     const isLocked = !hasAvailable && !hasStarted && !isCompleted;
-    const statusLabel = isCompleted ? 'Completed' : isLocked ? 'Locked' : hasStarted ? 'In progress' : 'Available';
+    const statusLabel = isCompleted ? '✓ Completed' : isLocked ? 'Locked' : hasStarted ? 'In progress' : 'Available';
     const classes = ['chapter-hub', `chapter-hub-${cluster.id}`, isLocked ? 'hub-locked' : '', isCompleted ? 'hub-completed' : ''].filter(Boolean).join(' ');
 
     return `
@@ -2978,7 +2981,8 @@ function unlockNodes(nodeIds = []) {
 }
 
 function getDirectUnlockTargets(node) {
-  const targets = new Set([...(node.unlocks || []), node.continueTo].filter(Boolean));
+  const continueTo = resolveValue(node.continueTo, node);
+  const targets = new Set([...(node.unlocks || []), continueTo].filter(Boolean));
   return [...targets].filter((nodeId) => (
     nodes[nodeId] &&
     !state.closedNodes.has(nodeId) &&
@@ -3455,17 +3459,23 @@ function completePassiveNode(nodeId) {
   markNodeCompleted(nodeId);
   applyBranchFlags(node.branchFlagsSet || []);
   if (node.unlocks) unlockNodes(node.unlocks);
-  if (node.continueTo) unlockNodes([node.continueTo]);
+  const resolvedContinueTo = resolveValue(node.continueTo, node);
+  if (resolvedContinueTo) unlockNodes([resolvedContinueTo]);
   refreshGlobalUnlocks();
-  renderBoard();
   if (nodeId === 'launch_10') {
+    renderBoard();
     renderEvaluationStage('post');
     return;
   }
   if (directTarget) {
+    renderBoard();
     renderActionStage(directTarget);
     return;
   }
+  if (node.completeChapter) {
+    state.expandedChapter = null;
+  }
+  renderBoard();
   closePanel();
 }
 

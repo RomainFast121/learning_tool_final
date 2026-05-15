@@ -482,9 +482,9 @@ const nodes = {
       {
         text: 'Enter as if this is a showcase opportunity and try to turn the sponsor meeting into visible momentum early.',
         feedbackTitle: 'You chose a high-visibility entry.',
-        feedbackStory: 'The project gains speed and attention, but expectations form before the team has stabilized its internal review.',
+        feedbackStory: 'The project gains speed and attention, but expectations form while the team is still stabilizing its internal review.',
         feedbackText: 'This route improves financing quickly, but makes later caution harder to communicate.',
-        impact: { social: -8, financial: 10, performance: -3 },
+        impact: { social: -7, financial: 9, performance: -2 },
         next: 'funding_08b',
         locks: ['funding_03_guarded'],
         lockReason:
@@ -495,8 +495,8 @@ const nodes = {
         text: 'Enter carefully, keep the meeting closed-door, and focus first on governance, milestones, and conditions of independence.',
         feedbackTitle: 'You chose a guarded opening.',
         feedbackStory: 'The room loses some early momentum, but keeps more space for due diligence and internal alignment.',
-        feedbackText: 'This route protects legitimacy and review, even if it softens the first funding wave.',
-        impact: { social: 5, financial: -4, performance: 2 },
+        feedbackText: 'This route protects legitimacy and review, while making the first funding wave less certain.',
+        impact: { social: 7, financial: -9, performance: 2 },
         next: 'funding_08b',
         locks: ['funding_03_hype'],
         lockReason:
@@ -559,7 +559,7 @@ const nodes = {
         feedbackTitle: 'You protected feasibility by conceding influence.',
         feedbackStory: 'The project becomes easier to finance, but harder to defend if the sponsor later pushes for speed over review.',
         feedbackText: 'This increases short-term flexibility while making governance more fragile later.',
-        impact: { social: -6, financial: 8, performance: -4 },
+        impact: { social: -7, financial: 10, performance: -3 },
         next: 'funding_09',
         branchFlagsSet: ['funding_contract_loose'],
       },
@@ -568,7 +568,7 @@ const nodes = {
         feedbackTitle: 'You defended a stricter contract.',
         feedbackStory: 'The final package is leaner, but the project keeps more space to remain accountable when pressures sharpen.',
         feedbackText: 'Less comfortable financially, but it protects the team from political dependence on one actor.',
-        impact: { social: 7, financial: -5, performance: 3 },
+        impact: { social: 8, financial: -6, performance: -2 },
         next: 'funding_09',
         branchFlagsSet: ['funding_contract_strict'],
       },
@@ -577,7 +577,7 @@ const nodes = {
         feedbackTitle: 'You chose a narrower commitment.',
         feedbackStory: 'The project gains less support, but keeps a realistic escape path if the relationship becomes constraining.',
         feedbackText: 'This trades scale for resilience and makes it easier to protect future correction.',
-        impact: { social: 5, financial: -7, performance: 4 },
+        impact: { social: 6, financial: -9, performance: 3 },
         next: 'funding_09',
         branchFlagsSet: ['funding_contract_pilot'],
       },
@@ -692,8 +692,8 @@ const nodes = {
         feedbackStory:
           'The team pauses briefly to define responsibilities. Bottlenecks become easier to see, and overloaded members are easier to support.',
         feedbackText:
-          'This improves performance and social fairness because workload becomes more visible and easier to distribute.',
-        impact: { social: 5, financial: -2, performance: 5 },
+          'This improves workload visibility, but it uses time and attention that could have gone into delivery.',
+        impact: { social: 4, financial: -6, performance: 2 },
         next: 'team_03',
       },
       {
@@ -702,8 +702,8 @@ const nodes = {
         feedbackStory:
           'The team produces faster short-term results, but unclear responsibilities remain under the surface.',
         feedbackText:
-          'This can reassure funders briefly, but it risks increasing pressure on people who are already overloaded.',
-        impact: { social: -4, financial: 5, performance: 3 },
+          'This can reassure funders briefly and keep output moving, but it risks increasing pressure on people who are already overloaded.',
+        impact: { social: -6, financial: 4, performance: 2 },
         next: 'team_03',
       },
       {
@@ -712,8 +712,8 @@ const nodes = {
         feedbackStory:
           'The team avoids immediate disruption, but the same delays and unclear responsibilities continue.',
         feedbackText:
-          'This avoids conflict in the short term, but it weakens performance because the structural problem remains unresolved.',
-        impact: { social: 0, financial: 1, performance: -7 },
+          'This avoids disruption in the short term, but the structural problem remains unresolved.',
+        impact: { social: 3, financial: 4, performance: -7 },
         next: 'team_03',
       },
     ],
@@ -750,10 +750,10 @@ const nodes = {
         text: 'Prioritize technical hires to improve the tool faster.',
         feedbackTitle: 'You chose a speed-focused team.',
         feedbackStory:
-          'Development accelerates. Features are delivered faster, and progress is easier to show in meetings.',
+          'Development accelerates. Features are delivered faster, and progress is easier to show in meetings, but fewer non-technical concerns are present in daily work.',
         feedbackText:
-          'This improves short-term performance, but fairness and governance questions may be pushed too far downstream.',
-        impact: { social: -6, financial: -3, performance: 7 },
+          'This protects short-term performance while relying on later review to catch fairness and governance concerns.',
+        impact: { social: -8, financial: 1, performance: 7 },
         next: 'team_05_speed',
         unlocks: ['team_05_speed'],
         locks: ['team_05_balanced'],
@@ -765,10 +765,10 @@ const nodes = {
         text: 'Build a mixed team with technical and fairness roles.',
         feedbackTitle: 'You chose a broader team.',
         feedbackStory:
-          'The team can improve the model while also questioning clinical fit, patient impact, and trust.',
+          'The team can question clinical fit, patient impact, and trust while still moving the model forward.',
         feedbackText:
           'This strengthens social fairness and long-term robustness, but it costs more and makes coordination slower.',
-        impact: { social: 8, financial: -6, performance: 4 },
+        impact: { social: 8, financial: -7, performance: -1 },
         next: 'team_05_balanced',
         unlocks: ['team_05_balanced'],
         locks: ['team_05_speed'],
@@ -878,7 +878,7 @@ const nodes = {
           'Coordination becomes simpler, and decisions are faster. But some concerns may enter only after key choices are already made.',
         feedbackText:
           'This helps financial viability by limiting coordination costs, but it can reduce social fairness.',
-        impact: { social: -5, financial: 5, performance: 0 },
+        impact: { social: -6, financial: 8, performance: -2 },
         next: 'team_07',
         branchFlagsSet: ['team_centralized'],
       },
@@ -889,7 +889,7 @@ const nodes = {
           'More people can see where difficult trade-offs happen. Meetings become heavier, and decisions take longer.',
         feedbackText:
           'This supports social fairness, but it costs more time and coordination.',
-        impact: { social: 5, financial: -5, performance: 0 },
+        impact: { social: 6, financial: -5, performance: -1 },
         next: 'team_07',
         branchFlagsSet: ['team_rotating'],
       },
@@ -899,8 +899,8 @@ const nodes = {
         feedbackStory:
           'Each major workstream now connects technical progress with fairness, workflow, and implementation concerns.',
         feedbackText:
-          'This improves performance and social fairness while keeping coordination lighter than full distribution.',
-        impact: { social: 3, financial: -2, performance: 2 },
+          'This links technical and fairness concerns, but it still costs coordination and can blur who has final authority.',
+        impact: { social: 4, financial: -6, performance: 2 },
         next: 'team_07',
         branchFlagsSet: ['team_paired_leads'],
       },
@@ -985,30 +985,30 @@ const nodes = {
     y: 40,
     introText: 'The team must choose how much uncertainty to carry forward.',
     text:
-      'Some want to ingest the records quickly and clean later. Others want staged access, bias notes, and consent review before training begins.',
+      'Some want to ingest the records quickly so experimentation reveals what matters. Others want staged access, bias notes, and consent review before training begins.',
     choices: [
       {
         text: 'Ingest quickly, begin experimentation, and fix documentation later.',
         feedbackTitle: 'You chose a faster intake route.',
         feedbackStory:
-          'The project gains momentum, but starts building on records it does not fully understand.',
+          'The project gains momentum and learns from real records sooner, but carries more uncertainty into early modeling.',
         feedbackText:
           'Fast intake helps early experiments, but can hide weak assumptions inside the pipeline.',
-        impact: { social: -7, financial: 6, performance: -4 },
+        impact: { social: -7, financial: 9, performance: -2 },
         next: 'data_03_fast',
         locks: ['data_03_careful'],
         lockReason:
-          'This choice closed the staged-audit route and opened a faster, riskier path.',
+          'This choice closed the staged-audit route and opened a faster, more adaptive path.',
         branchFlagsSet: ['data_fast'],
       },
       {
         text: 'Use staged access, document gaps, and review consent before training.',
-        feedbackTitle: 'You chose a more disciplined intake route.',
+        feedbackTitle: 'You chose a review-first intake route.',
         feedbackStory:
-          'The project slows down, but the team understands the archive more clearly.',
+          'The project slows down, but the team understands the archive more clearly before model assumptions harden.',
         feedbackText:
           'This protects traceability and trust, though it delays early experiments.',
-        impact: { social: 6, financial: -5, performance: 3 },
+        impact: { social: 7, financial: -9, performance: 2 },
         next: 'data_03_careful',
         locks: ['data_03_fast'],
         lockReason:
@@ -1119,8 +1119,8 @@ const nodes = {
           'The archive may improve, but the project asks for more trust before earning it.',
         feedbackText:
           'Data expansion depends on social legitimacy, not only technical need.',
-        impact: { social: -3, financial: -3, performance: 3 },
-        next: 'data_05',
+        impact: { social: -7, financial: -3, performance: 10 },
+        next: 'data_05_expand',
         branchFlagsSet: ['data_expand'],
       },
       {
@@ -1130,30 +1130,109 @@ const nodes = {
           'The team moves slower, but can better explain what the evidence means.',
         feedbackText:
           'This protects trust and evidence quality, but costs time and budget.',
-        impact: { social: 5, financial: -4, performance: 3 },
-        next: 'data_05',
+        impact: { social: 7, financial: -8, performance: 1 },
+        next: 'data_05_deepen',
         branchFlagsSet: ['data_deepen'],
       },
       {
         text: 'Redesign the technical path to use less compute.',
         feedbackTitle: 'You reduced the footprint of the route.',
         feedbackStory:
-          'The team lowers waste, though it gives up some early ambition.',
+          'The team lowers waste and infrastructure exposure, though it gives up some early modeling ambition.',
         feedbackText:
-          'A lighter path can improve long-term reliability, but still takes engineering work.',
-        impact: { social: 0, financial: 0, performance: 8 },
-        next: 'data_05',
+          'A lighter path can improve feasibility, but it may limit what the first model can learn from the archive.',
+        impact: { social: 3, financial: 7, performance: -10 },
+        next: 'data_05_low_compute',
         branchFlagsSet: ['data_low_compute'],
       },
     ],
   }),
 
-  data_05: makeStoryNode({
-    id: 'data_05',
+  data_05_expand: makeStoryNode({
+    id: 'data_05_expand',
+    chapter: 'data',
+    title: 'Broader Archive',
+    x: 540,
+    y: 540,
+    introText: 'The team asks for more data while the original archive is still being interpreted.',
+    text:
+      'The training pool grows, but the project now has more sites, more variation, and more explanation work to carry. The extra records may help coverage, yet they also make it harder to tell a simple story about what the archive actually represents.',
+    continueTo: 'data_06',
+    continueLabel: 'Continue to the data check',
+  }),
+
+  data_05_deepen: makeStoryNode({
+    id: 'data_05_deepen',
+    chapter: 'data',
+    title: 'Deeper Archive',
+    x: 340,
+    y: 540,
+    introText: 'The team spends the next cycle understanding the records it already has.',
+    text:
+      'The archive becomes easier to explain, but the project has fewer new examples to show for the time spent. Some people feel reassured by the documentation; others worry that the model work is becoming too slow for the winter timeline.',
+    continueTo: 'data_06',
+    continueLabel: 'Continue to the data check',
+  }),
+
+  data_05_low_compute: makeStoryNode({
+    id: 'data_05_low_compute',
+    chapter: 'data',
+    title: 'Lighter Pipeline',
+    x: 140,
+    y: 540,
+    introText: 'The team redesigns the data path around a smaller technical footprint.',
+    text:
+      'Storage and compute pressure fall, and the system becomes easier to justify operationally. The trade-off is that some ambitious modeling ideas are postponed until the team knows whether the leaner path can still answer the clinical question well enough.',
+    continueTo: 'data_06',
+    continueLabel: 'Continue to the data check',
+  }),
+
+  data_06: makeQuizNode({
+    id: 'data_06',
+    chapter: 'data',
+    title: 'Evidence Check',
+    x: 340,
+    y: 690,
+    introText: 'The chapter now has to turn its data posture into a defensible explanation.',
+    text:
+      'Which explanation would make the data chapter easiest to defend later?',
+    choices: [
+      {
+        text: 'Name what the archive supports, what remains uncertain, and which assumptions would force the team to revise its use.',
+        feedbackTitle: 'You kept the evidence conditional.',
+        feedbackStory:
+          'The team can now explain the archive without pretending that documentation, coverage, cost, and model ambition all point in the same direction.',
+        feedbackText:
+          'Responsible data work is not only collecting or cleaning records. It is keeping the limits visible enough to guide later decisions.',
+        next: 'data_07',
+      },
+      {
+        text: 'Summarize the archive as large enough for the next phase and leave the remaining caveats for technical notes.',
+        retry: true,
+        feedbackTitle: 'That makes the evidence look cleaner than it is.',
+        feedbackStory:
+          'A short summary may help momentum, but hiding caveats in technical notes makes later disagreements harder to resolve.',
+        feedbackText:
+          'The limits need to travel with the evidence, not sit outside the main decision record.',
+      },
+      {
+        text: 'Treat the chosen data route as settled because the project has already paid the cost of choosing it.',
+        retry: true,
+        feedbackTitle: 'That locks the path too early.',
+        feedbackStory:
+          'Every data route remains provisional once it meets clinical use, staffing limits, and future scrutiny.',
+        feedbackText:
+          'A data posture is strongest when it can still revise itself under new evidence.',
+      },
+    ],
+  }),
+
+  data_07: makeStoryNode({
+    id: 'data_07',
     chapter: 'data',
     title: 'Data Milestone',
     x: 340,
-    y: 540,
+    y: 840,
     introText: 'The chapter closes with a clearer, still imperfect foundation.',
     text: (currentState) =>
       currentState.branchFlags.has('data_fast')
@@ -1185,14 +1264,14 @@ const nodes = {
     y: 40,
     introText: 'The first launch decision is about scope, visibility, and what kind of risk the hospital is willing to carry.',
     text:
-      'One route pushes toward a broader, more visible multi-site pilot that shows confidence and momentum. Another route argues for a narrower first deployment that learns quietly, protects room for rollback, and resists the urge to turn a first launch into a public proof of inevitability.',
+      'One route pushes toward a broader, more visible multi-site pilot that shows confidence and momentum. Another route starts with a narrower first deployment that learns quietly and protects room for local correction.',
     choices: [
       {
         text: 'Prepare for a visible multi-site pilot that demonstrates strong confidence in the project.',
         feedbackTitle: 'You chose a broader and more exposed launch route.',
-        feedbackStory: 'The project may now look more convincing from the outside, but it also becomes less able to treat uncertainty as normal.',
+        feedbackStory: 'The project may now look more convincing from the outside, but it also has to manage uncertainty across more sites at once.',
         feedbackText: 'This route can amplify momentum, yet it makes every unresolved weakness more public and less forgiving.',
-        impact: { social: -7, financial: 5, performance: -3 },
+        impact: { social: -7, financial: 6, performance: 1 },
         next: 'launch_03_ambitious',
         locks: ['launch_03_measured', 'launch_04_measured'],
         lockReason:
@@ -1203,8 +1282,8 @@ const nodes = {
         text: 'Prepare for a narrower ward-level pilot that keeps room for correction and local trust-building.',
         feedbackTitle: 'You chose a more measured launch route.',
         feedbackStory: 'The project may look less triumphant, but it stays closer to the kind of deployment that can still learn without overclaiming.',
-        feedbackText: 'This route protects correction capacity and reduces the political cost of admitting uncertainty.',
-        impact: { social: 6, financial: -3, performance: 3 },
+        feedbackText: 'This route protects correction capacity, while giving up some visible momentum and scale.',
+        impact: { social: 7, financial: -6, performance: -1 },
         next: 'launch_03_measured',
         locks: ['launch_03_ambitious', 'launch_04_ambitious'],
         lockReason:
@@ -1216,10 +1295,10 @@ const nodes = {
   launch_03_ambitious: makeStoryNode({
     id: 'launch_03_ambitious',
     chapter: 'launch',
-    title: 'Exposure Friction',
+    title: 'Multi-Site Coordination',
     x: 600,
     y: 200,
-    introText: 'The broader route immediately turns enthusiasm into coordination strain.',
+    introText: 'The broader route turns enthusiasm into a larger coordination task.',
     text:
       'Three hospital sites now want to know what will change for them, who owns the monitoring burden, and how quickly the system can be adjusted if reality turns out messier than the optimism in the room. The sponsor still wants visibility, but staff push back against making a fragile first week look more certain than it is.',
     continueTo: 'launch_04_ambitious',
@@ -1228,10 +1307,10 @@ const nodes = {
   launch_03_measured: makeStoryNode({
     id: 'launch_03_measured',
     chapter: 'launch',
-    title: 'Ward-Level Reality Check',
+    title: 'Ward-Level Constraints',
     x: 100,
     y: 200,
-    introText: 'The narrower route feels more modest, but much more concrete once ward-level concerns are named clearly.',
+    introText: 'The narrower route feels more modest, and more concrete once ward-level concerns are named clearly.',
     text:
       'A nurse manager walks through the pilot ward and points out several practical problems that no one had fully seen from the boardroom: alarm fatigue, handover timing, and how easily “decision support” can still feel like pressure in a busy clinical setting. The quieter route suddenly feels less like caution in the abstract and more like respect for details that will decide whether staff can actually live with the tool.',
     continueTo: 'launch_04_measured',
@@ -1256,7 +1335,7 @@ const nodes = {
         feedbackTitle: 'You turned the broad route into a public event.',
         feedbackStory: 'The project gains attention and leverage, but it becomes much harder to treat early correction as normal learning once the pilot is publicly staged.',
         feedbackText: 'Publicity can help momentum, yet it also raises the political cost of uncertainty exactly when the project most needs room to acknowledge it.',
-        impact: { social: -9, financial: 5, performance: -3 },
+        impact: { social: -9, financial: 7, performance: 2 },
         next: 'launch_05',
         branchFlagsSet: ['launch_public'],
       },
@@ -1264,8 +1343,8 @@ const nodes = {
         text: 'Keep the pilot operationally broad but communication-light until the first live signals are clearer across sites.',
         feedbackTitle: 'You protected the broad route from some of its own visibility.',
         feedbackStory: 'The rollout remains ambitious, but it gains more room to absorb weak signals and uneven site readiness without immediate public framing.',
-        feedbackText: 'This does not remove the risks of breadth, but it does reduce the cost of learning in public before staff confidence is real.',
-        impact: { social: 2, financial: 0, performance: 2 },
+        feedbackText: 'This reduces the cost of learning in public, but it can make the broad pilot harder to explain to sponsors and managers.',
+        impact: { social: 6, financial: -4, performance: -2 },
         next: 'launch_05',
         branchFlagsSet: ['launch_broad_quiet'],
       },
@@ -1286,8 +1365,8 @@ const nodes = {
         text: 'Frame the pilot explicitly as a learning phase with transparent limits, visible checkpoints, and room for pause.',
         feedbackTitle: 'You made the quieter route openly provisional.',
         feedbackStory: 'The project may look less triumphant, but it gains a stronger language for correction, adjustment, and trust-building before people are asked to rely on it.',
-        feedbackText: 'This protects legitimacy by refusing to confuse modesty with weakness.',
-        impact: { social: 7, financial: -3, performance: 3 },
+        feedbackText: 'This protects legitimacy, but it can make the pilot look less decisive from a distance.',
+        impact: { social: 7, financial: -4, performance: -3 },
         next: 'launch_05',
         branchFlagsSet: ['launch_learning_frame'],
       },
@@ -1296,7 +1375,7 @@ const nodes = {
         feedbackTitle: 'You softened the caution without fully abandoning it.',
         feedbackStory: 'Institutional support may stay stronger, but the route begins recreating some of the expectation pressure it was meant to avoid.',
         feedbackText: 'This is more ambitious rhetorically than it first appears, even if the rollout itself remains narrow.',
-        impact: { social: -3, financial: 3, performance: -1 },
+        impact: { social: -6, financial: 4, performance: 2 },
         next: 'launch_05',
         branchFlagsSet: ['launch_quiet_confidence'],
       },
@@ -3138,6 +3217,55 @@ function getChoiceConstraint(choice) {
         label: resourceMeta[resource].label,
       })),
     };
+  }
+
+  const impact = choice.impact || null;
+  if (impact) {
+    const projectedBlocked = Object.keys(state.resources).flatMap((resource) => {
+      const current = state.resources[resource];
+      const delta = impact[resource] || 0;
+      const projected = clampResource(current + delta);
+      const meta = resourceMeta[resource];
+
+      if (
+        (current > LOWER_LIMIT && projected <= LOWER_LIMIT) ||
+        (current <= LOWER_LIMIT && delta <= 0)
+      ) {
+        return [{
+          resource,
+          level: 'low',
+          title: meta.lowTitle,
+          lead: meta.lowLead,
+          lesson: meta.lowLesson,
+          label: meta.label,
+        }];
+      }
+
+      if (
+        (current < UPPER_LIMIT && projected >= UPPER_LIMIT) ||
+        (current >= UPPER_LIMIT && delta >= 0)
+      ) {
+        return [{
+          resource,
+          level: 'high',
+          title: meta.highTitle,
+          lead: meta.highLead,
+          lesson: meta.highLesson,
+          label: meta.label,
+        }];
+      }
+
+      return [];
+    });
+
+    if (projectedBlocked.length) {
+      return {
+        blocked: true,
+        reason:
+          'This choice would push a resource to or beyond a threshold. Select another option that keeps the project within the playable range.',
+        entries: projectedBlocked,
+      };
+    }
   }
 
   const highBlocked = (choice.overRequires || []).filter((resource) => state.resources[resource] >= UPPER_LIMIT);

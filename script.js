@@ -1400,7 +1400,7 @@ const nodes = {
     chapter: 'launch',
     title: 'Final Launch Check',
     x: 80,
-    y: 650,
+    y: 640,
     introText: 'The final quiz checks whether the whole game\'s logic has stayed intact.',
     text:
       'Which statement best captures what a responsible launch posture requires after all four chapters of the game?',
@@ -1434,7 +1434,7 @@ const nodes = {
     title: (currentState) => getEnding(currentState).title,
     badge: 'Milestone',
     x: 550,
-    y: 780,
+    y: 770,
     introText: 'The game ends with the kind of launch the project has made possible for itself.',
     text: (currentState) => getEnding(currentState).text,
     extraHtml: (currentState) => `<h3>Outcome</h3><p>${escapeHtml(getEnding(currentState).lesson)}</p>`,

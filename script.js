@@ -1023,7 +1023,7 @@ const nodes = {
     chapter: 'data',
     title: 'Fast Ingestion Traceability',
     x: 540,
-    y: 160,
+    y: 200,
     introText: 'The pipeline is moving, but uncertainty is already appearing.',
     text:
       'Some labels differ by hospital, some fields are missing, and some notes are unclear. What should the team do first?',
@@ -1063,7 +1063,7 @@ const nodes = {
     chapter: 'data',
     title: 'Careful Inspection',
     x: 130,
-    y: 160,
+    y: 200,
     introText: 'The team reads the archive before treating it as training data.',
     text:
       'Consent language varies across sites, and some reuse assumptions are unclear. What is the most responsible interpretation?',
@@ -1104,7 +1104,7 @@ const nodes = {
     title: 'Responding To The Data Strain',
     badge: 'Decision node',
     x: 340,
-    y: 390,
+    y: 360,
     introText: 'The archive now creates cost, fairness, and infrastructure pressure.',
     text:
       'Storage, preprocessing, validation, representation gaps, and consent notes are all becoming visible. The team must decide what kind of data discipline it can afford.',
@@ -1153,7 +1153,7 @@ const nodes = {
     chapter: 'data',
     title: 'Broader Archive',
     x: 540,
-    y: 540,
+    y: 560,
     introText: 'The team asks for more data while the original archive is still being interpreted.',
     text:
       'The training pool grows, but the project now has more sites, more variation, and more explanation work to carry. The extra records may help coverage, yet they also make it harder to tell a simple story about what the archive actually represents.',
@@ -1166,7 +1166,7 @@ const nodes = {
     chapter: 'data',
     title: 'Deeper Archive',
     x: 340,
-    y: 540,
+    y: 560,
     introText: 'The team spends the next cycle understanding the records it already has.',
     text:
       'The archive becomes easier to explain, but the project has fewer new examples to show for the time spent. Some people feel reassured by the documentation; others worry that the model work is becoming too slow for the winter timeline.',
@@ -1179,7 +1179,7 @@ const nodes = {
     chapter: 'data',
     title: 'Lighter Pipeline',
     x: 140,
-    y: 540,
+    y: 560,
     introText: 'The team redesigns the data path around a smaller technical footprint.',
     text:
       'Storage and compute pressure fall, and the system becomes easier to justify operationally. The trade-off is that some ambitious modeling ideas are postponed until the team knows whether the leaner path can still answer the clinical question well enough.',
@@ -1192,7 +1192,7 @@ const nodes = {
     chapter: 'data',
     title: 'Evidence Check',
     x: 340,
-    y: 690,
+    y: 720,
     introText: 'The chapter now has to turn its data posture into a defensible explanation.',
     text:
       'Which explanation would make the data chapter easiest to defend later?',
@@ -1232,7 +1232,7 @@ const nodes = {
     chapter: 'data',
     title: 'Data Milestone',
     x: 340,
-    y: 840,
+    y: 860,
     introText: 'The chapter closes with a clearer, still imperfect foundation.',
     text: (currentState) =>
       currentState.branchFlags.has('data_fast')
@@ -1400,7 +1400,7 @@ const nodes = {
     chapter: 'launch',
     title: 'Final Launch Check',
     x: 80,
-    y: 660,
+    y: 650,
     introText: 'The final quiz checks whether the whole game\'s logic has stayed intact.',
     text:
       'Which statement best captures what a responsible launch posture requires after all four chapters of the game?',
@@ -1434,7 +1434,7 @@ const nodes = {
     title: (currentState) => getEnding(currentState).title,
     badge: 'Milestone',
     x: 550,
-    y: 800,
+    y: 780,
     introText: 'The game ends with the kind of launch the project has made possible for itself.',
     text: (currentState) => getEnding(currentState).text,
     extraHtml: (currentState) => `<h3>Outcome</h3><p>${escapeHtml(getEnding(currentState).lesson)}</p>`,

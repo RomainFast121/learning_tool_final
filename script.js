@@ -2,7 +2,7 @@ const LOWER_LIMIT = 30;
 const UPPER_LIMIT = 70;
 
 // FOR TESTING ONLY 
-const SKIP_PRE_EVALUATION = true;
+const SKIP_PRE_EVALUATION = false;
 const TESTING_START_NODES = ['funding_01', 'team_01', 'data_01'];
 
 const initialResources = {

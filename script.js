@@ -634,7 +634,7 @@ const nodes = {
     id: 'funding_10',
     chapter: 'funding',
     title: 'Funding Milestone',
-    x: 280,
+    x: 560,
     y: 660,
     introText: 'The chapter closes when the team translates the deal into everyday work for staff who were not in the negotiations.',
     text: (currentState) =>
